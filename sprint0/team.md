@@ -1,4 +1,4 @@
-| Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username
+| Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username |
 |
 |-----------|--------|------------|-------|---------------------|------------------
 |
@@ -14,3 +14,5 @@
 fully_cooked_turkey#9233 |
 |
 | Jeremy Ng| ngjerem6| 1005834055| jeremyngcc.ng@mail.utoronto.ca| discord| JCC#3828 |
+
+**Discord Chat/Server Invite :** https://discord.gg/5JsuXF9u
