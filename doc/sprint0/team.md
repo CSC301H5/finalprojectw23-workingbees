@@ -8,3 +8,4 @@
 | Jeremy Ng| ngjerem6| 1005834055| jeremyngcc.ng@mail.utoronto.ca| discord| JCC#3828 |
 
 **Discord Chat/Server Invite :** https://discord.gg/5JsuXF9u
+Trello: https://trello.com/invite/csc301project5/ATTI7d6b5bb9262f062b264bb890c780acf379DAC08F
