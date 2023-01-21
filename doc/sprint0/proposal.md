@@ -1,4 +1,4 @@
-PROPOSAL DRAFT - JAN 20 2023
+PROPOSAL DRAFT - JAN 20 2023 - NEED FEEDBACK
 
 # Problem: 
 Making groups for courses where you don't know people well is difficult, and the provided means of getting into groups (being autoassigned by the prof, using piazza and risking getting no responses/ghosted, or simply "talking to people") are not always viable.
