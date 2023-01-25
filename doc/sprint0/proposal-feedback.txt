@@ -1,0 +1,11 @@
+* How is this better than the current solution on Piazza where students can just post on a more adhoc basis? Isn’t the scenario you gave in the case against piazza, namely “using piazza and risking getting no responses/ghosted”, also entirely possible with your app? For this to work well, you need to have a significant amount of data to form strong opinions on preferences (ex. name, gender is probably not enough to produce good results). 
+   * Ideally for matching you would want to look into the “stable marriage problem” (https://en.wikipedia.org/wiki/Stable_marriage_problem) but the best you can probably do is doing a random matching. 
+* This makes more sense if no one in the class knows anyone else and we are doing matches from scratch, but that’s rarely the case. 
+* Additionally, how often would students really need to use this app? I feel like in most courses, students tend to form a group in the first week of the semester and stick with that for the remainder of assignments/projects in that class. 
+* Some other things I wanted to comment on: 
+   * In the final draft of your proposal, please be more specific and descriptive in regards to the details of your key users and usage scenarios. 
+   * Regarding your question about what architecture to use, check out the text at the top of this page here https://mcs.utm.utoronto.ca/~301/project.html in addition to the “MEAN” stack link in the left sidebar of the same site (but in my opinion, use React or something instead of Angular :P). You can also check this out: https://www.educative.io/blog/choose-a-web-development-tech-stack. But in general, don’t be too concerned with the selection of your tech stack, I’m sure anything you choose will work fine .
+   * Your market analysis could also use some more work. For example, are you able to quantify how large your addressable market is? 
+
+
+Overall, I think there is potential with idea your but you may need to flesh out the specifics a bit more and think of ways to differentiate your app from existing services. Additionally, you should think of ways to encourage the use of your app on a more frequent basis.
