@@ -1,4 +1,4 @@
-All of these apps are teacher-driven, one-sided solutions to forming groups:
+Teacher-driven, One-sided solutions to forming groups:
 
 Random Groups: It is a tool that allows teachers to randomly divide students into groups for class discussions, group work, or other activities.
 Pros: Splitting group based on a name list
@@ -8,10 +8,11 @@ GroupmakerPro: It is a group formation tool that allows teachers to divide stude
 Pros: Able to randomize by whole groups or by maximum persons. 
 Cons: Random splitting, no customizable splitting criteria
 
-
 Random Group Creator
 Pros: only need to type or upload a class list to form groups, able to control group size 
 Cons: Random splitting, no customizable splitting criteria
+
+Teacher-driven, Two-sided solutions to forming groups:
 
 Canvas is a learning management system (LMS) that allows teachers to create and manage groups within a class and to divide students into groups for group work and other activities.
  Pros: Canvas is a complete LMS that includes various tools for managing assignments, discussions, and other course materials. It also allows teachers to create self-enrolling or manually created groups, where students can join groups based on their preferences. 
