@@ -1,4 +1,5 @@
 # Product Backlog
+##### Remark: Dave, as described in personas.pdf, would be the host, and Maya would be the attendee.
 
 |As a...      |I want...    |So that... | Criteria of Satisfaction                        |
 |----------------|-----------------|----------------|------------------|
