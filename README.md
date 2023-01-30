@@ -1,6 +1,6 @@
 # Motivation
 
-TODO from proposal.
+HiveMind aims to solve the issue of quickly and efficiently forming cohesive groups of like-minded individuals on a large scale, where the physical forming of groups is infeasible or impractical. Modern groupmaking systems often do not give group members power over who they work with, or simply do not facilitate exposure to a majority of their potential candidates. Due to the inefficiencies introduced by alternatives, such as randomized group making or grouping via a slow and unreliable online forum, groupwork often becomes a tedious and dreaded part of life. HiveMind solves this issue by filtering the pool of potential teammates to the ones who would work best with you, and giving you the power to pick which of the recommended teammates you would prefer to work with.
 
 # Usage overview
 Below is a simple 10-step overview of how the application works.
