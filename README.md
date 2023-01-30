@@ -39,3 +39,5 @@ Below is a simple 10-step overview of how the application works.
 # Contribution
 
 We use git flow for this repository. Each feature should have a corresponding user story in PB.md. Feature branches should be created for each user story, following the name scheme of `S[N]-[XYZ]` where N is the sprint number and XYZ is the unique user story number (exclude the brackets.) For example, story 5 in sprint 2 would be a branch called `S2-5`. Feature branches can be merged into the `develop` branch for testing via a pull request. Once a release is ready in `develop`, it can be merged into `main` as a release via pull request.
+
+There is an active [Trello board](https://trello.com/invite/b/5JuJEXhe/ATTI00d30d0f1e90294d75fa0d18df1ff0e1A9B0C005/hivemind) being used for ticketing.
