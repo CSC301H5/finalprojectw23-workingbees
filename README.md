@@ -27,7 +27,7 @@ Below is a simple 10-step overview of how the application works.
 4. [Install MongoDB](https://www.mongodb.com/try/download/community) or create your own cloud instance on [MongoDB Atlas](https://www.mongodb.com/atlas/database), and get your connection URL. [Tutorial](https://www.youtube.com/watch?v=oVHQXwkdS6w).
 5. Create a file called ".env" in /server with the following line: `MONGO_CONNECTION_URL="YOURURLHERE"`, replacing `YOURURLHERE` with your MongoDB connection URL.
 6. Run the backend express server by executing `npm start` in `\server`. 
-7. In another terminal, run the frontend react server by executing `npm start` in `\client`.
+7. In another terminal, run the frontend react server by executing `npm start` in `\client`. (In the case that an "Invalid options object" error is encountered, follow the instructions [here](https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object).)
 8. Visit `localhost:3000` in your browser.
 
 # Technical Remarks
