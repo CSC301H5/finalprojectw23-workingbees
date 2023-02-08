@@ -16,7 +16,7 @@ const auth = (req, res, next) => {
         if (error) {
             return res.status(401).json({ msg:"Token invalid. Access denied." });
         } else {
-            req.user = decoded.user;
+            req.userID = decoded.userID;
             next();
         }
         });
