@@ -172,6 +172,7 @@ export const getUserHives = async (req, res) => {
             }
             var isHost = (user.userID == hive.hostID);
             var temp = {
+                "name": hive.name,
                 "isHost": isHost,
                 "phase": hive.phase,
                 "teamSize": 1   
