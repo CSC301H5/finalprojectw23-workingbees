@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const hiveModel = mongoose.Schema({
     hiveID: String,
-    hiveName: String,
+    name: String,
     code: String,
     hostID: String,
     attendeeIDs: Array, // of strings
