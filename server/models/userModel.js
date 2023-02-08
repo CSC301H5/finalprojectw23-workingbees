@@ -4,7 +4,7 @@ const userModel = mongoose.Schema({
     userID: String,
     email: String,
     password: String, // hashed.
-    hives: Array, // of ID's
+    hiveIDs: Array, // of ID's
     profiles: Array, // profiles they have saved that they can reuse
     isGuest: {
         type: Boolean,

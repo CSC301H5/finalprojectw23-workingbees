@@ -155,34 +155,36 @@ export const guestRegister = async (req, res) => {
 
 
 export const getUserHives = async (req, res) => {
+    // uses token and returns (for every hive the user is in): hiveID, isHost, phase, teamsize (is set to 1 for now by default, will be updated in groupmaking sprints.)
 
+    try {
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        var acc = {};
+        for (var i=0; i < user.hiveIDs.length; i++) {
+            var hive = await HiveModel.findById(user.hiveIDs[i]);
+            if (!hive) {
+                console.error("Error on getUserHives: invalid hive ID stored in db for userID " + user.userID);
+                return res.status(500).json({ msg:"Server Error." });
+            }
+            var isHost = (user.userID == hive.hostID);
+            var temp = {
+                "isHost": isHost,
+                "phase": hive.phase,
+                "teamSize": 1   
+            }
+            acc[hive.hiveID] = temp;
+        }
+
+        return res.status(200).json(acc);
+
+    } catch (e) {
+        console.error("Error on getUserHives controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
 }
-
-
-
-
-// export const getTest = async (req, res) => {
-
-//     try {
-//         const testModels = await TestModel.find();
-
-//         res.status(200).json(testModels);
-//     } catch (err) {
-//         res.status(404).json({ message: err.message });
-//     }
-
-// }
-
-// export const createTest = async (req, res) => {
-//     const body = req.body;
-
-//     const newTest = new TestModel(body);
-
-//     try {
-//         await newTest.save();
-
-//         res.status(201).json(newTest);
-//     } catch (err) {
-//         res.status(409).json({ message: err.message })
-//     }
-// }
