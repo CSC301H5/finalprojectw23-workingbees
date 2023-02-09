@@ -97,7 +97,7 @@ export const login = async (req, res) => {
             { expiresIn: '3 days' },
             (err, token) => {
                 if (err) throw err;
-                res.status(201).json({token});
+                res.status(200).json({token});
             }
         )
         
