@@ -16,7 +16,13 @@ export default class Login extends Component{
 	 
 	//this updates the object state if any changes happen
 	handleTextChange = (event) => {
-		//this.setState({event,target.name:event.target.value});
+		if (event.target.name == "username"){
+			this.setState({username:event.target.value});
+		} else if(event.target.name == "password") {
+			this.setState({password:event.target.value});
+		} else if (event.target.name == "confirmpassword"){
+			this.setState({confirmPassword:event.target.value});
+		}
 	}
 	
 	
