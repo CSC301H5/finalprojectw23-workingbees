@@ -54,6 +54,7 @@ export default class Register extends Login{
 					required /> <br/>
 				<input 
 					type="password" 
+					name="confirmpassword"
 					placeholder="Confirm password" 
 					value={this.state.confirmPassword} 
 					onChange={this.handleTextChange} 
