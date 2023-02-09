@@ -1,12 +1,11 @@
 import React from 'react';
 import Test from './components/test.js';
+import Register from './components/register.js'
 
 function App() {
   return (
     <div>
-      <h1>hello world!</h1>
-      <h2>Current objects in database:</h2>
-      <Test />
+      <Register	/>
     </div>
   );
 }
