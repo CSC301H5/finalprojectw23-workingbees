@@ -121,8 +121,7 @@ export const guestRegister = async (req, res) => {
 
         // create guest user
 
-
-        user = new UserModel({
+        var user = new UserModel({
             email: email,
             password: password,
             isGuest: true
