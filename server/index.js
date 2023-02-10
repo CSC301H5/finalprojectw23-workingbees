@@ -6,14 +6,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import testRoutes from './routes/test.js';
+import apiV1routes from './routes/apiV1.js';
 
 const app = express();
-
-app.use('/test', testRoutes);
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+
+app.use('/test', testRoutes);
+app.use('/api/v1', apiV1routes);
 
 const MONGO_CONNECTION_URL = process.env.MONGO_CONNECTION_URL
 const PORT = process.env.PORT || 3030;
