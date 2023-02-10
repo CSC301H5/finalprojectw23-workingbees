@@ -8,7 +8,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/guestRegister', guestRegister);
 router.get('/getUserHives', auth, getUserHives); // protected.
-router.post('/createHive', auth, createHive);
+router.post('/createHive', createHive);
 
 
 export default router;

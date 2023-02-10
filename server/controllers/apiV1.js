@@ -5,17 +5,11 @@ import HostModel from '../models/hostModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-async function getUniqueCode() {
+// Temporary code generator
+function getUniqueCode() {
     let min = 100000;
     let max = 1000000;
-    let unique = false;
-    while (!unique) {
-        let code = Math.floor(Math.random() * (max - min)) + min
-        let hive = await HiveModel.findOne({"code": code});
-        if (!hive) {
-            return code;
-        }
-    }
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 // reference: https://dev.to/jeffreythecoder/setup-jwt-authentication-in-mern-from-scratch-ib4
@@ -181,26 +175,26 @@ export const createHive = async (req, res) => {
 
     try {
         // try and find user
-        const user = await UserModel.findById(req.userID);
-        if (!user) {
-            return res.status(401).json({msg: "Invalid user. Action forbidden."});
-        }
+        //const user = await UserModel.findById(req.userID);
+        //if (!user) {
+        //    return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        //}
 
         // create host
-        host = new HostModel({
+        let host = new HostModel({
             name: displayName,
             profilePicture: profilePicture
         });
 
         // create new hive
-        hive = new HiveModel({
+        let hive = new HiveModel({
             name: hiveName,
             code: code,
             attendeeIDs: [],
             groupIDs: [],
             swarmIDs: [],
             phase: 0,
-            configOptions: configOptions
+            configOptions: "{}"
         });
 
         // link host and hive through mutual access of ids
@@ -212,10 +206,10 @@ export const createHive = async (req, res) => {
         await hive.save();
 
         // update user's hives
-        user.hiveIDs.push(hive.hiveID);
-        await user.save();
+        //user.hiveIDs.push(hive.hiveID);
+        //await user.save();
 
-        return res.status(200).json({code: code, hiveID: host.hiveID});
+        return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {
         console.error("Error on createHive controller!");

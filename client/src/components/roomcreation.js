@@ -42,10 +42,10 @@ class CreateRoom extends Component {
         //todo: error handling
         axios.post("/api/v1/createHive",
             {
-                profilePicture: "",
+                profilePicture: "sldkcndlkcns",
                 hiveName: this.state.hiveName,
                 displayName: this.state.displayName,
-                configOptions: {}
+                configOptions: "{}"
                 /*
                 UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
                 joinDate: this.state.joinDate,
@@ -61,6 +61,8 @@ class CreateRoom extends Component {
                 if (res.status == 200){
                     //get code and hiveID back -> store in local storage
                     this.setState({code: res.data.code})
+                    console.log(res.data.code)
+                    console.log(res.data.hiveID)
                     //for testing purposes
                     //localStorage.setItem('code', 'hello')
                     localStorage.setItem('code', JSON.stringify(this.state.code))
