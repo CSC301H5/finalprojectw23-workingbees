@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Login from './login.js';
-
 export default class Register extends Login{
 	//this technically means you could use the console to log in from register despite the button for it not existing
 	//unintended, but doesnt affect security
@@ -42,7 +41,7 @@ export default class Register extends Login{
 	//displaying 3 input fields and a button
 	render() {
 		return (
-		<div>
+		<div class>
 			<h1>Welcome</h1>
 			<form onSubmit={this.handleRegister}>
 				<b>Email</b> <br/>
