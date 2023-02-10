@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import "./Style.css"
+import hives from './hives.png'
+import Title1 from './Title1.png'
 
 export default class Login extends Component{
 	constructor(){
@@ -28,7 +30,7 @@ export default class Login extends Component{
 		//emails have to follow tstandard email formatting
 		//passwords are 8-32 chars long, and alphanumeric  plus .,-_!@#%$ and spaces
 		const emailexp = /^[\w.-_]+@\w+\.\w+$/
-		const pwexp = /^[\w.,-_!@#%\$ ]{8,32}$/
+		const pwexp = /^[\w.,-_!@#%$ ]{8,32}$/
 		
 		
 		return (emailexp.test(username) && pwexp.test(password) )
@@ -73,27 +75,37 @@ export default class Login extends Component{
 	//displaying 2 input fields and a button
 	render(){
 		return (
-			<div>
-				<h1>Welcome Back</h1>
-				<h5>Sign in to return where you left off</h5>
-				<form onSubmit={this.handleLogin}>
-					<input 
-						type="text" 
-						name="username" 
-						placeholder="Email address" 
-						value={this.state.username} 
-						onChange={this.handleTextChange} 
-						required />
-					<input 
-						type="password" 
-						name="password" 
-						placeholder="Password" 
-						value={this.state.password} 
-						onChange={this.handleTextChange} 
-						required />
-						<input type="submit" value="Sign In" />
-				</form>
-				<p>{this.state.errText}</p>
+			<div class="grid">
+				<div class="left-side">
+					<img src={hives} />
+				</ div>
+				<div class="right-side">
+					<img src={Title1} />
+					<h1 class="Title">Welcome Back</h1>
+					<h5>Sign in to return where you left off</h5>
+					<form onSubmit={this.handleLogin}>
+						<input 
+							class="textbox"
+							type="text" 
+							name="username" 
+							placeholder="Email address" 
+							value={this.state.username} 
+							onChange={this.handleTextChange} 
+							required />
+						<br />
+						<input 
+							class="textbox"
+							type="password" 
+							name="password" 
+							placeholder="Password" 
+							value={this.state.password} 
+							onChange={this.handleTextChange} 
+							required />
+						<br />
+						<input class="button" type="submit" value="Sign In" />
+					</form>
+					<p>{this.state.errText}</p>
+					</ div>
 			</div>
 		)
 	}
