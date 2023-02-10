@@ -5,6 +5,18 @@ import HostModel from '../models/hostModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+async function getUniqueCode() {
+    let min = 100000;
+    let max = 1000000;
+    let unique = false;
+    while (!unique) {
+        let code = Math.floor(Math.random() * (max - min)) + min
+        let hive = await HiveModel.findOne({"code": code});
+        if (!hive) {
+            return code;
+        }
+    }
+}
 
 // reference: https://dev.to/jeffreythecoder/setup-jwt-authentication-in-mern-from-scratch-ib4
 export const register = async (req, res) => {
