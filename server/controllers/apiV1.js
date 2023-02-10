@@ -1,5 +1,6 @@
 import UserModel from '../models/userModel.js';
 import HiveModel from '../models/hiveModel.js';
+import HostModel from '../models/hostModel.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -152,6 +153,105 @@ export const guestRegister = async (req, res) => {
     }
 }
 
+
+export const createHive = async (req, res) => {
+
+    let profilePicture = req.body.profilePicture;
+    let displayName = req.body.displayName;
+    let hiveName = req.body.hiveName;
+    let configOptions = req.body.configOptions; // Should be just {} for now
+    let code = getUniqueCode();
+
+    // verify request
+    if (!displayName || !profilePicture || !hiveName || !configOptions) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // create host
+        host = new HostModel({
+            name: displayName,
+            profilePicture: profilePicture
+        });
+
+        // create new hive
+        hive = new HiveModel({
+            name: hiveName,
+            code: code,
+            attendeeIDs: [],
+            groupIDs: [],
+            swarmIDs: [],
+            phase: 0,
+            configOptions: configOptions
+        });
+
+        // link host and hive through mutual access of ids
+        host.userID = host._id.toString();
+        hive.hiveID = hive._id.toString();
+        host.hiveID = hive.hiveID;
+        hive.hostID = host.userID;
+        await host.save();
+        await hive.save();
+
+        // update user's hives
+        user.hiveIDs.push(hive.hiveID);
+        await user.save();
+
+        return res.status(200).json({code: code, hiveID: host.hiveID});
+
+    } catch (e) {
+        console.error("Error on createHive controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getHiveAttendeeNames = async (req, res) => {
+
+    let hiveID = req.body.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HostModel.findbyId(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // get attendee names
+        let attendeNames = [];
+        let len = hive.attendeeIDs.length;
+        for (let i = 0; i < len; i++) {
+            let attendee = await AttendeeModel.findById(hive.attendeeIDs[i]);
+            attendeNames.push(attendee.name);
+        }
+
+        return res.status(200).json({attendeeNames: attendeNames});
+
+    } catch (e) {
+        console.error("Error on getHiveAttendeeNames controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
 
 export const getUserHives = async (req, res) => {
     // uses token and returns (for every hive the user is in): hiveID, isHost, phase, teamsize (is set to 1 for now by default, will be updated in groupmaking sprints.)
