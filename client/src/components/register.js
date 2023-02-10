@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Login from './login.js';
+import "./Style.css"
+import hives from './hives.png'
+import Title1 from './Title1.png'
+
 export default class Register extends Login{
 	//this technically means you could use the console to log in from register despite the button for it not existing
 	//unintended, but doesnt affect security
@@ -41,35 +45,45 @@ export default class Register extends Login{
 	//displaying 3 input fields and a button
 	render() {
 		return (
-		<div class>
-			<h1>Welcome</h1>
-			<form onSubmit={this.handleRegister}>
-				<b>Email</b> <br/>
-				<input 
-					type="text" 
-					name="username"
-					placeholder="honeybee@hivemind.net" 
-					value={this.state.username} 
-					onChange={this.handleTextChange} 
-					required /> <br/>
-				<b>Password</b> <br/>
-				<input 
-					type="password"
-					name="password"
-					placeholder="Pick something secure!" 
-					value={this.state.password} 
-					onChange={this.handleTextChange} 
-					required /> <br/>
-				<input 
-					type="password" 
-					name="confirmpassword"
-					placeholder="Confirm password" 
-					value={this.state.confirmPassword} 
-					onChange={this.handleTextChange} 
-				required /> <br/>
-				<input type="submit" value="Sign up" />
-			</form>
-			<p>{this.state.errText}</p>
+		<div class="grid">
+			<div class="left-side">
+				<img src={hives} />
+			</div>
+			<div class="right-side">
+				<img src={Title1} />
+				<h1 class="Title">Welcome</h1> <br/>
+				<h5>Register to get started</h5>
+				<form onSubmit={this.handleRegister}>
+					Email <br />
+					<input 
+						class="textbox"
+						type="text" 
+						name="username"
+						placeholder="honeybee@hivemind.net" 
+						value={this.state.username} 
+						onChange={this.handleTextChange} 
+						required /> <br />
+						Password <br />
+					<input 
+						class="textbox"
+						type="password"
+						name="password"
+						placeholder="Pick something secure!" 
+						value={this.state.password} 
+						onChange={this.handleTextChange} 
+						required /> <br />
+					<input 
+						class="textbox"
+						type="password" 
+						name="confirmpassword"
+						placeholder="Confirm password" 
+						value={this.state.confirmPassword} 
+						onChange={this.handleTextChange} 
+						required /> <br />
+					<input type="submit" value="Sign up" />
+				</form>
+				<p class="textbox">{this.state.errText}</p>
+			</div>
 		</ div>
 		)
 	}
