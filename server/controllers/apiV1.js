@@ -167,7 +167,7 @@ export const joinHive = async (req, res) => {
 
     try {
         // check if the code corresponds to an existing hive
-        let hive = await hive.findOne({"code": code});
+        let hive = await HiveModel.findOne({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
