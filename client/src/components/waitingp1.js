@@ -25,28 +25,33 @@ class WaitingP1 extends Component {
       hiveID: "",
       code: "",
       profilesCompleted: "0"
-    };
-    /*
-    var storedHiveID;
-    var storedCode;
-    */
-
-    
-    if(localStorage.getItem('code')){
-      this.setState({code: JSON.parse(localStorage.getItem('code'))});
     }
-    
+    this.handleStart = this.handleStart.bind(this)
+
+    if (localStorage.getItem('code')) {
+      this.setState({ code: JSON.parse(localStorage.getItem('code')) });
+    }
+
     //this.setState({code: localStorage.getItem('code')});
 
-    if(localStorage.getItem('hiveID')){
-      this.setState({hiveID: JSON.parse(localStorage.getItem('hiveID'))});
+    if (localStorage.getItem('hiveID')) {
+      this.setState({ hiveID: JSON.parse(localStorage.getItem('hiveID')) });
     }
   }
   handleStart = e => {
+    /*
     axios.get("/api/v1/getHiveAttendeeNames", { hiveID: this.state.hiveID }).then(res => {
       if (res.status == 200) {
         this.setState({ attendeeList: res.data.attendeeNames })
         this.setState({ numBees: res.attendees.length})
+      }
+    })
+    */
+    //get code
+    axios.get("/api/v1/getCode", {}).then(res => {
+      if (res.status == 200) {
+        this.setState({ code: res.data.code })
+        console.log(res.data.code)
       }
     })
   }

@@ -6,7 +6,8 @@
     background-repeat: no-repeat;
 }
 
-.wait h2 {
+.wait h2,
+.code {
     position: absolute;
     width: 616px;
     height: 115px;
@@ -118,4 +119,8 @@
     font-size: 16px;
     line-height: 20px;
     color: #FFFFFF;
+}
+
+.code {
+    left: 1000px;
 }
