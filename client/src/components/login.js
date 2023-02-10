@@ -58,7 +58,7 @@ export default class Login extends Component{
 		if (!this.checkInputs(this.state.username, this.state.password)){
 			this.setState({errText: "Invalid email or password, passwords must be between 8-32 characters long and consist of alphanumeric characters, spaces and .,-_!@#%$"})
 		} else {
-			axios.post("/api/v1/login", {username:this.state.username, password:this.state.password}).then(res => {
+			axios.post("/api/v1/login", {email:this.state.username, password:this.state.password}).then(res => {
 				if (res.status == 200){
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "

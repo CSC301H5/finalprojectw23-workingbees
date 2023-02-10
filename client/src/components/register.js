@@ -27,8 +27,8 @@ export default class Register extends Login{
 		}else if(!this.checkInputs(this.state.username, this.state.password)) {
 			this.setState({errText: "Invalid email or password, passwords must be between 8-32 characters long and consist of alphanumeric characters, spaces and .,-_!@#%$"})
 		} else {
-			axios.post("/api/v1/register", {username:this.state.username, password:this.state.password}).then(res => {
-				if (res.status == 200){
+			axios.post("/api/v1/register", {email:this.state.username, password:this.state.password}).then(res => {
+				if (res.status == 201){
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
 					
@@ -37,6 +37,7 @@ export default class Register extends Login{
 					this.setState({errText: "Incorrect username or password"})
 				} else {
 					this.setState({errText: "Server error"})
+					console.log(res.status, res.data);
 				}
 			})
 		}
