@@ -188,3 +188,106 @@ export const getUserHives = async (req, res) => {
         res.status(500).json({msg: "Server Error."})
     }
 }
+
+export const getHivePhase = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+        //if user does not have permission to use the hive.
+        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+
+        var data = {"phase": hive.phase};
+
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getHivePhase controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getHiveTimer = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+        //if user does not have permission to use the hive.
+        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        var data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
+
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getHiveTimer controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getHiveInfo = async (req, res) => {
+
+    try {
+
+        if (!req.body.code) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findOne({"code": req.body.code});
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found."});
+        }
+
+        var data = {
+            "hiveName": hive.name,
+            "phase": hive.phase,
+            "phaseCompletionDate": null // TODO: implement in later sprint when timers are added.
+            }; 
+
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getHiveTimer controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
