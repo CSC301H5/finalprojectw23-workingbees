@@ -7,25 +7,14 @@ import{useNavigate} from "react-router-dom";
 
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
-  let navigate =useNavigate();
-
+  const  navigate =useNavigate();
   const handleJoinRoomCode = () => {
+
     const code = roomCode;
+    console.log("ROOMCODE:",roomCode);
+   
+    navigate("/profile", { state: { roomCode: roomCode } });
   
-    axios.get(`/api/v1/getHiveInfo`, { code})
-      .then(res => { 
-        if (res.status === 200) {
-          navigate("/profile");
-        } else {
-          alert("Room code not found. Please try again.");
-        }
-        console.log(res.status)
-      })
-      .catch(error => {
-        console.error(error);
-        
-        alert("An error has occurred. Please try again later.");
-      });
   };
   
   
