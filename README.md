@@ -25,7 +25,9 @@ Below is a simple 10-step overview of how the application works.
 2. Clone the repository.
 3. Run `npm install` in both the `/server` and `/client` directories.
 4. [Install MongoDB](https://www.mongodb.com/try/download/community) or create your own cloud instance on [MongoDB Atlas](https://www.mongodb.com/atlas/database), and get your connection URL. [Tutorial](https://www.youtube.com/watch?v=oVHQXwkdS6w).
-5. Create a file called ".env" in /server with the following line: `MONGO_CONNECTION_URL="YOURURLHERE"`, replacing `YOURURLHERE` with your MongoDB connection URL.
+5. Create a file called ".env" in /server with the following lines: 
+- `MONGO_CONNECTION_URL="YOURURLHERE"`, replacing `YOURURLHERE` with your MongoDB connection URL.
+- `JWT_SECRET="SOME_SECRET"`, replacing `SOME_SECRET` with any string of your choice (preferably long and secret for use with authentication).
 6. Run the backend express server by executing `npm start` in `\server`. 
 7. In another terminal, run the frontend react server by executing `npm start` in `\client`. (In the case that an "Invalid options object" error is encountered, follow the instructions [here](https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object).)
 8. Visit `localhost:3000` in your browser.
@@ -34,10 +36,13 @@ Below is a simple 10-step overview of how the application works.
 
 - React server is configured to run on port 3000 by default.
 - Express server is configured to run on 3030.
-- Test site is available at the react URL. It provides one button for querying the database, and one for inserting a document (just inserts a timestamp of when you pressed the button.)
 
 # Contribution
 
-We use git flow for this repository. Each feature should have a corresponding user story in PB.md. Feature branches should be created for each user story, following the name scheme of `S[N]-[XYZ]` where N is the sprint number and XYZ is the unique user story number (exclude the brackets.) For example, story 5 in sprint 2 would be a branch called `S2-5`. Feature branches can be merged into the `develop` branch for testing via a pull request. Once a release is ready in `develop`, it can be merged into `main` as a release via pull request.
+We use git flow for this repository. Each feature should have corresponding user stories in PB.md. Feature branches should be created for each user story (or multiple if they are closely related), following the name scheme of `S[N]-[X].[Y].[Z]...` where N is the sprint number and X, Y, Z, etc. are unique user story numbers (exclude the brackets.) For example, story 5 and 6 in sprint 2 would be a branch called `S2-5.6`. Feature branches can be merged into the `develop` branch for testing via a pull request. Once a release is ready in `develop`, it can be merged into `main` as a release via pull request.
 
 There is an active [Trello board](https://trello.com/invite/b/5JuJEXhe/ATTI00d30d0f1e90294d75fa0d18df1ff0e1A9B0C005/hivemind) being used for ticketing.
+
+Backend API documentation can be found [here](https://fork-baryonyx-771.notion.site/Backend-api-v1-documentation-86b8c007cc114fa7ba5507ae83f7b172).
+
+Frontend documentation can be found [here](https://fork-baryonyx-771.notion.site/Frontend-Documentation-63fba7073c87477c9223a9586e3df1b0).
