@@ -338,13 +338,13 @@ export const getHiveAttendeeNames = async (req, res) => {
         }
 
         // get attendee names
-        let attendeNames = [];
+        let attendeeNames = [];
         for (let i = 0; i < hive.attendeeIDs.length; i++) {
             let attendee = await AttendeeModel.findOne({"userID": hive.attendeeIDs[i]});
-            attendeNames.push(attendee.name);
+            attendeeNames.push(attendee.name);
         }
 
-        return res.status(200).json({attendeeNames: attendeNames});
+        return res.status(200).json({attendeeNames: attendeeNames});
 
     } catch (e) {
         console.error("Error on getHiveAttendeeNames controller!");
