@@ -1,10 +1,23 @@
 import UserModel from '../models/userModel.js';
 import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
+import HostModel from '../models/hostModel.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+async function getUniqueCode() {
+    let min = 100000;
+    let max = 1000000;
+    let unique = false;
+    while (!unique) {
+        let code = Math.floor(Math.random() * (max - min)) + min
+        let hive = await HiveModel.findOne({"code": code});
+        if (!hive) {
+            return code;
+        }
+    }
+}
 
 // reference: https://dev.to/jeffreythecoder/setup-jwt-authentication-in-mern-from-scratch-ib4
 export const register = async (req, res) => {
@@ -178,12 +191,19 @@ export const joinHive = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        // check if display name already exists
-        let len = hive.attendeeIDs.length;
-        for (let i = 0; i < len; i++) {
-            let attendee = await AttendeeModel.findById(hive.attendeeIDs[i]);
+        // check that the user is not the host themself
+        if (user.userID == hive.hostID) {
+            return res.status(409).json({msg: "Error: User is already the host of this hive."});
+        }
+
+        // check if attendee name already exists or the user is already in the hive
+        for (let i = 0; i < hive.attendeeIDs.length; i++) {
+            let attendee = await AttendeeModel.findOne({"userID": hive.attendeeIDs[i]});
             if (attendee.name == displayName) {
-                return res.status(409).json({msg: "Attendee name already exists in the hive."});
+                return res.status(409).json({msg: "Error: Attendee name already exists in this hive."});
+            }
+            if (attendee.userID == user.userID) {
+                return res.status(409).json({msg: "Error: User is already an attendee in this hive."});
             }
         }
 
@@ -196,10 +216,10 @@ export const joinHive = async (req, res) => {
             groupID: "",
             swarmID: "",
             recommendedPending: [],
-            recoommendedResponses: []
+            recommendedResponses: []
         })
 
-        attendee.userID = attendee._id.toString();
+        attendee.userID = user.userID;
         await attendee.save();
 
         // add attendee to hive
@@ -214,6 +234,120 @@ export const joinHive = async (req, res) => {
 
     } catch (e) {
         console.error("Error on joinHive controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const createHive = async (req, res) => {
+
+    let profilePicture = req.body.profilePicture;
+    let displayName = req.body.displayName;
+    let hiveName = req.body.hiveName;
+    let configOptions = req.body.configOptions; // Should be just {} for now
+    let code = await getUniqueCode();
+
+    // verify request
+    if (!displayName || !profilePicture || !hiveName || !configOptions) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // create host
+        let host = new HostModel({
+            name: displayName,
+            profilePicture: profilePicture
+        });
+
+        // create new hive
+        let hive = new HiveModel({
+            name: hiveName,
+            code: code,
+            attendeeIDs: [],
+            groupIDs: [],
+            swarmIDs: [],
+            phase: -1,
+            configOptions: "{}"
+        });
+
+        // link host and hive through mutual access of ids
+        host.userID = user.userID;
+        hive.hiveID = hive._id.toString();
+        host.hiveID = hive.hiveID;
+        hive.hostID = host.userID;
+        await host.save();
+        await hive.save();
+
+        // update user's hives
+        user.hiveIDs.push(hive.hiveID);
+        await user.save();
+
+        return res.status(200).json({code: hive.code, hiveID: host.hiveID});
+
+    } catch (e) {
+        console.error("Error on createHive controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getCode = async (res) => {
+    try {
+        let hive = await HiveModel.findOne({"phase": -1});
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+        hive.phase = 0;
+        return res.status(200).json({code: hive.code});
+    } catch (e) {
+        console.error("Error on getCode controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getHiveAttendeeNames = async (req, res) => {
+
+    let hiveID = req.body.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // get attendee names
+        let attendeNames = [];
+        for (let i = 0; i < hive.attendeeIDs.length; i++) {
+            let attendee = await AttendeeModel.findOne({"userID": hive.attendeeIDs[i]});
+            attendeNames.push(attendee.name);
+        }
+
+        return res.status(200).json({attendeeNames: attendeNames});
+
+    } catch (e) {
+        console.error("Error on getHiveAttendeeNames controller!");
         console.error(e.message);
         console.error(e.status);
         res.status(500).json({msg: "Server Error."});
