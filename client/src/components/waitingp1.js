@@ -78,7 +78,6 @@ class WaitingP1 extends Component {
           <p className="attendeeList">{this.state.attendeeList}</p>
           <button type="button" className="start" style={{ cursor: 'pointer' }} onClick={this.handleStart}>Start</button>
           <button type="submit" className="continue" style={{ cursor: 'pointer' }}>Skip to phase 1</button>
-          <p className="hivemind">HIVEMIND</p>
         </form>
       </div>
     );
