@@ -8,13 +8,15 @@ export default class SplitPaneH extends Component{
 	}
 	
 	render(){
-		<div class="grid">
-			<div class="left">
-				{props.left}	
-			</ div>
-			<div class="right">
-				{props.right}
-			</ div>
-		</div>	
+		return 
+			<div class="grid">
+				<div class="left">
+					{props.left}	
+				</ div>
+				<div class="right">
+					{props.right}
+				</ div>
+			</div>
+		
 	}
 }

@@ -80,12 +80,11 @@ export default class Login extends Component{
 					<img src={hives} />
 				</ div>
 				<div class="right-side">
-					<img src={Title1} />
-					<h1 class="Title">Welcome Back</h1>
-					<h5>Sign in to return where you left off</h5>
-					<form onSubmit={this.handleLogin}>
+					<h1 class="welcomeBackText">Welcome Back</h1>
+					<h5 class="welcomeBackSubtext">Sign in to return where you left off</h5>
+					<form class="loginForm" onSubmit={this.handleLogin}>
 						<input 
-							class="textbox"
+							class="inputBox"
 							type="text" 
 							name="username" 
 							placeholder="Email address" 
@@ -93,8 +92,9 @@ export default class Login extends Component{
 							onChange={this.handleTextChange} 
 							required />
 						<br />
+						<br />
 						<input 
-							class="textbox"
+							class="inputBox"
 							type="password" 
 							name="password" 
 							placeholder="Password" 
@@ -102,9 +102,10 @@ export default class Login extends Component{
 							onChange={this.handleTextChange} 
 							required />
 						<br />
-						<input class="button" type="submit" value="Sign In" />
+					
+						<input class="loginButton" type="submit" value="Sign In" />
 					</form>
-					<p>{this.state.errText}</p>
+					<p class="text">{this.state.errText}</p>
 					</ div>
 			</div>
 		)

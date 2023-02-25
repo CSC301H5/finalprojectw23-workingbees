@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-
 button {
   background-color: #FFAF40;
   font-family: 'Montserrat';
@@ -348,4 +347,102 @@ button:hover {
   font-size: 16px;
   line-height: 20px;
   color: #FFFFFF;
+}
+
+.inputBox {
+  position: center;
+  background: #F6F6F6;
+  border: 1px solid #FFAF40;
+  border-radius: 8px;
+  width: 492px;
+  height: 50px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 18.5px;
+}
+
+.loginButton{
+  float: right;
+  background-color: #FFAF40;
+  color: white;
+  border: none;
+  height: 50px;
+  width: 225px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: center;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: 8px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.welcomeBackText{
+  position: absolute;
+  width: 711px;
+  height: 115px;
+  left: 640px;
+  top: 185px;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 94px;
+  line-height: 115px;
+}
+
+.welcomeBackSubtext {
+  position: absolute;
+  width: 400px;
+  height: 28px;
+  left: 796px;
+  top: calc(50% - 28px/2 - 198px + 50px);
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+}
+.welcomeText{
+  position: absolute;
+  width: 455px;
+  height: 115px;
+  left: 765px;
+  top: 185px;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 94px;
+  line-height: 115px;
+}
+
+.welcomeSubtext {
+  position: absolute;
+  width: 400px;
+  height: 28px;
+  left: 860px;
+  top: calc(50% - 28px/2 - 198px + 50px);
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+}
+
+.loginForm{
+  position: absolute;
+  left: 750px;
+  top:  398px;
+}
+
+.text{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 18.5px;
 }
