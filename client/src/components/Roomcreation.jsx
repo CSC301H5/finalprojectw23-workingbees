@@ -99,7 +99,7 @@ class CreateRoom extends Component {
                         onChange={this.handleJoinDate}
                     />
                     <input
-                        className="joinTime"
+                        className="SmalltextBox"  style={{ width: '197.5px',left: '953px', top: '395px'}}
                         type="time"
                         onChange={this.handleJoinTime}
                     />
