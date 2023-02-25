@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Login from './login.js';
+import Login from './Login.jsx';
 import "./Style.css"
-import hives from './hives.png'
-import Title1 from './Title1.png'
+import hives from '../Assets/hives.png'
+import Title1 from '../Assets/Title1.png'
 
 export default class Register extends Login{
 	//this technically means you could use the console to log in from register despite the button for it not existing

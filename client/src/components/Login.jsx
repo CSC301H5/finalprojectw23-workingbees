@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "./Style.css"
-import hives from './hives.png'
-import Title1 from './Title1.png'
+import hives from '../Assets/hives.png'
+import Title1 from '../Assets/Title1.png'
 
 export default class Login extends Component{
 	constructor(){

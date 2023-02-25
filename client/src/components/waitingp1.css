@@ -1,6 +1,6 @@
 .wait {
     background-image:
-        url(../../public/background.png);
+        url(../Assets/honeycomb.png);
     background-size: cover;
     height: 100vh;
     background-repeat: no-repeat;

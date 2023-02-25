@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import hives from './hives.png'
-import Title1 from './Title1.png'
+import hives from '../Assets/hives.png'
+import Title1 from '../Assets/Title1.png'
 import axios from 'axios';
 import "./Style.css";
 import{useNavigate} from "react-router-dom";
