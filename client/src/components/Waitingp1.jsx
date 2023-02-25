@@ -1,7 +1,8 @@
 import { Component, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import "./waitingp1.css"
+import hives from '../Assets/hives.png'
+import "./Style.css"
 
 function redirect(Component) {
   return props => <Component navHook={useNavigate()} />;
@@ -66,19 +67,24 @@ class WaitingP1 extends Component {
   render() {
 
     return (
-      <div className="wait">
-        <h2 className="h2">Code: </h2>
-        <p className="code">{this.state.code}</p>
-        <form onSubmit={this.handleSubmit}>
-          <label className="hiveSize">bees in the hive</label>
-          <label className="numProfiles">profiles completed</label>
-          <p className="profilesCompleted">{this.state.profilesCompleted}</p>
-          <p className="numBees">{this.state.numBees}</p>
-          <label className="attendees">Attendee list</label>
-          <p className="attendeeList">{this.state.attendeeList}</p>
-          <button type="button" className="start" style={{ cursor: 'pointer' }} onClick={this.handleStart}>Start</button>
-          <button type="submit" className="continue" style={{ cursor: 'pointer' }}>Skip to phase 1</button>
-        </form>
+      <div className="grid">
+        <div class="left">
+          <img src={hives} />
+        </ div>
+        <div class="right">
+          <h2 className="roomCode">Code: </h2>
+          <p className="roomCode" style={{ left: '1000px' }}>{this.state.code}</p>
+          <form onSubmit={this.handleSubmit}>
+            <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
+            <label className="numsDescription" style={{ left: '1000px' }}>profiles completed</label>
+            <p className="nums" style={{ left: '1070px' }}>{this.state.profilesCompleted}</p>
+            <p className="nums" style={{ left: '820px' }}>{this.state.numBees}</p>
+            <label className="attendees">Attendee list</label>
+            <p className="attendeeList">{this.state.attendeeList}</p>
+            <button type="button" className="button" style={{ position: 'absolute', left: '700px', top: '667px' }} onClick={this.handleStart}>Start</button>
+            <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
+          </form>
+        </div>
       </div>
     );
 
