@@ -78,23 +78,23 @@ class CreateRoom extends Component {
             <div className="create">
                 <h2 className="h2">Let's get some basic info down for your new hive.</h2>
                 <form onSubmit={this.handleSubmit}>
-                    <label className="hiveName">Hive name</label>
-                    <input className="hiveNameField"
+                <label className="display" style={{ width: '150px', height: '20px',left: '753px', top: '200px'}}>Hive name</label>
+                    <input className="textBox"  style={{ width: '400px', height: '50px',left: '753px', top: '225px'}}
                         type="text"
                         required
                         //onChange={(e) => this.setState({hiveName: e.target.value})}
                         onChange={this.handleHiveName}
                     />
-                    <label className="displayName">Your display name</label>
+                 <label className="display" style={{ width: '150px', height: '20px',left: '753px', top: '285px'}}>Your display name</label>
                     <input
                         className="displayNameField"
                         type="text"
                         required
                         onChange={this.handleDisplayName}
                     />
-                    <label className="joinDeadline">Join/pregroup deadline (Optional)</label>
+                   <label className="display"  style={{ width: '300px', height: '20px',left: '753px', top: '370px'}}>Join/pregroup deadline (Optional)</label>
                     <input
-                        className="joinDate"
+                       className="SmalltextBox"  style={{ width: '197.5px', left: '753px', top: '395px'}}
                         type="date"
                         onChange={this.handleJoinDate}
                     />
@@ -104,27 +104,27 @@ class CreateRoom extends Component {
                         onChange={this.handleJoinTime}
                     />
 
-                    <label className="profileDeadline">Profile completion deadline (Optional)</label>
+                    <label className="display"  style={{ width: '400px', height: '20px',left: '753px', top: '455px'}}>  Profile completion deadline (Optional)</label>
                     <input
-                        className="profileDate"
+                       className="textBox" style={{top: '480px',left: '753px', width: '197.5px',height: '50px'}}
                         type="date"
                         onChange={this.handleProfileDate}
                     />
                     <input
-                        className="profileTime"
+                       className="SmalltextBox" style={{top: '480px',left: '953px', width: '197.5px'}}
                         type="time"
                         onChange={this.handleProfileTime}
                     />
 
-                    <label className="classDeadline">Classification deadline (Optional)</label>
+                <label className="display" style={{top: '540px',left: '753px', width: '300px', height: '20px'}}>Classification deadline (Optional)</label>
                     <input
                         type="date"
-                        className="classDate"
+                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '565px'}}
                         onChange={this.handleClassDate}
                     />
                     <input
                         type="time"
-                        className="classTime"
+                        className="SmalltextBox"  style={{ width: '197.5px', left: '953px', top: '565px'}}
                         onChange={this.handleClassTime}
                     />
                     <button type="submit" className="continue" style={{cursor:'pointer'}}>Continue</button>

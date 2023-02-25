@@ -4,7 +4,7 @@ import Landing from './components/Landing';
 import Login from './components/login';
 import ErrorPage from './components/Error';
 import Test from './components/test';
-import Room_creation from './components/room-creation';
+import Room_creation from './components/roomcreation';
 import Room_Config from './components/room-config';
 import Waiting1 from './components/waiting1';
 import Register from './components/register';

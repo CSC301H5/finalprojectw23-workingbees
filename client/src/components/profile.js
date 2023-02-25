@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate,useLocation } from "react-router-dom";
 import axios from 'axios';
 import Avatr from "react-avatar-edit"
+import "./Style.css"
 const Profile = () => {
   const {state} = useLocation();
   //const { roomCode } = state;    
@@ -70,19 +71,12 @@ const Profile = () => {
             marginBottom: '10px'
           }}
          />
-         <input
-          type="text"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          placeholder="Enter description"
-          style={{  
-            width: '500px',
-            height: '50px',
-            fontSize: '20px',
-            padding: '10px',
-            marginBottom: '10px'
-          }}
-        />
+        <textarea 
+  className="multiline-textbox"
+  rows="4" 
+  cols="50" 
+  placeholder="Type your message here..." 
+/>
         <button type="submit">Submit</button>
         <button onClick={() => navigate("/")}>Cancel</button>
       </div>

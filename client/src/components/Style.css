@@ -80,3 +80,30 @@ margin-top:30px;
 display: grid;
 grid-template-columns: 600px 600px 
 }
+
+textbox {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.multiline-textbox {
+  display: block;
+  background-color: #FFAF40;
+    color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+
+
+  width: 400px;
+    height: 50px;
+    top: 310px;
+    left: 753px;
+}

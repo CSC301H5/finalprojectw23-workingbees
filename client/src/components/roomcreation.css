@@ -7,7 +7,7 @@
     height: 100vh;
     background-repeat: no-repeat;
 }
-
+/* Need to replace by button class*/
 .continue {
     box-sizing: border-box;
 
@@ -34,23 +34,15 @@
     line-height: 20px;
     color: #FFFFFF;
 }
-
-.classTime,
-.classDate,
-.joinDate,
-.joinTime,
-.profileDate,
-.profileTime {
+.SmalltextBox {
     box-sizing: border-box;
-
+    position: absolute;
     background: #F6F6F6;
     border: 1px solid #FFAF40;
     border-radius: 8px;
-
     width: 141px;
     height: 50px;
 }
-
 .h2 {
     position: absolute;
     width: 568px;
@@ -67,52 +59,23 @@
     color: #000000;
 }
 
-.hiveName {
+.display{
     position: absolute;
-    width: 88px;
-    height: 20px;
-    left: 753px;
-    top: 200px;
-
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
     color: #000000;
 }
 
-.hiveNameField {
-    box-sizing: border-box;
-
-    width: 400px;
-    height: 50px;
+.textBox{
     position: absolute;
-    left: 753px;
-    top: 225px;
-    /* Gray/01 */
-
+    box-sizing: border-box;
     background: #F6F6F6;
     border: 1px solid #FFAF40;
     border-radius: 8px;
 }
 
-.displayName {
-    position: absolute;
-    width: 150px;
-    height: 20px;
-    left: 753px;
-    top: 285px;
 
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
-    color: #000000;
-}
 
 .displayNameField {
     box-sizing: border-box;
@@ -129,97 +92,7 @@
     border: 1px solid #FFAF40;
     border-radius: 8px;
 }
-
-.joinDeadline {
-    position: absolute;
-    width: 300px;
-    height: 20px;
-    left: 753px;
-    top: 370px;
-
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
-    color: #000000;
-}
-
-.joinDate {
-    position: absolute;
-    top: 395px;
-    left: 753px;
-    width: 197.5px;
-}
-
-.joinTime {
-    position: absolute;
-    top: 395px;
-    left: 953px;
-    width: 197.5px;
-}
-
-.profileDeadline {
-    position: absolute;
-    width: 400px;
-    height: 20px;
-    left: 753px;
-    top: 455px;
-
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
-    color: #000000;
-}
-
-.profileDate {
-    position: absolute;
-    top: 480px;
-    left: 753px;
-    width: 197.5px;
-}
-
-.profileTime {
-    position: absolute;
-    top: 480px;
-    left: 953px;
-    width: 197.5px;
-}
-
-.classDeadline {
-    position: absolute;
-    width: 300px;
-    height: 20px;
-    left: 753px;
-    top: 540px;
-
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
-    /* identical to box height */
-    color: #000000;
-}
-
-.classDate {
-    position: absolute;
-    top: 565px;
-    left: 753px;
-    width: 197.5px;
-}
-
-.classTime {
-    position: absolute;
-    top: 565px;
-    left: 953px;
-    width: 197.5px;
-}
-
+/* LOGO */
 .hivemind {
     position: absolute;
     width: 210px;
