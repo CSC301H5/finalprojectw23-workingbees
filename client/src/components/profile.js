@@ -4,7 +4,7 @@ import axios from 'axios';
 import Avatr from "react-avatar-edit"
 const Profile = () => {
   const {state} = useLocation();
-  const { roomCode } = state;    
+  //const { roomCode } = state;    
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');

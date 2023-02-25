@@ -28,14 +28,14 @@ const Landing = () => {
     <div class="right-side">
     <img src={Title1} />
       
-      <input class="textbox"
+      <input class="`textbox`"
         id="room-code"
         type="text"
         value={roomCode}
         onChange={e => setRoomCode(e.target.value)}
       />
 
-      <button onClick={handleJoinRoomCode}>Join Hive</button>
+      <button class = 'small_button'onClick={handleJoinRoomCode}>Join Hive</button>
       <button onClick={() => {navigate("/register")}}>Register</button>
       <button onClick={() => {navigate("/Login")}}> Login</button>
     </div>

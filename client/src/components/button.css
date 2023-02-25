@@ -10,6 +10,7 @@ button{
     font-weight: bold;
     font-size: 15px;
     margin-left: 8px;
+    
   }
   button:hover{
     opacity: 0.5;
@@ -42,16 +43,4 @@ button{
 margin-top:30px;
 display: grid;
 grid-template-columns: 600px 600px 
-}
-.middle{
-display: inline-block;
-text-align: center;
-background-color: aqua;
-}
-.outer{
-
-    margin: auto;
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
 }

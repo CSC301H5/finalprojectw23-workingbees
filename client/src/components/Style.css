@@ -2,19 +2,53 @@ button{
     background-color: #FFAF40;
     color: white;
     border: none;
-    height: 30px;
-    width: 105px;
-    border-radius: 2px;
+    height: 50px;
+    width: 225px;
+    border-radius: 16px;
     cursor: pointer;
     position: center;
     font-weight: bold;
     font-size: 15px;
     margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
   button:hover{
     opacity: 0.5;
   }
-
+  .small_button{  
+    background-color: #FFAF40;
+    color: white;
+    border: none;
+    height: 50px;
+    width: 113px;
+    border-radius: 16px;
+    cursor: pointer;
+    position: center;
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .long_button{  
+    background-color: #FFAF40;
+    color: white;
+    border: none;
+    height: 50px;
+    width: 492px;
+    border-radius: 16px;
+    cursor: pointer;
+    position: center;
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
 .Title{
   display: flex;
   font-weight: bold;
