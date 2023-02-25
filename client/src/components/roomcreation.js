@@ -128,7 +128,6 @@ class CreateRoom extends Component {
                         onChange={this.handleClassTime}
                     />
                     <button type="submit" className="continue" style={{cursor:'pointer'}}>Continue</button>
-                    <p className="hivemind">HIVEMIND</p>    
                 </form>
             </div>
         );

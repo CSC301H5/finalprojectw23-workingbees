@@ -49,36 +49,48 @@ button{
     margin-top: 4px;
     margin-bottom: 4px;
   }
-.Title{
+
+.Title {
   display: flex;
   font-weight: bold;
   position: center;
   right: 10000px;
-  
+
 }
-.textbox{
+
+.textbox {
   display: block;
 
 }
 
 
-.right-side
-{width: 1fr;
+.right-side {
+  width: 1fr;
   display: inline-block;
 
   top: '50%';
   left: '50%';
 }
 
-.left-side
-{display:  inline-block;
+.left-side {
+  display: inline-block;
   width: 1fr;
 
 }
-.grid{
-margin-top:30px;
-display: grid;
-grid-template-columns: 600px 600px 
+
+.grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 600px 600px
+}
+
+.nav {
+  background-color: #FFFFFF;
+  color: #000000;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Montserrat';
+  font-style: normal;
 }
 
 textbox {
