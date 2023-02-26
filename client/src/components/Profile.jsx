@@ -51,7 +51,7 @@ const Profile = () => {
 		</div>
     <div class='right'>
     <form onSubmit={handleSubmit} >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' , }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' , position: 'absolute', top: '85px',left: '700px',}}>
        
         
       <Avatr width={400}
