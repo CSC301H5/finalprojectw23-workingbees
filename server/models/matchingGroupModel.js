@@ -4,7 +4,7 @@ const matchingGroupModel = mongoose.Schema({
     hiveID: String,
     groupID: String, // matches mongoose document's _id
     memberIDs: { 
-        type: Array, //of strings
+        type: Array, // of strings
         default: []
     },
     leaderID: String, // "leader" of the group (can invite)
