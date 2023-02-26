@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, guestRegister, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive, createHive, getCode, getHiveAttendeeNames, getMatchingGroup, roomConfigOptionsCompleted } from '../controllers/apiV1.js'
+import { register, login, guestRegister, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive, createHive, getCode, getHiveAttendeeNames, getMatchingGroup, roomConfigOptionsCompleted, getIncomingInvites, getOutgoingInvites } from '../controllers/apiV1.js'
 import auth from '../middleware/auth.js'
 
 const router = express.Router();
@@ -16,6 +16,8 @@ router.post('/createHive', auth, createHive);
 router.get('/getCode', getCode);
 router.get('/getHiveAttendeeNames', auth, getHiveAttendeeNames);
 router.get('/getMatchingGroup', auth, getMatchingGroup);
-router.get('/roomConfigOptionsCompleted', auth, roomConfigOptionsCompleted)
+router.get('/roomConfigOptionsCompleted', auth, roomConfigOptionsCompleted);
+router.get('/getIncomingInvites', auth, getIncomingInvites);
+router.get('/getOutgoingInvites', auth, getOutgoingInvites);
 
 export default router;
