@@ -69,7 +69,6 @@ class WaitingP1 extends Component {
     return (
       <div className="grid">
         <div class="left">
-          <img src={hives} />
         </ div>
         <div class="right">
           <h2 className="roomCode">Code: </h2>

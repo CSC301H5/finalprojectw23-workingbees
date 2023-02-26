@@ -4,7 +4,6 @@ import axios from 'axios';
 import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
-import Navbar from './Navbar';
 const Profile = () => {
   const {state} = useLocation();
   //const { roomCode } = state;    
@@ -49,9 +48,8 @@ const Profile = () => {
   return (
   <div class='grid'>
     <div class='left'>
-		<img src={hives} /></div>
+		</div>
     <div class='right'>
-    <Navbar/>
     <form onSubmit={handleSubmit} >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' , }}>
        

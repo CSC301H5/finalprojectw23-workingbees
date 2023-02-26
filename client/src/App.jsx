@@ -8,11 +8,13 @@ import ConfigRoom from './components/Roomconfig';
 import WaitingP1 from './components/Waitingp1';
 import Register from './components/Register';
 import Profile from './components/Profile';
+import Navbar from './components/Navbar';
 
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/Profile" element={<Profile />} />

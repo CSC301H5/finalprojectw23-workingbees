@@ -77,7 +77,6 @@ class CreateRoom extends Component {
         return (
             <div className="grid">
                 <div class="left">
-                    <img src={hives} />
                     </div>
                     <div class="right">
                 <h2 className="h2">Let's get some basic info down for your new hive.</h2>

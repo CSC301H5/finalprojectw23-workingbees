@@ -67,6 +67,7 @@ button:hover {
 .right {
   width: 1fr;
   display: inline-block;
+  vertical-align: top;
 
   top: '50%';
   left: '50%';
@@ -74,8 +75,8 @@ button:hover {
 
 .left {
   display: inline-block;
+  vertical-align: top;
   width: 1fr;
-
 }
 
 .grid {
@@ -88,6 +89,7 @@ button:hover {
 .right-side {
   width: 1fr;
   display: inline-block;
+  vertical-align: top;
 
   top: '50%';
   left: '50%';
@@ -96,6 +98,7 @@ button:hover {
 /* replace*/
 .left-side {
   display: inline-block;
+  vertical-align: top;
   width: 1fr;
 
 }
@@ -111,22 +114,13 @@ button:hover {
   font-family: 'Montserrat';
   font-style: normal;
   height: 50px;
+  vertical-align: top;
 }
 
 .rightNav {
   background-color: #FFFFFF;
   color: #000000;
-  display: flex;
-  justify-content: flex-end;
-  font-family: 'Montserrat';
-  font-style: normal;
-}
-
-.rightNav {
-  background-color: #FFFFFF;
-  color: #000000;
-  display: flex;
-  justify-content: flex-end;
+  display: absolute;
   font-family: 'Montserrat';
   font-style: normal;
 }

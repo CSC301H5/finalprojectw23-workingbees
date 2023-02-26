@@ -77,7 +77,6 @@ export default class Login extends Component{
 		return (
 			<div class="grid">
 				<div class="left-side">
-					<img src={hives} />
 				</ div>
 				<div class="right-side">
 					<h1 class="welcomeBackText">Welcome Back</h1>
