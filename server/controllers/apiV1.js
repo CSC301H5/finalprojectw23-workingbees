@@ -2,7 +2,7 @@ import UserModel from '../models/userModel.js';
 import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
-import MatchingGroupModel from '../models/matchingGroupModel';
+import MatchingGroupModel from '../models/matchingGroupModel.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
