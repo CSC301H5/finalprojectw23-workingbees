@@ -420,7 +420,7 @@ export const getHivePhase = async (req, res) => {
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
-        //if user does not have permission to use the hive.
+        // if user does not have permission to use the hive.
         if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
@@ -455,7 +455,7 @@ export const getHiveTimer = async (req, res) => {
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
-        //if user does not have permission to use the hive.
+        // if user does not have permission to use the hive.
         if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
@@ -525,7 +525,7 @@ export const getMatchingGroup = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
 
-        //if user does not have permission to use the hive.
+        // if user does not have permission to use the hive.
         if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
@@ -584,7 +584,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
 
-        //if user does not have permission to use the hive.
+        // if user does not have permission to use the hive.
         if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
