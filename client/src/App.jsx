@@ -12,7 +12,7 @@ import Profile from './components/Profile';
 
 function App() {
   return (
-    <Router> 
+    <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/Profile" element={<Profile />} />

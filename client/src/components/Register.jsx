@@ -51,39 +51,38 @@ export default class Register extends Login{
 				<img src={hives} />
 			</div>
 			<div class="right-side">
-				<img src={Title1} />
-				<h1 class="Title">Welcome</h1> <br/>
-				<h5>Register to get started</h5>
-				<form onSubmit={this.handleRegister}>
-					Email <br />
+				<h1 class="welcomeText">Welcome</h1> <br/>
+				<h5 class="welcomeSubtext">Register to get started</h5>
+				<form class="loginForm" onSubmit={this.handleRegister}>
+					<p class="text">Email</p> 
 					<input 
-						class="textbox"
+						class="inputBox"
 						type="text" 
 						name="username"
 						placeholder="honeybee@hivemind.net" 
 						value={this.state.username} 
 						onChange={this.handleTextChange} 
 						required /> <br />
-						Password <br />
+						<p class="text">Password</p>
 					<input 
-						class="textbox"
+						class="inputBox"
 						type="password"
 						name="password"
 						placeholder="Pick something secure!" 
 						value={this.state.password} 
 						onChange={this.handleTextChange} 
-						required /> <br />
+						required /> <br /> <br />
 					<input 
-						class="textbox"
+						class="inputBox"
 						type="password" 
 						name="confirmpassword"
 						placeholder="Confirm password" 
 						value={this.state.confirmPassword} 
 						onChange={this.handleTextChange} 
 						required /> <br />
-					<input type="submit" value="Sign up" />
+					<input class="loginButton" type="submit" value="Sign up" />
 				</form>
-				<p class="textbox">{this.state.errText}</p>
+				<p class="text">{this.state.errText}</p>
 			</div>
 		</ div>
 		)
