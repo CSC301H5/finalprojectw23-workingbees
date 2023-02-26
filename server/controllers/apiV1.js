@@ -2,6 +2,7 @@ import UserModel from '../models/userModel.js';
 import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
+import MatchingGroupModel from '../models/matchingGroupModel';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -487,6 +488,66 @@ export const getHiveInfo = async (req, res) => {
 
     } catch (e) {
         console.error("Error on getHiveTimer controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
+
+
+export const getMatchingGroup = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        //if user does not have permission to use the hive.
+        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // ensure they are not the host
+        const attendee = await AttendeeModel.findOne({"hiveID": req.body.hiveID, "userID": req.userID}); // need to get their attendee instance in the correct hive.
+        if (!attendee) {
+            return res.status(409).json({msg: "Not an attendee in the specified hive."})
+        }
+
+        // get matchingGroup
+        const matchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+        
+        data = {}
+        // add leader
+        const leader = await AttendeeModel.findOne(matchingGroup.leaderID);
+        data["leaderName"] = leader.name;
+
+        // add member names
+        let memberNames = [];
+        for (let i = 0; i < matchingGroup.memberIDs.length; i++) {
+            let member = await AttendeeModel.findOne({"userID": matchingGroup.memberIDs[i]});
+            memberNames.push(member.name);
+        }
+        data["members"] = memberNames;
+
+        res.status(200).json(data);
+
+
+    } catch (e) {
+        console.error("Error on getMatchingGroup controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
