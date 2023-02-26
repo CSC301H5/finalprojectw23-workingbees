@@ -1,4 +1,4 @@
-export function checkConfigOptions(req, res) {
+export async function checkConfigOptions(req, res) {
 
     // check config options body is as desired
     let configOptions = req.body.configOptions;
