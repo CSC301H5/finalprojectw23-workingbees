@@ -542,9 +542,9 @@ export const getMatchingGroup = async (req, res) => {
             return res.status(500).json({msg: "Server Error."});
         }
         
-        data = {}
+        var data = {}
         // add leader
-        const leader = await AttendeeModel.findOne(matchingGroup.leaderID);
+        const leader = await AttendeeModel.findOne({"userID": matchingGroup.leaderID});
         data["leaderName"] = leader.name;
 
         // add member names
