@@ -262,7 +262,10 @@ export const createHive = async (req, res) => {
         }
 
         // check config options
-        checkConfigOptions(req, res);
+        let configRes = await checkConfigOptions(req, res);
+        if (configRes) {
+            return;
+        }
 
         // create host
         let host = new HostModel({
