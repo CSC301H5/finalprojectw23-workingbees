@@ -671,3 +671,61 @@ export const getIncomingInvites = async (req, res) => {
         res.status(500).json({msg: "Server Error."})
     }
 }
+
+export const getOutgoingInvites = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // ensure they are not the host implicitly
+        const attendee = await AttendeeModel.findOne({"hiveID": req.body.hiveID, "userID": req.userID}); // need to get their attendee instance in the correct hive.
+        if (!attendee) {
+            return res.status(409).json({msg: "Not an attendee in the specified hive."})
+        }
+
+        // get matchingGroup
+        const matchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        var data = {}
+        // put leaderName: matchingGroupID pairs in data.
+
+        for (let i = 0; i < matchingGroup.outgoingInvites.length; i++) {
+            let targetUser = await AttendeeModel.findOne({"userID": matchingGroup.outgoingInvites[i]});
+            if (!targetUser) { // should exist
+                return res.status(500).json({msg: "Server Error."});
+            }
+            
+            data[targetUser.name] = targetUser.userID;
+        }
+
+        res.status(200).json(data);
+
+
+    } catch (e) {
+        console.error("Error on getMatchingGroup controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
