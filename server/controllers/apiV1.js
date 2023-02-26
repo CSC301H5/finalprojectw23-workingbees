@@ -24,8 +24,6 @@ export const register = async (req, res) => {
 
     let email = req.body.email;
     let password = req.body.password;
-    console.log(!email);
-    console.log(!password);
     // verify request (can add regex)
     if (!email || !password) {
         // error
