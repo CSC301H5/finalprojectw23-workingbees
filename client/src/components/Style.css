@@ -128,13 +128,9 @@ grid-template-columns: 600px 600px
 
 
 
-.create {
-  background-image:
-      url(../Assets/background.png);
-  background-size: cover;
-  height: 100vh;
-  background-repeat: no-repeat;
-}
+
+
+
 /* Need to replace by button class*/
 .continue {
   box-sizing: border-box;

@@ -3,7 +3,7 @@ import hives from '../Assets/hives.png'
 import axios from 'axios';
 import "./Style.css";
 import{useNavigate} from "react-router-dom";
-
+import Navbar from '../components/Navbar';
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const  navigate =useNavigate();
@@ -25,7 +25,7 @@ const Landing = () => {
   <img src={hives} />
   </div>
     <div class="right">
-   
+    <Navbar style={{ position: 'absolute', left: '1167px', top: '445px'}} />
     <div className='display'style={{ width: '507px', height: '115px',left: '740px', top: '261px', fontWeight: "500px", fontSize:"94px",lineHeight:"115px"}}> HIVEMIND </div>
       <input className="textBox"  style={{ width: '400px', height: '50px',left: '750px', top: '450px'}}
         id="room-code"

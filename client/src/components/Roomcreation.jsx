@@ -2,7 +2,7 @@ import { Component, useEffect, useState } from "react";
 import axios from 'axios';
 import "./Style.css"
 import { useNavigate, useNavigation } from "react-router-dom";
-
+import hives from '../Assets/hives.png'
 
 function redirect(Component) {
     return props => <Component navHook={useNavigate()} />;
@@ -75,7 +75,11 @@ class CreateRoom extends Component {
     render() {
 
         return (
-            <div className="create">
+            <div className="grid">
+                <div class="left">
+                    <img src={hives} />
+                    </div>
+                    <div class="right">
                 <h2 className="h2">Let's get some basic info down for your new hive.</h2>
                 <form onSubmit={this.handleSubmit}>
                 <label className="display" style={{ width: '150px', height: '20px',left: '753px', top: '200px'}}>Hive name</label>
@@ -129,6 +133,7 @@ class CreateRoom extends Component {
                     />
                     <button type="submit" className="continue" style={{cursor:'pointer'}}>Continue</button>
                 </form>
+                </div>
             </div>
         );
 
