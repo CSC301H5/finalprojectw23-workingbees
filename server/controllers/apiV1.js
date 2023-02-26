@@ -2,6 +2,7 @@ import UserModel from '../models/userModel.js';
 import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
+import { checkConfigOptions } from '../utils/configOptionsUtils.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -245,7 +246,7 @@ export const createHive = async (req, res) => {
     let profilePicture = req.body.profilePicture;
     let displayName = req.body.displayName;
     let hiveName = req.body.hiveName;
-    let configOptions = req.body.configOptions; // Should be just {} for now
+    let configOptions = req.body.configOptions;
     let code = await getUniqueCode();
 
     // verify request
@@ -258,6 +259,12 @@ export const createHive = async (req, res) => {
         const user = await UserModel.findById(req.userID);
         if (!user) {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // check config options
+        let configRes = await checkConfigOptions(req, res);
+        if (configRes) {
+            return;
         }
 
         // create host
@@ -274,7 +281,7 @@ export const createHive = async (req, res) => {
             groupIDs: [],
             swarmIDs: [],
             phase: -1,
-            configOptions: "{}"
+            configOptions: JSON.stringify(configOptions)
         });
 
         // link host and hive through mutual access of ids
