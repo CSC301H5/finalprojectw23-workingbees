@@ -1,46 +1,41 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "./Style.css";
-import hives from '../Assets/hives.png'
+import axios from 'axios';
 
+export default function Navbar({ roomCode }) {
 
-export default function Navbar() {
-  const [roomName, setRoomName] = useState(null);
-  const [timer, setTimer] = useState(null);
-  const location = useLocation();
+  const [hiveName, setHiveName] = useState('')
 
-
-  if (location.pathname === "/") {
-    return null
+  //assumes room code is given
+  /* TODO: get hiveName
+  async function getHiveName() {
+    axios.get("/api/v1/getHiveInfo",
+      {
+        params: {
+          code: roomCode
+        }
+      }).then(res => {
+        console.log(res.data.hiveName)
+        if (res.status == 200) {
+          setHiveName(res.data.hiveName)
+        }
+      })
   }
-  else if (location.pathname === ("/Login") || (location.pathname === ("/register"))) {
-    return (
-      <div class="grid">
-        <div class="left">
-          <img src={hives}></img>
-        </div>
-        <div class="right">
-          <nav className="rightNav">
-            <h1 style={{ float: 'right' }}>HIVEMIND</h1>
-          </nav>
-        </div>
+  useEffect(() => {
+    getHiveName();
+  }, [])
+  */
+
+  return (
+    <div class="grid">
+      <div class="right">
+        <nav class="nav">
+          <h1>{roomCode}</h1> {/* should be hiveName instead of roomCode */}
+          <h1 style={{ color: '#FFAF40' }}>(Timer)</h1>
+          <h1>HIVEMIND</h1>
+        </nav>
       </div>
-    )
-  }
-  else {
-    return (
-      <div class="grid">
-        <div class="left">
-          <img src={hives}></img>
-        </div>
-        <div class="right">
-          <nav class="nav">
-            <h1>(Room Name)</h1>
-            <h1 style={{ color: '#FFAF40' }}>(Timer)</h1>
-            <h1>HIVEMIND</h1>
-          </nav>
-        </div>
-      </div>
-    )
-  }
+    </div>
+  )
 }
