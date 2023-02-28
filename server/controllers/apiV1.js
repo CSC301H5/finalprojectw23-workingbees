@@ -3,7 +3,7 @@ import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
-import { getSocketsInHive, getCurrentHiveOfUser, getSocketOfUser } from '../utils/wsutils.js';
+import { getSocketsInHive, getCurrentHiveOfUser, getSocketOfUser, broadcast } from '../utils/wsutils.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -797,11 +797,13 @@ export const sendInvite = async (req, res) => {
             return res.status(401).json({msg: "User must be the leader of the matching group"})
         }
 
-        // send the invitation
+        // notify the invited user if they are active
         let invitedUserSocket = getSocketOfUser(invitedUser.userID);
-        invitedUserSocket.send('{"event": NEW_INVITE, "username": ' + attendee.name + '}');
+        if (invitedUserSocket) {
+            invitedUserSocket.send(`{"event": NEW_INVITE, "username": ${attendee.name}}`);
+        }
 
-        // update invitation status
+        // send the invitation and update invitation status
         matchingGroup.outgoingInvites.push(invitedUser.userID);
         invitedAttendee.pendingInvites.push(matchingGroup.groupID);
         await matchingGroup.save();
@@ -858,11 +860,10 @@ export const acceptInvite = async (req, res) => {
             return res.status(409).json({msg: "User does not have a pending invitation from this matching group"})
         }
 
-        // accept the invitation
-        let matchingGroupSocket = getSocketOfUser(matchingGroup.leaderID);
-        matchingGroupSocket.send('{"event: "INVITE_ACCEPTED" + "username": ' + invitedAttendee.name + '}');
+        // notify members of the matching group if they are active
+        broadcast(hiveID, matchingGroup, `{"event: "INVITE_ACCEPTED" + "username": ${invitedAttendee.name}}`)
 
-        // update invitation status
+        // accept the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
             return res.status(500).json({msg: "Server error"})
         }
@@ -946,11 +947,10 @@ export const rejectInvite = async (req, res) => {
             return res.status(409).json({msg: "User does not have a pending invitation from this matching group"})
         }
 
-        // reject the invitation
-        let matchingGroupSocket = getSocketOfUser(matchingGroup.leaderID);
-        matchingGroupSocket.send('{"event: "INVITE_REJECTED" + "username": ' + invitedAttendee.name + '}');
+        // notify members of the matching group if they are active
+        broadcast(hiveID, matchingGroup, `{"event: "INVITE_REJECTED" + "username": ${invitedAttendee.name}}`);
 
-        // update invitation status
+        // reject the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
             return res.status(500).json({msg: "Server error"})
         }
