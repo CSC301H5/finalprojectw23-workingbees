@@ -107,3 +107,12 @@ export function getSocketOfUser(userID) { // returns the websocket of the user w
         return connections[hiveID][userID];
     }
 }
+
+export function broadcast(hiveID, matchingGroup, message) { // sends a message to each member of the matching group with an active socket
+    let sockets = getSocketsInHive(hiveID);
+    for (var key in sockets) {
+        if (matchingGroup.memberIDs.includes(key) || matchingGroup.leaderID == key) {
+            sockets[key].send(message);
+        }
+    }
+}
