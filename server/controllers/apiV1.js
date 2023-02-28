@@ -279,7 +279,7 @@ export const createHive = async (req, res) => {
             attendeeIDs: [],
             groupIDs: [],
             swarmIDs: [],
-            phase: -1,
+            phase: 0,
             configOptions: JSON.stringify(configOptions)
         });
 
@@ -299,22 +299,6 @@ export const createHive = async (req, res) => {
 
     } catch (e) {
         console.error("Error on createHive controller!");
-        console.error(e.message);
-        console.error(e.status);
-        res.status(500).json({msg: "Server Error."});
-    }
-}
-
-export const getCode = async (res) => {
-    try {
-        let hive = await HiveModel.findOne({"phase": -1});
-        if (!hive) {
-            return res.status(404).json({msg: "Error: Hive not found"});
-        }
-        hive.phase = 0;
-        return res.status(200).json({code: hive.code});
-    } catch (e) {
-        console.error("Error on getCode controller!");
         console.error(e.message);
         console.error(e.status);
         res.status(500).json({msg: "Server Error."});
