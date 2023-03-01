@@ -9,6 +9,7 @@ import WaitingP1 from './components/Waitingp1';
 import Register from './components/Register';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar';
+import TeamProfile from './components/TeamProfile';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/waiting1" element={< WaitingP1 />} />
         <Route path="/createHive" element={< CreateRoom />} />
         <Route path="/register" element={< Register />} />
+        <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="*" element={< ErrorPage/>} />
       </Routes>
     </Router>
