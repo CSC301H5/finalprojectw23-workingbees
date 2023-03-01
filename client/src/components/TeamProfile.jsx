@@ -5,6 +5,7 @@ import ClientSlider from "./ClientSlider"
 function TeamProfile() {
     // stores availability as 2D array arr
     const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(13).fill(0)))
+    // stores client input value
     const [num, setNum] = useState(0)
     return (
         <div>

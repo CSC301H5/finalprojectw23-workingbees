@@ -2,7 +2,7 @@ import { useState } from "react"
 import "./Style.css"
 
 
-// takes in max, min, step
+// takes in max, min, step, num (target grade), setNum, and explanation
 function ClientSlider(props) {
     const min = props.min
     const max = props.max
