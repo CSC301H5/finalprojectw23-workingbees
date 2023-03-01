@@ -366,7 +366,7 @@ button:hover {
   line-height: 18.5px;
 }
 
-.loginButton{
+.loginButton {
   float: right;
   background-color: #FFAF40;
   color: white;
@@ -383,7 +383,7 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.welcomeBackText{
+.welcomeBackText {
   position: absolute;
   width: 711px;
   height: 115px;
@@ -410,7 +410,8 @@ button:hover {
   font-size: 23px;
   line-height: 28px;
 }
-.welcomeText{
+
+.welcomeText {
   position: absolute;
   width: 455px;
   height: 115px;
@@ -438,15 +439,36 @@ button:hover {
   line-height: 28px;
 }
 
-.loginForm{
+.loginForm {
   position: absolute;
   left: 750px;
-  top:  398px;
+  top: 398px;
 }
 
-.text{
+.text {
   font-family: 'Montserrat';
   font-style: normal;
   font-size: 16px;
   line-height: 18.5px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 398px;
+  height: 0px;
+  border: 1px solid #FFAF40;
+  background: #d3d3d3;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #FFAF40;
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
 }
