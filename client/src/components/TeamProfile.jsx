@@ -11,7 +11,7 @@ function TeamProfile() {
             {/* TODO: update maxAllowed*/}
             <ClientCalendar maxAllowed={3} arr={arr} setArr={setArr} />
             {/* TODO: update props accordingly */}
-            <ClientSlider min={0} max={100} step={1} num={num} setNum={setNum}/>
+            <ClientSlider min={0} max={100} step={1} num={num} setNum={setNum} explanation={"Target grade"}/>
         </div>
     )
 }

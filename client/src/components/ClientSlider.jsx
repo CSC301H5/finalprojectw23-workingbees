@@ -9,12 +9,13 @@ function ClientSlider(props) {
     const step = props.step
     const num = props.num
     const setNum = props.setNum
+    const explanation = props.explanation
 
     const handleChange = (e) => {setNum(e.target.value)}
 
     return (
         <div>
-            <h1 className="text">Target grade</h1>
+            <h1 className="text">{explanation}</h1>
             <label className="text" style={{color: "#FFAF40", fontSize: "13px" }}>{min}%</label>
             <input
                 className="slider"
