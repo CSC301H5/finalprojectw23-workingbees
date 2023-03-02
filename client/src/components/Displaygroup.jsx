@@ -1,19 +1,29 @@
 import React, { Component, useEffect, useState } from 'react';
 import "./Style.css"
-import Navbar from "./Navbar";
-import hives from '../Assets/hives.png'
-import "./Style.css"
+import StatusIndicator from "./groupmemberentry";
+import Box from './box';
 
 
 
-const  Displaygroup = () => {
+export default function  Displaygroup ({ roomCode })  {
     
-    return (
-        <input className="textBox" style={{ width: '400px', height: '50px', left: '753px', top: '225px' }}
 
-      );
+        const [hiveName, setHiveName] = useState('')
     
-};
+      
+        return (
+          <div class="grid">
+            <div class="right">
+          
+              <Box Class='box'>
+        <div className='grid'>
+      
+            </div>
+          </Box>
 
+                <h1>{roomCode}</h1> {/* should be hiveName instead of roomCode */}
+            </div>
+          </div>
+        )
+      }
 
-export default Displaygroup;

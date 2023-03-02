@@ -147,7 +147,18 @@ button:hover {
 }
 
 
+.box{
 
+  background: #F6F6F6;
+  border-radius: 8px;
+  min-Height: 200px;
+  padding: 12px;
+  width: 490px;
+  height: 200px;
+  border: 1px solid #FFAF40;
+
+
+}
 
 
 

@@ -2,7 +2,9 @@ import React, { Component, useEffect, useState } from 'react';
 import "./Style.css"
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
-
+import Box from './box';
+import Displaygroup from "./Displaygroup";
+import StatusIndicator from "./groupmemberentry";
 
 
 const  Gorupcreation = () => {
@@ -15,11 +17,18 @@ const  Gorupcreation = () => {
       </div>
         <div class="right">
         < Navbar />
-                <input className="textBox" style={{ width: '400px', height: '50px', left: '753px', top: '225px' }}/>
+        <label className="display" style={{ position: 'absolute ', left: '654px', width: '97px', height: '20px' }}>Your swarm</label>
 
-        <div className='display'style={{ overflow : "auto", width: '507px', height: '115px',left: '740px', top: '261px', fontWeight: "500px", fontSize:"94px",lineHeight:"115px"}}> section1 </div>
-   
+       <Displaygroup/>
+       <input class="textBox" placeholder="Username" style={ {width:"400px",
+        height: "50px" }}></input> 
+           <button type="submit" style={{ position: 'absolute ', left: '1010px', top: '380px' }}>Invite</button>
+           <label className="display" style={{ position: 'absolute ', left: '594px',  top: '480px',width: '150px', height: '20px' }}>Pending invites</label>
+           <button type="submit" style={{ position: 'absolute ', left: '1010px', top: '780px' }}>continue</button>
+           <Displaygroup style={{ position: 'absolute ', left: '654px', width: '97px',top: '780px', height: '20px' }}/>
+
             </div>
+
           </div>
         </>
       );
