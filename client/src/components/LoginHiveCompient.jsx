@@ -7,39 +7,21 @@ export default function HiveComp({ roomCode }) {
 
   const [hiveName, setHiveName] = useState('')
 
-  //assumes room code is given
-  /* TODO: get hiveName
-  async function getHiveName() {
-    axios.get("/api/v1/getHiveInfo",
-      {
-        params: {
-          code: roomCode
-        }
-      }).then(res => {
-        console.log(res.data.hiveName)
-        if (res.status == 200) {
-          setHiveName(res.data.hiveName)
-        }
-      })
-  }
-  useEffect(() => {
-    getHiveName();
-  }, [])
-  */
 
   return (
     <div>
           <div/>
-          <h1>ROOM</h1>
+          <div >  <h1 style={{ position : 'relative', width: '190px',left: '100px',top:'75px' }} > CSC301 202F</h1></div>
+          
            <div
       style={{
-        width: '50px',
-        height: '50px',
+        width: '75px',
+        height: '75px',
         borderRadius: '50%',
         backgroundColor: 'orange',
       }}
     ></div>
-          <div > status</div>
+          <div style={{ position : 'relative', width: '190px',left: '100px',top:'0px',fontSize:'26px' }} > phase 1</div>
     </div>
   )
 }

@@ -7,7 +7,7 @@ import "./Style.css"
 import Navbar from "./Navbar";
 import HiveComp from './LoginHiveCompient';
 import ScrollPage from './scroll';
-
+import { getCookie } from './getAuthToken';
 
 /*  **GET /api/v1/getUserHives (PROTECTED)**
 
@@ -47,95 +47,71 @@ Expected Response:
 - 200 - Successfully returned all user hive data.
 - 401 - Access denied.
 - 500 - Internal server error (unknown exception) */
+
+
+
 function LoginHomePage ()  {
+  const [room, setRoom] = useState('');
 
   const navigate = useNavigate();
-  axios.post("/api/v1/joinHive",
-  {
-    "code": 846453,
-    "profilePicture": "SGVsbG8gd29ybGQsIHRoaXMgaXMgbm90IGEgcmVhbCBtZXNzYWdl...",
-    "displayName": "Drone4",
-    "biography": "Eternally loyal to the hive."
-      /*
-      UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
-      joinDate: this.state.joinDate,
-      joinTime: this.state.joinTime,
-      profileDate: this.state.profileDate,
-      profileTime: this.state.profileTime,
-      classDate: this.state.classDate,
-      classTime: this.state.classTime
-      */
-  }    , {
+  const handleInputChange = (event) => {
+    setRoom(event.target.value);
+  }
+
+
+
+  const { state } = useLocation();
+  const x_auth_token = getCookie("x-auth-token");
+
+
+  const  test = getCookie("x-auth-token");
+  console.log("test:", test );
+
+  axios.get("/api/v1/getUserHives", {
     headers: {
-      "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2M2ZkMWRlNDYxNGJmZDMyYmJjZjY5NTQiLCJpYXQiOjE2Nzc2MTY4NjUsImV4cCI6MTY3Nzg3NjA2NX0.Gf-7aDiVWoTqQsZnVFsQVoZr4bqoVBGF83weN57CGrk"
+      "x-auth-token": 1111111,
     }
-  }         ).then(res => {
-    if (res.status == 200) {
-       
-      console.log(res.data)
+  }).then(res => {
+    if (res.status === 200) {
+      console.log("HOOOOOOOO") 
+      console.log(res.data.hiveID) 
     }
-})
+  })
+  
+  
+
+
 
 
 //Handle Join Hive button 
 const handleClick = () => {
-  axios.post("/api/v1/joinHive", {
-    "code": 846453,
-    "profilePicture": "SGVsbG8gd29ybGQsIHRoaXMgaXMgbm90IGEgcmVhbCBtZXNzYWdl...",
-    "displayName": "Drone4",
-    "biography": "Eternally loyal to the hive."
-  } , {
-    headers: {
-      "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2M2ZkMWRlNDYxNGJmZDMyYmJjZjY5NTQiLCJpYXQiOjE2Nzc2MTY4NjUsImV4cCI6MTY3Nzg3NjA2NX0.Gf-7aDiVWoTqQsZnVFsQVoZr4bqoVBGF83weN57CGrk"
-    }
-  }  ).then(res => {
-    if (res.status === 200) {
-     
-    }
-    else{
-      console.log("GG" )
 
+  console.log('room', room);
+  console.log('x-auth-token', x_auth_token);
+
+
+  axios.get("/api/v1/getHiveInfo", {
+    code: room
+}, {
+    headers: {
+        "x-auth-token": x_auth_token
     }
-  });
+}).then(res => {
+    console.log(res.data);
+}).catch(err => {
+    console.error(err.response.data);
+});
+
+
+
+      
 }
 //Handle create new Hive button 
-const handleClick2 = () => {
-  axios.post("/api/v1/createHive", {
-    "profilePicture": "SGVsbG8gd29ybGQsIHRoaXMgaXMgbm90IGEgcmVhbCBtZXNzYWdl...",
-    "displayName": "HostBee1",
-    "hiveName": "CSC301's Hive",
-    "configOptions": {}
-  } , {
-    headers: {
-      "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2M2ZkMWRlNDYxNGJmZDMyYmJjZjY5NTQiLCJpYXQiOjE2Nzc2MTY4NjUsImV4cCI6MTY3Nzg3NjA2NX0.Gf-7aDiVWoTqQsZnVFsQVoZr4bqoVBGF83weN57CGrk"
-    }
-  }  ).then(res => {
-    if (res.status === 200) {
-      
-      console.log(res.date) 
-      //console.log(res.date) 
-      //console.log(res.date.code) 
-      //console.log(res.date.hiveID) 
-      
 
-      
-    }
-  });
+const handleClick2 = () => {
+  navigate("/createHive");
 }
 
-  axios.get("/api/v1/getHiveInfo",
-  {} , {
-    headers: {
-      "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2M2ZkMWRlNDYxNGJmZDMyYmJjZjY5NTQiLCJpYXQiOjE2Nzc2MTY4NjUsImV4cCI6MTY3Nzg3NjA2NX0.Gf-7aDiVWoTqQsZnVFsQVoZr4bqoVBGF83weN57CGrk"
-    }
-  }   ).then(res => {
-    if (res.status === 200) {
-       
-        console.log(res.date.hiveID) 
-    }
-
-  }
-  )
 
 
 
@@ -147,54 +123,27 @@ const handleClick2 = () => {
         </div>
         <div class='right'>
           < Navbar />
-          G
+          
           <div
       style={{
-        height: '300px',
+        height: '500px',
         overflow: 'auto',
       }}
-    >    <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed
-    nisi nec purus congue elementum vel id lorem. Vestibulum ac metus velit.
-    Donec fringilla mauris sit amet mauris suscipit, at volutpat dolor
-    ullamcorper. Fusce convallis nisi quis neque semper, vel malesuada
-    ipsum facilisis. Suspendisse potenti. Aliquam eleifend, mi sed sagittis
-    lacinia, odio lectus dapibus justo, vel malesuada ex risus vel arcu.
-    Proin luctus augue et ipsum efficitur bibendum. Curabitur euismod augue
-    ut dui laoreet vehicula. Donec ut justo eget nulla rutrum tristique ut
-    eu lectus.
-  </p> <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed
-        nisi nec purus congue elementum vel id lorem. Vestibulum ac metus velit.
-        Donec fringilla mauris sit amet mauris suscipit, at volutpat dolor
-        ullamcorper. Fusce convallis nisi quis neque semper, vel malesuada
-        ipsum facilisis. Suspendisse potenti. Aliquam eleifend, mi sed sagittis
-        lacinia, odio lectus dapibus justo, vel malesuada ex risus vel arcu.
-        Proin luctus augue et ipsum efficitur bibendum. Curabitur euismod augue
-        ut dui laoreet vehicula. Donec ut justo eget nulla rutrum tristique ut
-        eu lectus.
-      </p><p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed
-        nisi nec purus congue elementum vel id lorem. Vestibulum ac metus velit.
-        Donec fringilla mauris sit amet mauris suscipit, at volutpat dolor
-        ullamcorper. Fusce convallis nisi quis neque semper, vel malesuada
-        ipsum facilisis. Suspendisse potenti. Aliquam eleifend, mi sed sagittis
-        lacinia, odio lectus dapibus justo, vel malesuada ex risus vel arcu.
-        Proin luctus augue et ipsum efficitur bibendum. Curabitur euismod augue
-        ut dui laoreet vehicula. Donec ut justo eget nulla rutrum tristique ut
-        eu lectus.
-      </p></div>
+    >  < HiveComp />   < HiveComp />< HiveComp />< HiveComp />< HiveComp />< HiveComp /> </div>
       
-          < HiveComp />
+         
           <input
 							className='SmalltextBox'
 							type="text"
 							name="username"
 							placeholder="Room PIN"
-              style={{ cursor: 'pointer',   position:'absolute', width: '250px', height: '50px', left: '765px', top: '760px' }}
+              onChange={handleInputChange}
+              value={room}
+
+              style={{ cursor: 'pointer',   position:'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
 							 />
-                <button onClick={handleClick} type="submit" className="button" style={{ cursor: 'pointer',  position:'absolute', width: '150px', height: '35px', left: '1050px', top: '770px' } }>Join Hive</button>
-                <button onClick={handleClick2}  type="submit" className="button" style={{ cursor: 'pointer', position:'absolute',width: '492px', height: '50px', left: '755px', top: '818px'}}>Create new Hive</button>
+                <button onClick={handleClick} type="submit" className="button" style={{ cursor: 'pointer',  position:'absolute', width: '150px', height: '35px', left: '930px', top: '660px' } }>Join Hive</button>
+                <button onClick={handleClick2}  type="submit" className="button" style={{ cursor: 'pointer', position:'absolute',width: '492px', height: '50px', left: '650px', top: '718px'}}>Create new Hive</button>
   
         </div>
       </div>

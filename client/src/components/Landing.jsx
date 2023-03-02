@@ -7,12 +7,46 @@ import Navbar from '../components/Navbar';
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const navigate = useNavigate();
+
+  
+
+
   const handleJoinRoomCode = () => {
 
     const code = roomCode;
-    console.log("ROOMCODE:", roomCode);
+    
+   
+    axios.post( "/api/v1/guestRegister").then(res => {
+      if (res.status == 201 ) {
 
-    navigate("/profile", { state: { roomCode: roomCode } });
+        const x_auth_token = res.data.token
+        document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
+       // navigate("/profile", { state: { roomCode: roomCode } });
+       console.log("ROOMCODE:", roomCode);
+       console.log("res.data.token:", res.data.token);
+  axios.get("/api/v1/getHiveInfo", {
+    code: roomCode
+}, {
+    headers: {
+        "x-auth-token": res.data.token
+    }
+}).then(res=>{
+  if (res.status == 200 ) {
+     console.log('res.status.hiveName', res.status.hiveName)
+
+  }
+
+else{ console.log('wtf')
+}})
+       
+
+      
+       
+   }
+   
+  })
+
+  
 
   };
 
@@ -31,6 +65,7 @@ const Landing = () => {
         type="text"
         value={roomCode}
         onChange={e => setRoomCode(e.target.value)}
+        
       />
 
           <button class='small_button' onClick={handleJoinRoomCode} style={{ position: 'absolute', left: '1167px', top: '445px' }}>Join Hive</button>

@@ -1,10 +1,10 @@
 import { Component, useEffect, useState } from "react";
 import axios from 'axios';
 import "./Style.css"
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation,useLocation  } from "react-router-dom";
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
-
+import { getCookie } from './getAuthToken';
 function CreateRoom() {
     const [hiveName, setHiveName] = useState('')
     const [displayName, setDisplayName] = useState('')
@@ -24,6 +24,9 @@ function CreateRoom() {
     const handleProfileTime = (e) => { setProfileTime(e.target.value) }
     const handleClassDate = (e) => { setClassDate(e.target.value) }
     const handleClassTime = (e) => { setClassTime(e.target.value) }
+
+
+    const x_auth_token = getCookie("x-auth-token");
 
     const handleSubmit = e => {
         //pass to waiting page
@@ -45,10 +48,16 @@ function CreateRoom() {
                 classDate: this.state.classDate,
                 classTime: this.state.classTime
                 */
-            }).then(res => {
+            }, {
+                headers: {
+                  "x-auth-token": x_auth_token
+                }
+              } ).then(res => {
                 if (res.status == 200) {
                     //get code and hiveID back -> store in local storage
-                    navigate('/waiting1', { state: { code: res.data.code } })
+                    console.log(res.data.code)
+                    
+                    //navigate('/waiting1', { state: { code: res.data.code } })
                 }
             })
     }

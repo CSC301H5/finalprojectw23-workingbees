@@ -63,6 +63,7 @@ export default class Login extends Component {
 				if (res.status == 200) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
+					console.log(res.data.token)
 					window.location.replace("/LoginHomePage")
 				} else if (res.status == 401) {
 					this.setState({ errText: "Incorrect username or password" })

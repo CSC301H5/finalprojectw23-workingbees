@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 
 const Profile = () => {
   const { state } = useLocation();
-  //const { roomCode } = state;    
+  //const { roomCode } = state.c;    
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
