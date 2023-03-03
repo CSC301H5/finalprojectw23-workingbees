@@ -8,6 +8,7 @@ const attendeeModel = mongoose.Schema({
     profilePicture: String, // base64 encoded string
     groupID: String,
     swarmID: String,
+    pendingInvites: Array, // of strings of matchingGroupsIDs that have sent invites to this attendee. 
     recommendedPending: Array, // of userIDs (strings)
     recommendedResponses: Array // of userIDs (strings)
 });
