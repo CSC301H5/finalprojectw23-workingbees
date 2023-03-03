@@ -465,10 +465,28 @@ button:hover {
 }
 
 .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background-color: #FFAF40;
-    opacity: 1;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
+  -webkit-appearance: none;
+  background-color: #FFAF40;
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
+
+.dropdown {
+  width: 398px;
+  height: 20px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  padding-bottom: 50px
+}
+
+.multiselect {
+  width: 398px;
+  height: 20px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  padding-bottom: 50px
 }
