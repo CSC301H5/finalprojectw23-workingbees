@@ -35,7 +35,7 @@ export default function MultiselectQuestion(props) {
             <label>Maximum number of options allowed:</label>
             <input
                 type="number"
-                name="max"
+                name={"max-" + props.index}
                 value={props.max}
                 onChange={props.handleTextChange}
                 required /> <br />

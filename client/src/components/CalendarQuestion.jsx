@@ -24,7 +24,7 @@ export default function CalendarQuestion(props) {
                 </label>
                 <input
                     type="number"
-                    name="max"
+                    name={"max-" + props.index}
                     value={props.max}
                     onChange={props.handleTextChange}
                     required /> <br />
