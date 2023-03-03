@@ -22,12 +22,6 @@ export default function CalendarQuestion(props) {
                 <label>
                     Maximum number of 1-hour blocks allowed:
                 </label>
-                <input
-                    type="number"
-                    name="max"
-                    onChange={props.handleTextChange}
-                    required
-                />
             </div>
         </div>
     )
