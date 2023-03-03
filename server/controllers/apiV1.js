@@ -462,7 +462,7 @@ export const getHiveInfo = async (req, res) => {
 
     try {
 
-        if (!req.body.code) {
+        if (!req.query.code) {
             return res.status(400).json({msg: "Malformed request."});
         }
 
@@ -471,7 +471,7 @@ export const getHiveInfo = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findOne({"code": req.body.code});
+        const hive = await HiveModel.findOne({"code": req.query.code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found."});
         }

@@ -15,6 +15,8 @@ function CreateRoom() {
     const [classDate, setClassDate] = useState('')
     const [classTime, setClassTime] = useState('')
     const navigate = useNavigate();
+    //guest token
+    const [token, setToken] = useState('')
 
     const handleHiveName = (e) => { setHiveName(e.target.value) }
     const handleDisplayName = (e) => { setDisplayName(e.target.value) }
@@ -25,11 +27,22 @@ function CreateRoom() {
     const handleClassDate = (e) => { setClassDate(e.target.value) }
     const handleClassTime = (e) => { setClassTime(e.target.value) }
 
+    async function getToken() {
+        //get a guest token
+        axios.post("/api/v1/guestRegister", {}).then(res => {
+            if (res.status == 201) {
+                setToken(res.data.token)
+            }
+        })
+    }
+    useEffect(() => {
+        getToken();
+    }, [])
+
+
     const handleSubmit = e => {
-        //pass to waiting page
+
         e.preventDefault();
-        //this.props.navHook("/waiting1")
-        //todo: error handling
         axios.post("/api/v1/createHive",
             {
                 profilePicture: "sldkcndlkcns",
@@ -45,12 +58,16 @@ function CreateRoom() {
                 classDate: this.state.classDate,
                 classTime: this.state.classTime
                 */
-            }).then(res => {
-                if (res.status == 200) {
-                    //get code and hiveID back -> store in local storage
-                    navigate('/waiting1', { state: { code: res.data.code } })
-                }
-            })
+            }, {
+            headers: {
+                'x-auth-token': token
+            }
+        }
+        ).then(res => {
+            if (res.status == 200) {
+                navigate('/waiting1', { state: { code: res.data.code, token: token } })
+            }
+        })
     }
 
     return (

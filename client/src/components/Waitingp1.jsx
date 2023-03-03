@@ -26,7 +26,7 @@ function WaitingP1() {
         <img src={hives}></img>
       </ div>
       <div class="right">
-        <Navbar roomCode={location.state.code}/>
+        <Navbar roomCode={location.state.code} token={location.state.token}/>
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>
         <form onSubmit={handleSubmit}>
