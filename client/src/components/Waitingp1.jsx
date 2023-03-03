@@ -9,8 +9,6 @@ import hives from '../Assets/hives.png'
 function WaitingP1() {
   const [attendeeList, setAttendeeList] = useState([])
   const [numBees, setNumBees] = useState("0")
-  const [hiveID, setHiveID] = useState("")
-  const [code, setCode] = useState("")
   const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +24,7 @@ function WaitingP1() {
         <img src={hives}></img>
       </ div>
       <div class="right">
-        <Navbar roomCode={location.state.code}/>
+        <Navbar roomCode={location.state.code} token={location.state.token}/>
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>
         <form onSubmit={handleSubmit}>
