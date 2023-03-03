@@ -1,4 +1,5 @@
 import HiveModel from "../models/hiveModel.js";
+import { isArrayOfStrings, hasDuplicates, isContained } from "./arrayUtils.js";
 
 // generates a unique 6-digit code that is unused by any hive
 export async function getUniqueCode() {
@@ -12,42 +13,6 @@ export async function getUniqueCode() {
             return code;
         }
     }
-}
-
-// checks whether each entry of the array is a string 
-function isArrayOfStrings(arr) {
-    if (!Array.isArray(arr)) {
-        return false;
-    }
-    for (let i = 0; i < arr.length; i++) {
-        if (typeof arr[i] !== 'string') {
-            return false;
-        }
-    }
-    return true;
-}
-
-// checks whether the entries of the given array (of strings) are unique
-function hasDuplicates(arr) {
-    var valuesSoFar = Object.create(null);
-    for (var i = 0; i < arr.length; i++) {
-        var value = arr[i];
-        if (value in valuesSoFar) {
-            return true;
-        }
-        valuesSoFar[value] = true;
-    }
-    return false;
-}
-
-// returns true if every element in arr1 is in arr2
-function isContained(arr1, arr2) {
-    for (let i = 0; i < arr1.length; i++) {
-        if (!arr2.includes(arr1[i])) {
-            return false;
-        }
-    }
-    return true;
 }
 
 // returns a 1D time interval representation of the given 2D timetable

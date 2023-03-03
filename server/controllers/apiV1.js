@@ -5,6 +5,7 @@ import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketsInHive, getCurrentHiveOfUser, getSocketOfUser, broadcast } from '../utils/wsutils.js';
+import { removeElement } from '../utils/arrayUtils.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
