@@ -7,30 +7,32 @@ import "./Style.css"
 import Navbar from "./Navbar";
 
 const Profile = () => {
-  const { state } = useLocation();
+  
+  const  state  = useLocation();
   //const { roomCode } = state;    
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
-  let navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ name, description, preview });
-    try {
-      const response = axios.post('/api/v1/joinHive', {
-        name,
-        description,
-        preview,
-
-      });
-      console.log(response.status);
-    } catch (error) {
-      console.error(error);
-      return error.response.status;
-    }
-  };
+  const navigate = useNavigate();
+  const handleclick3 =() =>{navigate("/gorupcreation")}
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log({ name, description, preview });
+  try {
+    const response = await axios.post('/api/v1/createHive', {
+      profilePicture: preview,
+      displayName: name,
+      hiveName: "CSC301's Hive",
+      configOptions: {}
+    }).then;
+    console.log(response.status);
+    // Do something with the response, such as redirect to a new page
+  } catch (error) {
+    console.error(error);
+    return error.response.status;
+  }
+};
 
   const [src, setSrc] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -94,8 +96,8 @@ const Profile = () => {
           class='multiline-textbox'
 
           placeholder="Type your message here..." />
-        <button type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
-
+          
+           <button onClick={handleclick3}  style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
       </div>
     </div>
   );
