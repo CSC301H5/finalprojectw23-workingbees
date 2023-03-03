@@ -6,24 +6,28 @@ import Displaygroup from "./Displaygroup";
 import{useNavigate, useLocation} from "react-router-dom";
 import axios from 'axios';
 import PendingInvitesList from "./pendingInvitelist"
+import { getCookie } from './getAuthToken';
 
 
 const  Gorupcreation = () => {
   const navigate = useNavigate();
   const [username, setName] = useState('');
   const location = useLocation();
+  const x_auth_token = getCookie("x-auth-token");
+  /*
   const roomCode = location.state.code;
   const token = location.state.token;
+  */
 
-  const handleclick3 =() =>{navigate("/roomConfig", {state: { roomCode, token } })}
-  //const handleclick3 =() =>{navigate("/roomConfig")}
+  //const handleclick3 =() =>{navigate("/roomConfig", {state: { roomCode, token } })}
+  const handleclick3 =() =>{navigate("/teamProfile")}
   const handleInviteGroupMate = ({hiveID,username}) => {
   
     axios
       .post('/api/v1/sendInvite', {hiveID, username: username}, {
         headers: {
           
-            "x-auth-token": token
+            "x-auth-token": x_auth_token
         },
       })
       .then((res) => {
