@@ -573,7 +573,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
 
     try {
 
-        if (!req.body.hiveID) {
+        if (!req.query.hiveID) {
             return res.status(400).json({msg: "Malformed request."});
         }
 
@@ -582,7 +582,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.body.hiveID);
+        const hive = await HiveModel.findById(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -593,7 +593,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
         }
 
         // ensure they are not the host
-        const attendee = await AttendeeModel.findOne({"hiveID": req.body.hiveID, "userID": req.userID}); // need to get their attendee instance in the correct hive.
+        const attendee = await AttendeeModel.findOne({"hiveID": req.query.hiveID, "userID": req.userID}); // need to get their attendee instance in the correct hive.
         if (!attendee) {
             return res.status(409).json({msg: "Not an attendee in the specified hive."})
         }
@@ -611,7 +611,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
 
 
     } catch (e) {
-        console.error("Error on getMatchingGroup controller!");
+        console.error("Error on roomConfigOptionsCompleted controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
@@ -667,7 +667,7 @@ export const getIncomingInvites = async (req, res) => {
 
 
     } catch (e) {
-        console.error("Error on getMatchingGroup controller!");
+        console.error("Error on getIncomingInvites controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
@@ -725,7 +725,7 @@ export const getOutgoingInvites = async (req, res) => {
 
 
     } catch (e) {
-        console.error("Error on getMatchingGroup controller!");
+        console.error("Error on getOutgoingInvites controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
@@ -989,5 +989,51 @@ export const getRoomConfigOptions = async(req, res) => {
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getHiveMatchingGroupCompletion = async (req, res) => {
+
+    try {
+
+        if (!req.query.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.query.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        var acc = 0; // increment for each matchingGroup that's submitted data.
+
+        for (let i = 0; i < hive.groupIDs.length; i++) {
+            let matchingGroup = await MatchingGroupModel.findById(hive.groupIDs[i]);
+            if (!matchingGroup) { // this should always exist if the id is in groupIDs, so something is wrong with DB state.
+                return res.status(500).json({msg: "Server Error."});
+            }
+            if (matchingGroup.hiveConfigResponses != "") { // i.e. data has been submitted
+                acc += 1;
+            }
+        }
+
+        res.status(200).json({"completed": acc});
+
+
+    } catch (e) {
+        console.error("Error on getHiveMatchingGroupCompletion controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
     }
 }
