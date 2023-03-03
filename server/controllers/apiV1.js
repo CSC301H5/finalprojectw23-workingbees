@@ -3,35 +3,13 @@ import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
-import { checkConfigOptions } from '../utils/configOptionsUtils.js';
+import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketsInHive, getCurrentHiveOfUser, getSocketOfUser, broadcast } from '../utils/wsutils.js';
+import { removeElement } from '../utils/arrayUtils.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-async function getUniqueCode() {
-    let min = 100000;
-    let max = 1000000;
-    let unique = false;
-    while (!unique) {
-        let code = Math.floor(Math.random() * (max - min)) + min
-        let hive = await HiveModel.findOne({"code": code});
-        if (!hive) {
-            return code;
-        }
-    }
-}
-
-// removes an element from the array and returns whether the element was successfully deleted
-function removeElement(arr, elem) {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == elem) {
-            arr.splice(i, 1);
-            return true;
-        }
-    }
-    return false;
-}
 
 // reference: https://dev.to/jeffreythecoder/setup-jwt-authentication-in-mern-from-scratch-ib4
 export const register = async (req, res) => {
@@ -986,6 +964,68 @@ export const getRoomConfigOptions = async(req, res) => {
 
     } catch (e) {
         console.error("Error on getRoomConfigOptions controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const submitRoomConfigOptions = async(req, res) => {
+
+    let hiveID = req.body.hiveID;
+    let configOptionsResponse = req.body.configOptionsResponse;
+
+    // verify request
+    if (!hiveID || !configOptionsResponse) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find user and hive and check that the user is an attendee in this hive
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        // get matching group of the user and ensure the user is the leader
+        let matchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        if (user.userID != matchingGroup.leaderID) {
+            return res.status(401).json({msg: "User must be the leader of the matching group"});
+        }
+
+        // check if a response has already been submitted
+        if (matchingGroup.hiveConfigResponses) {
+            return res.status(409).json({msg: "Matching group response has already been submitted"});
+        }
+
+        // check configOptionsResponse is valid
+        let configRes = await checkConfigOptionsResponse(hive, configOptionsResponse, res);
+        if (configRes) {
+            return;
+        }
+
+        // save and submit matching group response
+        matchingGroup.hiveConfigResponses = configOptionsResponse;
+        await matchingGroup.save();
+
+        return res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on submitRoomConfigOptions controller!");
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
