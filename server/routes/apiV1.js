@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, guestRegister, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive } from '../controllers/apiV1.js'
+import { register, login, guestRegister, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive, createHive, getHiveAttendeeNames } from '../controllers/apiV1.js'
 import auth from '../middleware/auth.js'
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.get('/getHiveTimer', auth, getHiveTimer);
 router.get('/getHivePhase', auth, getHivePhase);
 router.get('/getHiveInfo', auth, getHiveInfo); // still requires guest Auth.
 router.post('/joinHive', auth, joinHive);
+router.post('/createHive', auth, createHive);
+router.get('/getHiveAttendeeNames', auth, getHiveAttendeeNames);
 
 export default router;
