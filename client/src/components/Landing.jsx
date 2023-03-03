@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import hives from '../Assets/hives.png'
 import axios from 'axios';
 import "./Style.css";
@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const navigate = useNavigate();
+  const [token, setToken] = useState('')
 
   
 
@@ -14,30 +15,55 @@ const Landing = () => {
   const handleJoinRoomCode = () => {
 
     const code = roomCode;
-    
+  
    
     axios.post( "/api/v1/guestRegister").then(res => {
+
       if (res.status == 201 ) {
 
         const x_auth_token = res.data.token
+
+        setToken(res.data.token)
         document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
        // navigate("/profile", { state: { roomCode: roomCode } });
+
        console.log("ROOMCODE:", roomCode);
        console.log("res.data.token:", res.data.token);
-  axios.get("/api/v1/getHiveInfo", {
-    code: roomCode
-}, {
-    headers: {
-        "x-auth-token": res.data.token
-    }
-}).then(res=>{
-  if (res.status == 200 ) {
-     console.log('res.status.hiveName', res.status.hiveName)
 
-  }
+       async function  getHiveName(){
+        console.log('room', roomCode);
+        console.log('token :', token);
+        const roomInt = parseInt(roomCode);
+        console.log('roomInt', roomInt);
+    
+        if (isNaN(roomInt)) {
+          console.error('Room code is not a number!');
+          return;
+        }
+        axios.get("/api/v1/getHiveInfo", {
+          params: {
+            code: roomCode
+          },
+          headers: {
+            "x-auth-token": token
+          }
+        }).then(res => {
+          console.log("x2 : ",token);
+          if (res.status ==200) 
+          {  console.log("30000");
+          console.log("x2 ", token);
+            navigate("/Profile" , { state: { code: roomCode, token: token} } )
+          }
+          console.log(res.data);
+        }).catch(err => {
+          console.error(err.response.data);
+        });
+        
+    
+      }
+      getHiveName();
+      
 
-else{ console.log('wtf')
-}})
        
 
       

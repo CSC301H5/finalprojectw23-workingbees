@@ -5,31 +5,46 @@ import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-
+import { getCookie } from './getAuthToken';
 const Profile = () => {
-  const { state } = useLocation();
-  //const { roomCode } = state.c;    
 
+  const location = useLocation();
+  const code = location.state.code;
+  const token = location.state.token;
+   console.log("code :", code);
+   console.log("x-auth-token from landing", token);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   let navigate = useNavigate();
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ name, description, preview });
-    try {
-      const response = axios.post('/api/v1/joinHive', {
-        name,
-        description,
-        preview,
+    const x_auth_token = getCookie("x-auth-token");
+      console.log("x-auth-token", token);
+      console.log("typeof(code) : ", typeof(code));
+      axios.post('/api/v1/joinHive', {
+        
+          code: Number(code),
+          profilePicture: preview,
+          displayName: name,
+          biography: description
+  
+        },{
+        headers: {
+          "x-auth-token": token
+        }}
 
+       ).then(res => {
+        if (res.status ==201) 
+        {  console.log("hiveID :",res.data.hiveID);
+          //navigate("/Profile" , { state: { code: code} } )
+        }
+        console.log(res.data);
+      }).catch(err => {
+        console.error(err.response.data);
       });
-      console.log(response.status);
-    } catch (error) {
-      console.error(error);
-      return error.response.status;
-    }
   };
 
   const [src, setSrc] = useState(null);
@@ -42,7 +57,7 @@ const Profile = () => {
     setPreview(view);
   }
   useEffect(() => {
-    console.log(preview)
+    //console.log(preview)
   })
 
 
@@ -92,9 +107,11 @@ const Profile = () => {
           cols="50"
           style={{ position: 'absolute ', top: '507px', left: '650px', resize: 'none', height: '120px', width: "550px" }}
           class='multiline-textbox'
-
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+ 
           placeholder="Type your message here..." />
-        <button type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
+        <button onClick={handleSubmit} type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
 
       </div>
     </div>

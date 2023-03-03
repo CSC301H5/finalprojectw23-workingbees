@@ -9,49 +9,10 @@ import HiveComp from './LoginHiveCompient';
 import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
 
-/*  **GET /api/v1/getUserHives (PROTECTED)**
-
-Description: gets the user’s hive list information for home page
-
-Body parameters:
-
-- None
-
-Body example:
-
-```jsx
-{}
-```
-
-Response:
-
-- A JSON object where the keys are the IDs of every Hive they are in, and the values being nested JSON objects containing hive name, host status of the logged in user, the phase of the hive, and their team size (default to 1 until teams are implemented in a later sprint.)
-
-Response body example:
-
-```jsx
-{
-"63e1bb9327ffe3d01689a801": {
-	  "name": "A Hive",
-		"isHost": true,
-		"phase": 2,
-		"teamSize": 1
-	},
-...
-}
-```
-
-* In the event of an error, a string error of the form {”msg”: “Some information here”} is returned in the body.
-
-Expected Response:
-- 200 - Successfully returned all user hive data.
-- 401 - Access denied.
-- 500 - Internal server error (unknown exception) */
-
-
 function LoginHomePage ()  {
   const [room, setRoom] = useState('');
-
+  const { state } = useLocation();
+  const x_auth_token = getCookie("x-auth-token");
   const navigate = useNavigate();
   const handleInputChange = (event) => {
     setRoom(event.target.value);
@@ -63,10 +24,6 @@ function LoginHomePage ()  {
     const roomInt = parseInt(room);
     console.log('roomInt', roomInt);
 
-    if (isNaN(roomInt)) {
-      console.error('Room code is not a number!');
-      return;
-    }
     axios.get("/api/v1/getHiveInfo", {
       params: {
         code: room
@@ -75,10 +32,12 @@ function LoginHomePage ()  {
         "x-auth-token": x_auth_token
       }
     }).then(res => {
-      console.log(res.data);
-    }).catch(err => {
-      console.error(err.response.data);
-    });
+      if (res.status == 200){
+        navigate("/Profile" , { state: { code: room, token: x_auth_token} } )
+
+      }
+     
+    })
     
 
   }
@@ -86,25 +45,45 @@ function LoginHomePage ()  {
     getHiveName();
   }, [] )
 
+  async function  getHiveName2(){
+   
+ 
+    axios.get("/api/v1/getUserHives ", {
+      params: { },
+      headers: {
+        "x-auth-token": x_auth_token
+      }
+    }).then(res => {
+      if (res.status ==200){
+        console.log("DATA : ",res.data);
+    
+        const rows =[];
+        
+        for (var hiveID in res.data) {
+          rows.push(< HiveComp names={res.data[hiveID].name}  phases={res.data[hiveID].phase}  /> )
+      }
+
+       
+      }
+
+   
+    });
+    
+
+  }
+  useEffect(() => {
+    getHiveName2();
+  }, [] )
+  getHiveName2();
 
 
-  const { state } = useLocation();
-  const x_auth_token = getCookie("x-auth-token");
 
 
-  const  test = getCookie("x-auth-token");
-  console.log("test:", test );
 
-  axios.get("/api/v1/getUserHives", {
-    headers: {
-      "x-auth-token": 1111111,
-    }
-  }).then(res => {
-    if (res.status === 200) {
-      console.log("HOOOOOOOO") 
-      console.log(res.data.hiveID) 
-    }
-  })
+
+
+
+
   
 
   
@@ -118,6 +97,8 @@ const handleClick = () => {
 //Handle create new Hive button 
 
 const handleClick2 = () => {
+  //getHiveName2();
+
   navigate("/createHive");
 }
 
@@ -132,13 +113,16 @@ const handleClick2 = () => {
         </div>
         <div class='right'>
           < Navbar />
-          
+    
           <div
       style={{
         height: '500px',
         overflow: 'auto',
       }}
-    >  < HiveComp />   < HiveComp />< HiveComp />< HiveComp />< HiveComp />< HiveComp /> </div>
+    >  
+    
+     <rows/>
+   </div>
       
          
           <input
