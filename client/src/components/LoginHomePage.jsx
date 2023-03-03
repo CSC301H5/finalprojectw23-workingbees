@@ -85,27 +85,23 @@ function LoginHomePage ()  {
 
 //Handle Join Hive button 
 const handleClick = () => {
-
   console.log('room', room);
   console.log('x-auth-token', x_auth_token);
-
-
   axios.get("/api/v1/getHiveInfo", {
-    code: room
-}, {
+    params: {
+      code: room
+    },
     headers: {
-        "x-auth-token": x_auth_token
+      'x-auth-token': x_auth_token
+    
     }
-}).then(res => {
+  }).then(res => {
     console.log(res.data);
-}).catch(err => {
+  }).catch(err => {
     console.error(err.response.data);
-});
-
-
-
-      
+  });
 }
+
 //Handle create new Hive button 
 
 const handleClick2 = () => {
