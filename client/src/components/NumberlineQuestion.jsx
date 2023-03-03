@@ -21,14 +21,14 @@ export default function NumberlineQuestion(props){
 				Start:
 				<input 
 					type="number" 
-					name="start"  
+					name={"start-" + props.index} 
 					value={props.start} 
 					onChange={props.handleTextChange} 
 					required /> <br />
 				Stop:
 				<input 
 					type="number" 
-					name="stop" 
+					name={"stop-" + props.index} 
 					placeholder="Question" 
 					value={this.state.question} 
 					onChange={this.handleTextChange} 
@@ -36,7 +36,7 @@ export default function NumberlineQuestion(props){
 				Increment:
 				<input 
 					type="number" 
-					name="increment" 
+					name={"increment-" + props.index}
 					placeholder="Question" 
 					value={this.state.question} 
 					onChange={this.handleTextChange} 

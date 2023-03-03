@@ -18,7 +18,11 @@ export default function QuestionText(props) {
 				value="Remove"
 				onChange={props.removeQuestion}
 			/>
-			<select name="mode">
+			<select
+				name={"matchMode-" + props.index}
+				onChange={props.selectMode}
+				value={props.matchMode}
+				placeholder="Select Match Mode">
 				<option>Similar</option>
 				<option>Diverse</option>
 				<option>None</option>
