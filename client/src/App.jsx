@@ -10,7 +10,7 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar';
 import TeamProfile from './components/TeamProfile';
-
+import Gorupcreation from './components/groupcreation';
 import LoginHomePage from './components/LoginHomePage';
 
 function App() {
@@ -26,6 +26,8 @@ function App() {
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
+        <Route path="/Gorupcreation" element={< Gorupcreation />} />
+
         <Route path="*" element={< ErrorPage/>} />
       </Routes>
     </Router>
