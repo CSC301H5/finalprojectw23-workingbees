@@ -9,8 +9,6 @@ import hives from '../Assets/hives.png'
 function WaitingP1() {
   const [attendeeList, setAttendeeList] = useState([])
   const [numBees, setNumBees] = useState("0")
-  const [hiveID, setHiveID] = useState("")
-  const [code, setCode] = useState("")
   const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
