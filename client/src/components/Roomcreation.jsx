@@ -27,6 +27,11 @@ function CreateRoom() {
     const handleClassDate = (e) => { setClassDate(e.target.value) }
     const handleClassTime = (e) => { setClassTime(e.target.value) }
 
+    const configOptions = {
+        "groupSizeRange": [1, 3],
+        "questions": []
+    }
+
     async function getToken() {
         //get a guest token
         axios.post("/api/v1/guestRegister", {}).then(res => {
@@ -41,14 +46,14 @@ function CreateRoom() {
 
 
     const handleSubmit = e => {
-
+        
         e.preventDefault();
         axios.post("/api/v1/createHive",
             {
                 profilePicture: "sldkcndlkcns",
                 hiveName: hiveName,
                 displayName: displayName,
-                configOptions: "{}"
+                configOptions: configOptions
                 /*
                 UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
                 joinDate: this.state.joinDate,
@@ -68,6 +73,7 @@ function CreateRoom() {
                 navigate('/waiting1', { state: { code: res.data.code, token: token } })
             }
         })
+        
     }
 
     return (

@@ -5,6 +5,8 @@ import ClientMultiselect from "./ClientMultiselect"
 import ClientSlider from "./ClientSlider"
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
+import hives from '../Assets/hives.png'
+import Navbar from "./Navbar"
 
 
 // expects code and token
@@ -17,31 +19,38 @@ function TeamProfile() {
     const [response, setResponse] = useState("")
     // stores selected options in multiselect
     const [selected, setSelected] = useState([])
-    // stores configOptions
-    const [configOptions, setConfigOptions] = useState('')
-
-    const location = useLocation();
-    const navigate = useNavigate();
 
     // get configOptions
-    async function getConfigOptions() {
-        axios.get("/api/v1/getRoomConfigOptions",
-            {
-                params: {
-                    code: location.state.code
-                },
-                headers: {
-                    'x-auth-token': location.state.token
-                }
-            }).then(res => {
-                if (res.status == 200) {
-                    setConfigOptions(res.data.configOptions)
-                }
-            })
+    const configOptions = {
+        "groupSizeRange": [1, 3],
+        "questions": [{
+            "type": "DROPDOWN",
+            "explanation": "What year are you in?",
+            "typeOptions": {
+                "options": ["Year 1", "Year 2", "Year 3", "Year 4+"]
+            }
+        }, {
+            "type": "MULTISELECT",
+            "explanation": "What topics interest you?",
+            "typeOptions": {
+                "options": ["Data structures and algorithms", "Stats", "Cyber security", "Data science", "Software engineering", "Computer hardware", "Systems design"],
+                "maxAllowed": 3,
+            }
+        }, {
+            "type": "NUMBERLINE",
+            "explanation": "What is your target grade?",
+            "typeOptions": {
+                "min": 0,
+                "max": 100,
+                "step": 0.5
+            }
+        }, {
+            "type": "TIMETABLE",
+            "typeOptions": {
+                "maxAllowed": 10
+            }
+        }]
     }
-    useEffect(() => {
-        getConfigOptions();
-    }, [])
 
     const rows = [];
     for (let i = 0; i < configOptions.questions.length; i++) {
@@ -60,7 +69,19 @@ function TeamProfile() {
         }
     }
 
-    return <tbody>{rows}</tbody>;
+    return (
+        <div className="grid">
+            <div class="left">
+                <img src={hives}></img>
+            </div>
+            <div class="right">
+                <Navbar />
+                <tbody>{rows}</tbody>
+            </div>
+
+        </div>
+
+    )
 
 }
 export default TeamProfile
