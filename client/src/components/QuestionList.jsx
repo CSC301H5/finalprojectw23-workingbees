@@ -5,8 +5,9 @@ import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import CalendarQuestion from './CalendarQuestion'
 
-export default class AddQuestionList{
+export default class QuestionList extends Component{
 	constructor(){
+		super()
 		this.state = {
 			questions: [],
 			selectedType: "DROPDOWN"
@@ -96,7 +97,7 @@ export default class AddQuestionList{
 						/>
 				)
 			} else if (this.state.questions[i].type === "NUMBERLINE"){
-			questionComponents.push(
+				questionComponents.push(
 					<NumberlineQuestion
 						index={i}
 						question={this.state.questions[i].title}
@@ -110,7 +111,7 @@ export default class AddQuestionList{
 				)
 			} else if (this.state.questions[i].type === "TIMETABLE"){
 				questionComponents.push(
-					<TimetableQuestion
+					<CalendarQuestion
 						index={i}
 						question={this.state.questions[i].title}
 						explanation={this.state.questions[i].explanation}
@@ -136,7 +137,8 @@ export default class AddQuestionList{
 	
 	addAnswer(event){
 		// the button triggering the event will have the question index in its name
-		let index = parseInt(event.target.name.split('-')[1])  
+		let index = parseInt(event.target.name.split('-')[1])
+		
 	}
 	
 	removeAnswer(event){
@@ -217,7 +219,7 @@ export default class AddQuestionList{
 	
 	handleSelectChange(event){
 		this.setState({
-			selectType: event.target.value
+			selectedType: event.target.value
 		})
 	}
 	
@@ -226,8 +228,7 @@ export default class AddQuestionList{
 		// request
 	}
 	
-	
-	render(){
+	render() {
 		return (
 			<form onSubmit={this.publish}>
 				<select value={this.state.DROPDOWN} 	
@@ -238,7 +239,7 @@ export default class AddQuestionList{
 					<option value="TIMETABLE">Timetable</option>
 				</select>
 				<div>
-					{this.renderQuestions}
+					{this.renderQuestions()}
 				</div>
 				<input
 					type="button"
@@ -252,4 +253,5 @@ export default class AddQuestionList{
 			</form>
 		)
 	}
+	
 }
