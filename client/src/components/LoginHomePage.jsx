@@ -49,7 +49,6 @@ Expected Response:
 - 500 - Internal server error (unknown exception) */
 
 
-
 function LoginHomePage ()  {
   const [room, setRoom] = useState('');
 
@@ -57,6 +56,35 @@ function LoginHomePage ()  {
   const handleInputChange = (event) => {
     setRoom(event.target.value);
   }
+
+  async function  getHiveName(){
+    console.log('room', room);
+    console.log('x-auth-token', x_auth_token);
+    const roomInt = parseInt(room);
+    console.log('roomInt', roomInt);
+
+    if (isNaN(roomInt)) {
+      console.error('Room code is not a number!');
+      return;
+    }
+    axios.get("/api/v1/getHiveInfo", {
+      params: {
+        code: room
+      },
+      headers: {
+        "x-auth-token": x_auth_token
+      }
+    }).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.error(err.response.data);
+    });
+    
+
+  }
+  useEffect(() => {
+    getHiveName();
+  }, [] )
 
 
 
@@ -78,28 +106,13 @@ function LoginHomePage ()  {
     }
   })
   
+
   
-
-
 
 
 //Handle Join Hive button 
 const handleClick = () => {
-  console.log('room', room);
-  console.log('x-auth-token', x_auth_token);
-  axios.get("/api/v1/getHiveInfo", {
-    params: {
-      code: room
-    },
-    headers: {
-      'x-auth-token': x_auth_token
-    
-    }
-  }).then(res => {
-    console.log(res.data);
-  }).catch(err => {
-    console.error(err.response.data);
-  });
+  getHiveName();
 }
 
 //Handle create new Hive button 
