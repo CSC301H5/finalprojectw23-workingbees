@@ -11,6 +11,7 @@ import Profile from './components/Profile';
 import Navbar from './components/Navbar';
 import TeamProfile from './components/TeamProfile';
 
+import LoginHomePage from './components/LoginHomePage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/createHive" element={< CreateRoom />} />
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />
+        <Route path="/LoginHomePage" element={< LoginHomePage />} />
         <Route path="*" element={< ErrorPage/>} />
       </Routes>
     </Router>
