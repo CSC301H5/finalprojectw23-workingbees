@@ -3,7 +3,6 @@ import axios from 'axios';
 import Login from './Login.jsx';
 import "./Style.css"
 import hives from '../Assets/hives.png'
-import Title1 from '../Assets/Title1.png'
 import Navbar from './Navbar.jsx';
 
 export default class Register extends Login {
@@ -22,19 +21,19 @@ export default class Register extends Login {
 		//checks input validity then sends the post request
 
 		event.preventDefault()
-		if (this.state.password != this.state.confirmPassword) {
+		if (this.state.password !== this.state.confirmPassword) {
 			this.setState({ errText: "Password and confirm password must match" })
 			console.log('passwords dont match')
 		} else if (!this.checkInputs(this.state.username, this.state.password)) {
 			this.setState({ errText: "Invalid email or password, passwords must be between 8-32 characters long and consist of alphanumeric characters, spaces and .,-_!@#%$" })
 		} else {
 			axios.post("/api/v1/register", { email: this.state.username, password: this.state.password }).then(res => {
-				if (res.status == 201) {
+				if (res.status === 201) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
 
 					window.location.replace("")
-				} else if (res.status == 401) {
+				} else if (res.status === 401) {
 					this.setState({ errText: "Incorrect username or password" })
 				} else {
 					this.setState({ errText: "Server error" })

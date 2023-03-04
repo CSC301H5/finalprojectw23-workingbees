@@ -9,13 +9,13 @@ class ConfigRoom extends Component {
     constructor() {
         super();
         this.state = {
-            
+
         };
     }
     handleSubmit = e => {
         e.preventDefault();
         this.props.navHook("/waiting1")
-        
+
         axios.post("/room-config",
             {
 
@@ -23,8 +23,6 @@ class ConfigRoom extends Component {
                 console.log(res);
                 console.log(res.data);
             })
-            
-            
     }
 
     render() {
@@ -33,9 +31,7 @@ class ConfigRoom extends Component {
             <div className="config">
                 <h2>Room configuration</h2>
                 <form onSubmit={this.handleSubmit}>
-
-                    <button type="submit" className="continue" style={{cursor:'pointer'}}>Publish</button>                    
-
+                    <button type="submit" className="continue" style={{ cursor: 'pointer' }}>Publish</button>
                 </form>
             </div>
         );
