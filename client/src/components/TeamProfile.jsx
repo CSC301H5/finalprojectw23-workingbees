@@ -34,7 +34,7 @@ function TeamProfile() {
                     'x-auth-token': location.state.token
                 }
             }).then(res => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setConfigOptions(res.data.configOptions)
                 }
             })
