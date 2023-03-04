@@ -1,7 +1,7 @@
 import { Component } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import "./Style.css"
 function redirect(Component) {
     return props => <Component navHook={useNavigate()} />;
 }
