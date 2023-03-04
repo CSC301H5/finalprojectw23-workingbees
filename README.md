@@ -39,10 +39,14 @@ Below is a simple 10-step overview of how the application works.
 
 # Contribution
 
-We use git flow for this repository. Each feature should have corresponding user stories in PB.md. Feature branches should be created for each user story (or multiple if they are closely related), following the name scheme of `S[N]-[X].[Y].[Z]...` where N is the sprint number and X, Y, Z, etc. are unique user story numbers (exclude the brackets.) For example, story 5 and 6 in sprint 2 would be a branch called `S2-5.6`. Feature branches can be merged into the `develop` branch for testing via a pull request. Once a release is ready in `develop`, it can be merged into `main` as a release via pull request.
+We use git flow for this repository. Each feature should have corresponding user stories in PB.md. Feature branches should be created for each user story (or multiple if they are closely related), following the name scheme of `S[N]-[X].[Y].[Z]...-[B/F][K]` where N is the sprint number, X, Y, Z, etc. are unique user story numbers, B/F specifies whether a subtask branch pertains to backend or frontend, and K specifies the subtask number as on trello (exclude the brackets.) For example, story 5 and 6 in sprint 2 would be a feature branch called `S2-5.6`. To branch off of `S2-5.6` to work on backend subtask number 4, the branch would be named `S2-5.6-B4`. Subtask branches can be merged back into their feature branch via a pull request.. Feature branches can be merged into the `develop` branch for testing via a pull request. Once a release is ready in `develop`, it can be merged into `main` as a release via pull request.
 
 There is an active [Trello board](https://trello.com/invite/b/5JuJEXhe/ATTI00d30d0f1e90294d75fa0d18df1ff0e1A9B0C005/hivemind) being used for ticketing.
 
 Backend API documentation can be found [here](https://fork-baryonyx-771.notion.site/Backend-api-v1-documentation-86b8c007cc114fa7ba5507ae83f7b172).
+
+Websocket documentation can be found [here](https://fork-baryonyx-771.notion.site/Websocket-Documentation-38374367ce3f40cca5d9ddca44ee8e22).
+
+The "ConfigOptions" standard docs can be found [here](https://fork-baryonyx-771.notion.site/roomConfigOptions-Documentation-38f7112aec6d43b3bb9a3031eaa17771).
 
 Frontend documentation can be found [here](https://fork-baryonyx-771.notion.site/Frontend-Documentation-63fba7073c87477c9223a9586e3df1b0).
