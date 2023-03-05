@@ -34,19 +34,14 @@ function LoginHomePage() {
     }).then(res => {
       if (res.status === 200) {
         navigate("/Profile", { state: { code: room, token: x_auth_token } })
-
       }
-
     })
-
-
   }
   useEffect(() => {
     getHiveName();
   }, [])
 
   async function getHiveName2() {
-
 
     axios.get("/api/v1/getUserHives ", {
       params: {},
@@ -58,32 +53,16 @@ function LoginHomePage() {
         console.log("DATA : ", res.data);
 
         const rows = [];
-
         for (var hiveID in res.data) {
           rows.push(< HiveComp names={res.data[hiveID].name} phases={res.data[hiveID].phase} />)
         }
-
-
       }
-
-
     });
-
-
   }
   useEffect(() => {
     getHiveName2();
   }, [])
   getHiveName2();
-
-
-
-
-
-
-
-
-
 
 
 
@@ -120,10 +99,8 @@ function LoginHomePage() {
             overflow: 'auto',
           }}
         >
-
           <rows />
         </div>
-
 
         <input
           className='SmalltextBox'
