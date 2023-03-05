@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import "./Style.css"
 
 // Assumes props.top and props.bottom are other components
-export default class SplitPaneV extends Component{
-	constructor(props){
+export default class SplitPaneV extends Component {
+	constructor(props) {
 		super(props)
 	}
-	
-	render(){
+
+	render() {
 		<div class="grid">
 			<div>
-				{props.top}	
+				{props.top}
 			</ div>
 			<div>
 				{props.bottom}
 			</ div>
-		</div>	
+		</div>
 	}
 }

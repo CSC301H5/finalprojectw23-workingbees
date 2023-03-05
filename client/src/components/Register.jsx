@@ -23,7 +23,7 @@ export default class Register extends Login {
 		event.preventDefault()
 		if (this.state.password !== this.state.confirmPassword) {
 			this.setState({ errText: "Password and confirm password must match" })
-			console.log('passwords dont match')
+			console.log('passwords don\'t match')
 		} else if (!this.checkInputs(this.state.username, this.state.password)) {
 			this.setState({ errText: "Invalid email or password, passwords must be between 8-32 characters long and consist of alphanumeric characters, spaces and .,-_!@#%$" })
 		} else {
