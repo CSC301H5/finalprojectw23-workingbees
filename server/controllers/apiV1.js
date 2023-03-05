@@ -27,7 +27,7 @@ export const register = async (req, res) => {
         let user = await UserModel.findOne({"email": email});
         if (user) {
             return res.status(409).json({msg: "Error: User already exists."});
-        } 
+        }
 
         // create user
         const salt = await bcrypt.genSalt(10);
@@ -80,7 +80,7 @@ export const login = async (req, res) => {
         let user = await UserModel.findOne({"email": email});
         if (!user) {
             return res.status(401).json({msg: "Error: Email or password incorrect"});
-        } 
+        }
 
         const matchFound = await bcrypt.compare(password, user.password);
         if (!matchFound) {
@@ -101,7 +101,7 @@ export const login = async (req, res) => {
                 res.status(200).json({token});
             }
         )
-        
+
     } catch (e) {
         console.error("Error on login controller!");
         console.error(e.message);
@@ -358,7 +358,7 @@ export const getUserHives = async (req, res) => {
                 "name": hive.name,
                 "isHost": isHost,
                 "phase": hive.phase,
-                "teamSize": 1   
+                "teamSize": 1
             }
             acc[hive.hiveID] = temp;
         }
@@ -395,7 +395,7 @@ export const getHivePhase = async (req, res) => {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        var data = {"phase": hive.phase};
+        const data = {"phase": hive.phase};
 
         return res.status(200).json(data);
 
@@ -429,7 +429,7 @@ export const getHiveTimer = async (req, res) => {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        var data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
+        const data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
 
         return res.status(200).json(data);
 
@@ -459,11 +459,11 @@ export const getHiveInfo = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive not found."});
         }
 
-        var data = {
+        const data = {
             "hiveName": hive.name,
             "phase": hive.phase,
             "phaseCompletionDate": null // TODO: implement in later sprint when timers are added.
-            }; 
+            };
 
         return res.status(200).json(data);
 
@@ -510,8 +510,8 @@ export const getMatchingGroup = async (req, res) => {
         if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
             return res.status(500).json({msg: "Server Error."});
         }
-        
-        var data = {}
+
+        const data = {}
         // add leader
         const leader = await AttendeeModel.findOne({"userID": matchingGroup.leaderID});
         data["leaderName"] = leader.name;
@@ -570,8 +570,8 @@ export const roomConfigOptionsCompleted = async (req, res) => {
         }
 
         // check if they are filled out (default value is "")
-        var data = {};
-        data["completed"] = matchingGroup.hiveConfigResponses == "" ? false : true
+        const data = {};
+        data["completed"] = matchingGroup.hiveConfigResponses === "" ? false : true
         res.status(200).json(data);
 
     } catch (e) {
@@ -611,7 +611,7 @@ export const getIncomingInvites = async (req, res) => {
             return res.status(409).json({msg: "Not an attendee in the specified hive."})
         }
 
-        var data = {}
+        const data = {}
         // put leaderName: matchingGroupID pairs in data.
 
         for (let i = 0; i < attendee.pendingInvites.length; i++) {
@@ -623,7 +623,7 @@ export const getIncomingInvites = async (req, res) => {
             if (!leader) { // should exist
                 return res.status(500).json({msg: "Server Error."});
             }
-            
+
             data[leader.name] = matchingGroup.groupID;
         }
 
@@ -672,7 +672,7 @@ export const getOutgoingInvites = async (req, res) => {
             return res.status(500).json({msg: "Server Error."});
         }
 
-        var data = {}
+        const data = {}
         // put leaderName: matchingGroupID pairs in data.
 
         for (let i = 0; i < matchingGroup.outgoingInvites.length; i++) {
@@ -680,7 +680,7 @@ export const getOutgoingInvites = async (req, res) => {
             if (!targetUser) { // should exist
                 return res.status(500).json({msg: "Server Error."});
             }
-            
+
             data[targetUser.name] = targetUser.userID;
         }
 
@@ -725,7 +725,7 @@ export const sendInvite = async (req, res) => {
         if (!invitedAttendee) {
             return res.status(404).json({msg: "Error: Username not found"});
         }
-        
+
         const invitedUser = await UserModel.findById(invitedAttendee.userID);
         if (!invitedUser) { // each attendee should have a registered userID, so something went terribly wrong.
             return res.status(500).json({msg: "Server Error."});
