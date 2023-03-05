@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import HiveComp from './LoginHive';
 import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
+import HiveList from './HiveList';
 
 function LoginHomePage() {
   const [room, setRoom] = useState('');
@@ -77,7 +78,6 @@ function LoginHomePage() {
 
   const handleClick2 = () => {
     //getHiveName2();
-
     navigate("/createHive");
   }
 
@@ -99,7 +99,7 @@ function LoginHomePage() {
             overflow: 'auto',
           }}
         >
-          <rows />
+          <HiveList />
         </div>
 
         <input
