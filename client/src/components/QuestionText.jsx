@@ -1,35 +1,43 @@
 import React, { Component } from 'react';
 import "./Style.css"
-/*
+/*Necessary props
+	key
+	title
+	explanation
+	handleTextChange
+	removeQuestion
+	matchMode
+	selectMode
 */
 export default function QuestionText(props) {
 	return (
 		<div>
 			<input
+				//class="inputBox"
 				type="text"
-				name={"question-" + props.index}
+				name="title"
 				placeholder="Question"
-				value={props.question}
+				value={props.title}
 				onChange={props.handleTextChange}
 				required />
 			<input
 				type="button"
-				name={"remove-" + props.index}
+				name="remove"
 				value="Remove"
-				onChange={props.removeQuestion}
+				onChange={() => props.removeQuestion(props.key)}
 			/>
 			<select
-				name={"matchMode-" + props.index}
+				name={"matchMode"}
 				onChange={props.selectMode}
 				value={props.matchMode}
 				placeholder="Select Match Mode">
-				<option>Similar</option>
-				<option>Diverse</option>
-				<option>None</option>
+				<option value="SIMILAR">Similar</option>
+				<option value="DIVERSE">Diverse</option>
+				<option value="NONE">None</option>
 			</select> <br />
 			<input
 				type="text"
-				name={"explanation-" + props.index}
+				name={"explanation"}
 				placeholder="Explanation"
 				value={props.explanation}
 				onChange={props.handleTextChange}
