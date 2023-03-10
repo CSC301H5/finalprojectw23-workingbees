@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from 'axios';
-import HiveEntry from './HiveEntry';
+import BigEntry from './BigEntry';
 import { getCookie } from './getAuthToken';
 
 export default function HiveList() {
@@ -35,7 +35,7 @@ export default function HiveList() {
     return (
         <div>
             {hiveData.map(hiveDatum => (
-                <HiveEntry
+                <BigEntry
                     name={hiveDatum.name}
                     description={hiveDatum.description}
                 />

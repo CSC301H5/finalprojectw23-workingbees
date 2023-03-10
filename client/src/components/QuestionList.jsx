@@ -5,14 +5,14 @@ import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import CalendarQuestion from './CalendarQuestion'
 
-export default class QuestionList extends Component{
-	constructor(){
+export default class QuestionList extends Component {
+	constructor() {
 		super()
 		this.state = {
 			questions: [],
 			selectedType: "DROPDOWN"
 		}
-		
+
 		this.addQuestion = this.addQuestion.bind(this)
 		this.removeQuestion = this.removeQuestion.bind(this)
 		this.addAnswer = this.removeQuestion.bind(this)
@@ -21,13 +21,13 @@ export default class QuestionList extends Component{
 		this.handleSelectChange = this.handleSelectChange.bind(this)
 		this.publish = this.publish.bind(this)
 	}
-	
-	addQuestion(event){
+
+	addQuestion(event) {
 		//need to make a deep copy to prevent concurrency issues
 		let copyquestions = this.state.questions.map(x => x)
 		let newTypeOptions
-		
-		if (this.state.selectedType === "DROPDOWN"){
+
+		if (this.state.selectedType === "DROPDOWN") {
 			newTypeOptions = {
 				options: [],
 				required: false
@@ -38,20 +38,20 @@ export default class QuestionList extends Component{
 				maxAllowed: 0,
 				required: false
 			}
-			
+
 		} else if (this.state.selectedType === "NUMBERLINE") {
 			newTypeOptions = {
 				min: 0,
 				max: 0,
 				step: 0,
 			}
-			
+
 		} else if (this.state.selectedType === "TIMETABLE") {
 			newTypeOptions = {
 				maxAllowed: 0
 			}
 		}
-		
+
 		let newQuestion = {
 			type: this.state.selectedType,
 			title: "",
@@ -60,13 +60,13 @@ export default class QuestionList extends Component{
 			typeOptions: newTypeOptions
 		}
 		copyquestions.push(newQuestion)
-		this.setState({questions: copyquestions})
+		this.setState({ questions: copyquestions })
 	}
-	
-	renderQuestions(){
+
+	renderQuestions() {
 		let questionComponents = []
-		for(let i = 0; i < this.state.questions.length; i++){
-			if(this.state.questions[i].type === "DROPDOWN"){
+		for (let i = 0; i < this.state.questions.length; i++) {
+			if (this.state.questions[i].type === "DROPDOWN") {
 				questionComponents.push(
 					<DropdownQuestion
 						index={i}
@@ -79,9 +79,9 @@ export default class QuestionList extends Component{
 						removeQuestion={this.removeQuestion}
 						addAnswer={this.addAnswer}
 						removeAnswer={this.removeAnswer}
-						/>
+					/>
 				)
-			} else if (this.state.questions[i].type === "MULTISELECT"){
+			} else if (this.state.questions[i].type === "MULTISELECT") {
 				questionComponents.push(
 					<MultiselectQuestion
 						index={i}
@@ -94,9 +94,9 @@ export default class QuestionList extends Component{
 						removeQuestion={this.removeQuestion}
 						addAnswer={this.addAnswer}
 						removeAnswer={this.removeAnswer}
-						/>
+					/>
 				)
-			} else if (this.state.questions[i].type === "NUMBERLINE"){
+			} else if (this.state.questions[i].type === "NUMBERLINE") {
 				questionComponents.push(
 					<NumberlineQuestion
 						index={i}
@@ -107,9 +107,9 @@ export default class QuestionList extends Component{
 						increment={this.state.questions[i].typeOptions.step}
 						handleTextChange={this.handleTextChange}
 						removeQuestion={this.removeQuestion}
-						/>
+					/>
 				)
-			} else if (this.state.questions[i].type === "TIMETABLE"){
+			} else if (this.state.questions[i].type === "TIMETABLE") {
 				questionComponents.push(
 					<CalendarQuestion
 						index={i}
@@ -120,38 +120,38 @@ export default class QuestionList extends Component{
 						increment={this.state.questions[i].typeOptions.step}
 						handleTextChange={this.handleTextChange}
 						removeQuestion={this.removeQuestion}
-						/>
+					/>
 				)
 			}
 		}
 		return questionComponents
 	}
-	
-	removeQuestion(event){
+
+	removeQuestion(event) {
 		// the button triggering the event will have the question index in its name
 		let index = parseInt(event.target.name.split('-')[1])
-		let newQuestions = this.state.questions.slice(0, index).concat(this.state.questions.slice(index+1)) 
-		this.setState({questions: newQuestions})
-		
+		let newQuestions = this.state.questions.slice(0, index).concat(this.state.questions.slice(index + 1))
+		this.setState({ questions: newQuestions })
+
 	}
-	
-	addAnswer(event){
+
+	addAnswer(event) {
 		// the button triggering the event will have the question index in its name
 		let index = parseInt(event.target.name.split('-')[1])
-		
+
 	}
-	
-	removeAnswer(event){
+
+	removeAnswer(event) {
 		// the button triggering the event will have the question and answer indexes in its name
 		let questionIndex = parseInt(event.target.name.split('-')[1])
-		let answerIndex =  parseInt(event.target.name.split('-')[2])
+		let answerIndex = parseInt(event.target.name.split('-')[2])
 		let newTypeOptions = {
-			options: this.state.questions[questionIndex].typeOptions.options.slice(0, answerIndex).concat(this.state.questions[questionIndex].typeOptions.options.slice(answerIndex+1)),
-			required:  this.state.questions[questionIndex].typeOptions.required
+			options: this.state.questions[questionIndex].typeOptions.options.slice(0, answerIndex).concat(this.state.questions[questionIndex].typeOptions.options.slice(answerIndex + 1)),
+			required: this.state.questions[questionIndex].typeOptions.required
 		}
-		if(this.state.questions[questionIndex].type === "MULTISELECT"){
+		if (this.state.questions[questionIndex].type === "MULTISELECT") {
 			newTypeOptions.maxAllowed = this.state.questions[questionIndex].typeOptions.maxAllowed
-		} 
+		}
 		let newQuestion = {
 			type: this.state.question[questionIndex].type.slice(),
 			title: this.state.question[questionIndex].title.slice(),
@@ -159,34 +159,34 @@ export default class QuestionList extends Component{
 			matchmode: this.state.question[questionIndex].matchmode.slice(),
 			typeOptions: newTypeOptions
 		}
-		let copyQuestions= this.state.questions.map(x=>x)	
+		let copyQuestions = this.state.questions.map(x => x)
 		copyQuestions[questionIndex] = newQuestion
-		this.setState({questions: copyQuestions})
+		this.setState({ questions: copyQuestions })
 	}
-	
-	handleTextChange(event){
+
+	handleTextChange(event) {
 		let indexes = event.target.name.split('-')
 		let newTypeOptions
-		
-		if(this.state.questions[indexes[1]].type === "MULTISELECT"){
-			newTypeOptions= {
+
+		if (this.state.questions[indexes[1]].type === "MULTISELECT") {
+			newTypeOptions = {
 				maxAllowed: this.state.questions[indexes[1]].typeOptions.maxAllowed,
 				required: this.state.questions[indexes[1]].typeOptions.required,
 				options: this.state.questions[indexes[1]].typeOptions.options.slice()
 			}
-		} else if (this.state.questions[indexes[1]].type === "DROPDOWN"){
-			newTypeOptions= {
-				required: this.state.questions[indexes[1]].typeOptions.required ,
+		} else if (this.state.questions[indexes[1]].type === "DROPDOWN") {
+			newTypeOptions = {
+				required: this.state.questions[indexes[1]].typeOptions.required,
 				options: this.state.questions[indexes[1]].typeOptions.options.slice()
 			}
-		} else if(this.state.questions[indexes[1]].type === "NUMBERLINE"){
-			newTypeOptions= {
+		} else if (this.state.questions[indexes[1]].type === "NUMBERLINE") {
+			newTypeOptions = {
 				min: this.state.questions[indexes[1]].typeOptions.min,
-				max:this.state.questions[indexes[1]].typeOptions.max,
-				step:this.state.questions[indexes[1]].typeOptions.step
+				max: this.state.questions[indexes[1]].typeOptions.max,
+				step: this.state.questions[indexes[1]].typeOptions.step
 			}
-		} else if (this.state.questions[indexes[1]].type === "TIMETABLE"){
-			newTypeOptions= {
+		} else if (this.state.questions[indexes[1]].type === "TIMETABLE") {
+			newTypeOptions = {
 				maxAllowed: this.state.questions[indexes[1]].typeOptions.maxAllowed
 			}
 		}
@@ -198,41 +198,41 @@ export default class QuestionList extends Component{
 			matchmode: this.state.question[indexes[1]].matchmode.slice(),
 			typeOptions: newTypeOptions
 		}
-		if(indexes[0] === "question"){
+		if (indexes[0] === "question") {
 			newQuestion.title = event.target.value
-		} else if ((indexes[0] === "answer")){
+		} else if ((indexes[0] === "answer")) {
 			newQuestion.typeOptions.options[indexes[1]] = event.target.value
-		} else if (indexes[0] === "start"){
+		} else if (indexes[0] === "start") {
 			newQuestion.typeOptions.min = event.target.value
-		} else if (indexes[0] === "stop"){
+		} else if (indexes[0] === "stop") {
 			newQuestion.typeOptions.max = event.target.value
-		} else if (indexes[0] === "increment"){
+		} else if (indexes[0] === "increment") {
 			newQuestion.typeOption.step = event.target.value
-		} else if (indexes[0] === "max"){
+		} else if (indexes[0] === "max") {
 			newQuestion.typeOption.MaxAllowed = event.target.value
 		}
-		
-		let copyQuestions= this.state.questions.map(x=>x)	
+
+		let copyQuestions = this.state.questions.map(x => x)
 		copyQuestions[indexes[1]] = newQuestion
-		this.setState({questions: copyQuestions})
+		this.setState({ questions: copyQuestions })
 	}
-	
-	handleSelectChange(event){
+
+	handleSelectChange(event) {
 		this.setState({
 			selectedType: event.target.value
 		})
 	}
-	
-	publish(event){
+
+	publish(event) {
 		// the state layout is meant to closely match the format of the 
 		// request
 	}
-	
+
 	render() {
 		return (
 			<form onSubmit={this.publish}>
-				<select value={this.state.DROPDOWN} 	
-						onChange={this.handleSelectChange}>
+				<select value={this.state.DROPDOWN}
+					onChange={this.handleSelectChange}>
 					<option value="DROPDOWN">Dropdown</option>
 					<option value="MULTISELECT">Multiselect</option>
 					<option value="NUMBERLINE">Numberline</option>
@@ -245,13 +245,13 @@ export default class QuestionList extends Component{
 					type="button"
 					value="Add Question"
 					onClick={this.addQuestion}
-					/>
+				/>
 				<input
 					type="submit"
 					value="Publish"
-					/>
+				/>
 			</form>
 		)
 	}
-	
+
 }

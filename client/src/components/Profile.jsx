@@ -5,42 +5,31 @@ import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-import { getCookie } from './getAuthToken';
-const Profile = () => {
 
+const Profile = () => {
   const location = useLocation();
   const code = location.state.code;
   const token = location.state.token;
-  console.log("code :", code);
-  console.log("x-auth-token from landing", token);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [profilePicture, setProfilePicture] = useState(null);
-  let navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ name, description, preview });
-    const x_auth_token = getCookie("x-auth-token");
-    console.log("x-auth-token", token);
-    console.log("typeof(code) : ", typeof (code));
     axios.post('/api/v1/joinHive', {
-
-      code: Number(code),
+      code: parseInt(code),
       profilePicture: preview,
       displayName: name,
       biography: description
-
     }, {
       headers: {
         "x-auth-token": token
       }
-    }
-
-    ).then(res => {
-      if (res.status === 201) {
-        console.log("hiveID :", res.data.hiveID);
-        //navigate("/Profile" , { state: { code: code} } )
+    }).then(res => {
+      if (res.status === 200) {
+        const hiveID = res.data.hiveID;
+        console.log("hiveID sent from Profile:", hiveID);
+        navigate("/groupcreation", { state: { token, hiveID } });
       }
       console.log(res.data);
     }).catch(err => {
@@ -58,10 +47,7 @@ const Profile = () => {
     setPreview(view);
   }
   useEffect(() => {
-    //console.log(preview)
   })
-
-
 
   return (
     <div class='grid'>
@@ -72,16 +58,14 @@ const Profile = () => {
         < Navbar />
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>
-
-
             <Avatr width={300}
               height={200}
               onCrop={onCrop}
               onClose={onClose}
               src={src}
             />
-          </div>    </form>
-
+          </div>
+        </form>
 
         <label className="display" style={{ top: '385px', left: '700px', width: '300px', height: '20px' }}>Help others identify you </label>
 
