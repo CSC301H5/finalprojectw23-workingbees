@@ -10,7 +10,6 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import TeamProfile from './components/TeamProfile';
 import LoginHomePage from './components/LoginHomePage';
-import AcceptReject from './components/AcceptReject';
 
 function App() {
   return (
@@ -25,9 +24,6 @@ function App() {
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
-        
-        <Route path="/accept" element={<AcceptReject />} />
-
         <Route path="*" element={< ErrorPage />} />
       </Routes>
     </Router>
