@@ -111,7 +111,7 @@ export const login = async (req, res) => {
 }
 
 
-export const guestRegister = async (res) => {
+export const guestRegister = async (req, res) => {
 
     try {
 
@@ -746,7 +746,8 @@ export const sendInvite = async (req, res) => {
         }
 
         // check if your matching group is already the largest it can be
-        const max = hive.configOptions.groupSizeRange[1];
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
         if (matchingGroup.memberIDs.length === max - 1) {
             return res.status(409).json({msg: "Matching group is already the largest it can be"})
         }
@@ -848,10 +849,11 @@ export const acceptInvite = async (req, res) => {
 
         // add user to their new matching group
         invitedAttendee.groupID = matchingGroupID;
-        matchingGroup.memberIDs.push(user.userID)
+        matchingGroup.memberIDs.push(user.userID);
 
         // remove all remaining invitations sent by the matching group if it is now full
-        const max = hive.configOptions.groupSizeRange[1];
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
         if (matchingGroup.memberIDs.length === max - 1) {
             let numInvitesSent = matchingGroup.outgoingInvites.length;
             for (let i = 0; i < numInvitesSent; i++) {
@@ -859,6 +861,7 @@ export const acceptInvite = async (req, res) => {
                 let invitedID = matchingGroup.outgoingInvites.pop();
                 let invitedAttendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": invitedID});
                 removeElement(invitedAttendee.pendingInvites, matchingGroupID);
+                await invitedAttendee.save();
 
                 // notify previously invited attendees if they are active
                 let invitedUserSocket = getSocketOfUser(invitedID);
