@@ -18,7 +18,7 @@ export default class Question extends Component{
 		}
 		
 		this.handleTextChange = this.handleTextChange.bind(this)
-		this.removeQuestion = props.removeQuestion.bind(this)
+		this.removeQuestion = props.removeQuestion
 		this.handleSelectChange = this.handleSelectChange.bind(this)
 		
 	}

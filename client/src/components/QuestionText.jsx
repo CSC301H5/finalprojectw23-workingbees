@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./Style.css"
 /*Necessary props
-	key
+	id
 	title
 	explanation
 	handleTextChange
@@ -24,7 +24,7 @@ export default function QuestionText(props) {
 				type="button"
 				name="remove"
 				value="Remove"
-				onChange={() => props.removeQuestion(props.key)}
+				onClick={() => {props.removeQuestion(props.id)}}
 			/>
 			<select
 				name={"matchMode"}
