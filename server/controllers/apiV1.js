@@ -4,7 +4,7 @@ import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
-import { getSocketOfUser, broadcast } from '../utils/wsutils.js';
+import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { removeElement } from '../utils/arrayUtils.js';
 
 import jwt from 'jsonwebtoken';
@@ -240,7 +240,6 @@ export const createHive = async (req, res) => {
     let hiveName = req.body.hiveName;
     let configOptions = req.body.configOptions;
     let code = await getUniqueCode();
-
     // verify request
     if (!displayName || !profilePicture || !hiveName || !configOptions) {
         return res.status(400).json({msg: "Malformed request."});
@@ -1132,5 +1131,61 @@ export const getUserDisplayName = async(req, res) => {
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
+    }
+}
+
+
+
+export const beginPhaseOne = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await HiveModel.findById(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // ensure they are host
+        const host = await HostModel.findOne({"hiveID": req.body.hiveID, "userID": user.userID});
+        if (!host) {
+            return res.status(409).json({msg: "Not the host of the specified hive."})
+        }
+
+        // ensure phase one can be begun (is in phase 0)
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Hive is not in phase 0."});
+        }
+
+        // update hive
+        hive.phase = 1;
+        await hive.save();
+
+        // notify all clients of change
+        let clients = getSocketsInHive(hive.hiveID);
+        for (var key in clients) {
+            clients[key].send('{"event": "PHASE_SKIP", "newPhase": 1}');
+        }
+
+        res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on beginPhaseOne controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
     }
 }
