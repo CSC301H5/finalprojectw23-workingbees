@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const matchingGroupModel = mongoose.Schema({
     hiveID: String,
     groupID: String, // matches mongoose document's _id
+    leaderID: String, // "leader" of the group (can invite)
     memberIDs: { 
         type: Array, // of strings
         default: []
     },
-    leaderID: String, // "leader" of the group (can invite)
     outgoingInvites: { 
         type: Array,  // of Strings, containing userIDs of the users that have been invited to this group.
         default: []
@@ -15,6 +15,14 @@ const matchingGroupModel = mongoose.Schema({
     hiveConfigResponses: { // JSON string of responses.
         type: String,
         default: ""
+    },
+    recommendedPending: {
+        type: Array, // of userIDs (strings)
+        default: []
+    },
+    recommendedResponses: {
+        type: Array, // of userIDs (strings)
+        default: []
     }
 });
 

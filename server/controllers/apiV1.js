@@ -194,17 +194,14 @@ export const joinHive = async (req, res) => {
             name: displayName,
             biography: biography,
             profilePicture: profilePicture,
-            groupID: "",
             swarmID: "",
-            recommendedPending: [],
-            recommendedResponses: []
+            pendingInvites: []
         })
 
         // create matchingGroup
         let matchingGroup = new MatchingGroupModel({
             hiveID: hive.hiveID,
-            leaderID: user.userID, // is used in the attendee class as well.
-            // groupID assigned after creation, memberIDs/outgoingInvites/hiveConfigResponses default.
+            leaderID: user.userID,
         })
 
         matchingGroup.groupID = matchingGroup._id.toString();
