@@ -1032,6 +1032,13 @@ export const submitRoomConfigOptions = async(req, res) => {
         matchingGroup.hiveConfigResponses = configOptionsResponse;
         await matchingGroup.save();
 
+        // send an update to the host
+
+        let hostSocket = getSocketOfUser(hive.hostID);
+        if (hostSocket) {
+            hostSocket.send('{"event": "GROUP_PROFILE_CREATED"}');
+        }
+
         return res.status(200).json();
 
     } catch (e) {
