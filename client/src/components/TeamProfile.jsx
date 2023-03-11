@@ -25,6 +25,7 @@ function TeamProfile() {
     const location = useLocation();
     const navigate = useNavigate();
 
+
     // get configOptions
     async function getConfigOptions() {
         axios.get("/api/v1/getRoomConfigOptions",
@@ -97,7 +98,9 @@ function TeamProfile() {
             </div>
             <div class="right">
                 <Navbar roomCode={location.state.code} />
-                <tbody>{rows}</tbody>
+                <div style={{ overflow: "auto", maxHeight: "70vh" }}>
+                    <tbody>{rows}</tbody>
+                </div>
                 <button type="submit" className="continue" style={{ cursor: 'pointer' }} onClick={handleSubmit}>Continue</button>
             </div>
         </div>
