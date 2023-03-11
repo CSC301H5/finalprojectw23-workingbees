@@ -4,7 +4,7 @@ import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
-import { getSocketsInHive, getCurrentHiveOfUser, getSocketOfUser, broadcast } from '../utils/wsutils.js';
+import { getSocketOfUser, broadcast } from '../utils/wsutils.js';
 import { removeElement } from '../utils/arrayUtils.js';
 
 import jwt from 'jsonwebtoken';
@@ -16,22 +16,20 @@ export const register = async (req, res) => {
 
     let email = req.body.email;
     let password = req.body.password;
-    // verify request (can add regex)
+
+    // verify request
     if (!email || !password) {
-        // error
         return res.status(400).json({msg: "Malformed request."});
     }
 
-    
     try {
         // check if user already exists.
         let user = await UserModel.findOne({"email": email});
         if (user) {
             return res.status(409).json({msg: "Error: User already exists."});
-        } 
+        }
 
         // create user
-
         const salt = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salt);
 
@@ -64,8 +62,6 @@ export const register = async (req, res) => {
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
     }
-
-
 }
 
 
@@ -84,7 +80,7 @@ export const login = async (req, res) => {
         let user = await UserModel.findOne({"email": email});
         if (!user) {
             return res.status(401).json({msg: "Error: Email or password incorrect"});
-        } 
+        }
 
         const matchFound = await bcrypt.compare(password, user.password);
         if (!matchFound) {
@@ -105,30 +101,24 @@ export const login = async (req, res) => {
                 res.status(200).json({token});
             }
         )
-        
+
     } catch (e) {
         console.error("Error on login controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
     }
-
-
 }
 
 
 export const guestRegister = async (req, res) => {
 
-    let email = "";
-    let password = "";
-    
     try {
 
         // create guest user
-
         var user = new UserModel({
-            email: email,
-            password: password,
+            email: "",
+            password: "",
             isGuest: true
         });
 
@@ -183,17 +173,17 @@ export const joinHive = async (req, res) => {
         }
 
         // check that the user is not the host themself
-        if (user.userID == hive.hostID) {
+        if (user.userID === hive.hostID) {
             return res.status(409).json({msg: "Error: User is already the host of this hive."});
         }
 
         // check if attendee name already exists or the user is already in the hive
         for (let i = 0; i < hive.attendeeIDs.length; i++) {
             let attendee = await AttendeeModel.findOne({"userID": hive.attendeeIDs[i]});
-            if (attendee.name == displayName) {
+            if (attendee.name === displayName) {
                 return res.status(409).json({msg: "Error: Attendee name already exists in this hive."});
             }
-            if (attendee.userID == user.userID) {
+            if (attendee.userID === user.userID) {
                 return res.status(409).json({msg: "Error: User is already an attendee in this hive."});
             }
         }
@@ -211,7 +201,6 @@ export const joinHive = async (req, res) => {
         })
 
         // create matchingGroup
-
         let matchingGroup = new MatchingGroupModel({
             hiveID: hive.hiveID,
             leaderID: user.userID, // is used in the attendee class as well.
@@ -234,7 +223,7 @@ export const joinHive = async (req, res) => {
         user.hiveIDs.push(hive.hiveID);
         await user.save();
 
-        return res.status(200).json({hiveID: hive.hiveID});
+        return res.status(201).json({hiveID: hive.hiveID});
 
     } catch (e) {
         console.error("Error on joinHive controller!");
@@ -332,7 +321,7 @@ export const getHiveAttendeeNames = async (req, res) => {
         }
 
         // get attendee names
-        let attendeeNames = [];
+        const attendeeNames = [];
         for (let i = 0; i < hive.attendeeIDs.length; i++) {
             let attendee = await AttendeeModel.findOne({"userID": hive.attendeeIDs[i]});
             attendeeNames.push(attendee.name);
@@ -364,12 +353,12 @@ export const getUserHives = async (req, res) => {
                 console.error("Error on getUserHives: invalid hive ID stored in db for userID " + user.userID);
                 return res.status(500).json({ msg:"Server Error." });
             }
-            var isHost = (user.userID == hive.hostID);
+            var isHost = (user.userID === hive.hostID);
             var temp = {
                 "name": hive.name,
                 "isHost": isHost,
                 "phase": hive.phase,
-                "teamSize": 1   
+                "teamSize": 1
             }
             acc[hive.hiveID] = temp;
         }
@@ -402,12 +391,11 @@ export const getHivePhase = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-
-        var data = {"phase": hive.phase};
+        const data = {"phase": hive.phase};
 
         return res.status(200).json(data);
 
@@ -437,11 +425,11 @@ export const getHiveTimer = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        var data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
+        const data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
 
         return res.status(200).json(data);
 
@@ -471,11 +459,11 @@ export const getHiveInfo = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive not found."});
         }
 
-        var data = {
+        const data = {
             "hiveName": hive.name,
             "phase": hive.phase,
             "phaseCompletionDate": null // TODO: implement in later sprint when timers are added.
-            }; 
+            };
 
         return res.status(200).json(data);
 
@@ -507,7 +495,7 @@ export const getMatchingGroup = async (req, res) => {
         }
 
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
@@ -522,14 +510,14 @@ export const getMatchingGroup = async (req, res) => {
         if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
             return res.status(500).json({msg: "Server Error."});
         }
-        
-        var data = {}
+
+        const data = {}
         // add leader
         const leader = await AttendeeModel.findOne({"userID": matchingGroup.leaderID});
         data["leaderName"] = leader.name;
 
         // add member names
-        let memberNames = [];
+        const memberNames = [];
         for (let i = 0; i < matchingGroup.memberIDs.length; i++) {
             let member = await AttendeeModel.findOne({"userID": matchingGroup.memberIDs[i]});
             memberNames.push(member.name);
@@ -537,7 +525,6 @@ export const getMatchingGroup = async (req, res) => {
         data["members"] = memberNames;
 
         res.status(200).json(data);
-
 
     } catch (e) {
         console.error("Error on getMatchingGroup controller!");
@@ -557,7 +544,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
 
         const user = await UserModel.findById(req.userID);
         if (!user) { // failed to find user
-            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+            return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
         const hive = await HiveModel.findById(req.query.hiveID);
@@ -566,7 +553,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
         }
 
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
@@ -583,10 +570,9 @@ export const roomConfigOptionsCompleted = async (req, res) => {
         }
 
         // check if they are filled out (default value is "")
-        var data = {};
-        data["completed"] = matchingGroup.hiveConfigResponses == "" ? false : true
+        const data = {};
+        data["completed"] = matchingGroup.hiveConfigResponses === "" ? false : true
         res.status(200).json(data);
-
 
     } catch (e) {
         console.error("Error on roomConfigOptionsCompleted controller!");
@@ -606,7 +592,7 @@ export const getIncomingInvites = async (req, res) => {
 
         const user = await UserModel.findById(req.userID);
         if (!user) { // failed to find user
-            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+            return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
         const hive = await HiveModel.findById(req.query.hiveID);
@@ -615,8 +601,8 @@ export const getIncomingInvites = async (req, res) => {
         }
 
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         // ensure they are not the host implicitly
@@ -625,7 +611,7 @@ export const getIncomingInvites = async (req, res) => {
             return res.status(409).json({msg: "Not an attendee in the specified hive."})
         }
 
-        var data = {}
+        const data = {}
         // put leaderName: matchingGroupID pairs in data.
 
         for (let i = 0; i < attendee.pendingInvites.length; i++) {
@@ -637,12 +623,11 @@ export const getIncomingInvites = async (req, res) => {
             if (!leader) { // should exist
                 return res.status(500).json({msg: "Server Error."});
             }
-            
+
             data[leader.name] = matchingGroup.groupID;
         }
 
         res.status(200).json(data);
-
 
     } catch (e) {
         console.error("Error on getIncomingInvites controller!");
@@ -671,7 +656,7 @@ export const getOutgoingInvites = async (req, res) => {
         }
 
         // if user does not have permission to use the hive.
-        if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
@@ -687,7 +672,7 @@ export const getOutgoingInvites = async (req, res) => {
             return res.status(500).json({msg: "Server Error."});
         }
 
-        var data = {}
+        const data = {}
         // put leaderName: matchingGroupID pairs in data.
 
         for (let i = 0; i < matchingGroup.outgoingInvites.length; i++) {
@@ -695,12 +680,11 @@ export const getOutgoingInvites = async (req, res) => {
             if (!targetUser) { // should exist
                 return res.status(500).json({msg: "Server Error."});
             }
-            
+
             data[targetUser.name] = targetUser.userID;
         }
 
         res.status(200).json(data);
-
 
     } catch (e) {
         console.error("Error on getOutgoingInvites controller!");
@@ -741,7 +725,7 @@ export const sendInvite = async (req, res) => {
         if (!invitedAttendee) {
             return res.status(404).json({msg: "Error: Username not found"});
         }
-        
+
         const invitedUser = await UserModel.findById(invitedAttendee.userID);
         if (!invitedUser) { // each attendee should have a registered userID, so something went terribly wrong.
             return res.status(500).json({msg: "Server Error."});
@@ -761,8 +745,15 @@ export const sendInvite = async (req, res) => {
             return res.status(409).json({msg: "User has already been invited"});
         }
 
+        // check if your matching group is already the largest it can be
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            return res.status(409).json({msg: "Matching group is already the largest it can be"})
+        }
+
         // check that the inviting user is the leader of the hive
-        if (user.userID != matchingGroup.leaderID) {
+        if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"})
         }
 
@@ -826,11 +817,11 @@ export const acceptInvite = async (req, res) => {
         }
 
         if (!invitedAttendee.pendingInvites.includes(matchingGroupID)) {
-            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"})
+            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"});
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event: "INVITE_ACCEPTED" + "username": ${invitedAttendee.name}}`)
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": ${invitedAttendee.name}}`);
 
         // accept the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
@@ -858,7 +849,27 @@ export const acceptInvite = async (req, res) => {
 
         // add user to their new matching group
         invitedAttendee.groupID = matchingGroupID;
-        matchingGroup.memberIDs.push(user.userID)
+        matchingGroup.memberIDs.push(user.userID);
+
+        // remove all remaining invitations sent by the matching group if it is now full
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            let numInvitesSent = matchingGroup.outgoingInvites.length;
+            for (let i = 0; i < numInvitesSent; i++) {
+                // update invitation status
+                let invitedID = matchingGroup.outgoingInvites.pop();
+                let invitedAttendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": invitedID});
+                removeElement(invitedAttendee.pendingInvites, matchingGroupID);
+                await invitedAttendee.save();
+
+                // notify previously invited attendees if they are active
+                let invitedUserSocket = getSocketOfUser(invitedID);
+                if (invitedUserSocket) {
+                    invitedUserSocket.send(`{"event": "INVITE_CANCELED", "matchingGroupID": ${matchingGroup.groupID}}`);
+                }
+            }
+        }
 
         await originalMatchingGroup.save();
         await matchingGroup.save();
@@ -917,7 +928,7 @@ export const rejectInvite = async (req, res) => {
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event: "INVITE_REJECTED" + "username": ${invitedAttendee.name}}`);
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_REJECTED", "username": ${invitedAttendee.name}}`);
 
         // reject the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
@@ -1062,18 +1073,64 @@ export const getHiveMatchingGroupCompletion = async (req, res) => {
             if (!matchingGroup) { // this should always exist if the id is in groupIDs, so something is wrong with DB state.
                 return res.status(500).json({msg: "Server Error."});
             }
-            if (matchingGroup.hiveConfigResponses != "") { // i.e. data has been submitted
+            if (matchingGroup.hiveConfigResponses !== "") { // i.e. data has been submitted
                 acc += 1;
             }
         }
 
         res.status(200).json({"completed": acc});
 
-
     } catch (e) {
         console.error("Error on getHiveMatchingGroupCompletion controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getUserDisplayName = async(req, res) => {
+
+    let hiveID = req.query.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // determine whether the user is an attendee or host in the hive
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee && !host) {
+            return res.status(401).json({msg: "User must be an attendee or host of this hive"});
+        }
+
+        if (attendee && host) { // the user can only have one role in the hive, so something went terribly wrong
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        if (attendee) {
+            return res.status(200).json({"name": attendee.name});
+        } else {
+            return res.status(200).json({"name": host.name});
+        }
+
+    } catch (e) {
+        console.error("Error on getUserDisplayName controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
     }
 }

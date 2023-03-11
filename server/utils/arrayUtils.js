@@ -1,7 +1,7 @@
 // removes an element from the array and returns whether the element was successfully deleted
 export function removeElement(arr, elem) {
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == elem) {
+        if (arr[i] === elem) {
             arr.splice(i, 1);
             return true;
         }
