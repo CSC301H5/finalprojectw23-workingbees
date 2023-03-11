@@ -90,10 +90,11 @@ export async function checkConfigOptions(req, res) {
         let title = questions[i].title;
         let explanation = questions[i].explanation;
         let matchMode = questions[i].matchMode;
+        let priority = questions[i].priority;
         let typeOptions = questions[i].typeOptions;
 
         // check the question fields exist
-        if (!type || !title || !explanation || !matchMode || !typeOptions) {
+        if (!type || !title || !explanation || !matchMode || (!priority && priority !== 0) || !typeOptions) {
             return res.status(400).json({msg: "Malformed request. (question " + (i+1) + ")"});
         }
 
@@ -102,6 +103,11 @@ export async function checkConfigOptions(req, res) {
             return res.status(400).json({msg: "Error: Invalid type for question " + (i+1)});
         } else if (matchMode !== "SIMILAR" && matchMode !== "DIVERSE" && matchMode !== "NONE") {
             return res.status(400).json({msg: "Error: Invalid matchMode for question " + (i+1)});
+        }
+
+        // check if priority is valid
+        if (matchMode !== "NONE" && (!Number.isInteger(priority) || priority < 1 || priority > 5)) {
+            return res.status(400).json({msg: "Error: priority must be an integer from 1 to 5 (inclusive) for question " + (i+1)});
         }
 
         // check if typeOptions is valid
