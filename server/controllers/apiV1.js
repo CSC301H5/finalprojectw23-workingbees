@@ -6,6 +6,7 @@ import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { removeElement } from '../utils/arrayUtils.js';
+import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -161,7 +162,7 @@ export const joinHive = async (req, res) => {
 
     try {
         // check if the code corresponds to an existing hive
-        let hive = await HiveModel.findOne({"code": code});
+        let hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -313,7 +314,7 @@ export const getHiveAttendeeNames = async (req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -352,7 +353,7 @@ export const getUserHives = async (req, res) => {
 
         var acc = {};
         for (var i=0; i < user.hiveIDs.length; i++) {
-            var hive = await HiveModel.findById(user.hiveIDs[i]);
+            var hive = await getHiveFromDBByID(user.hiveIDs[i]);
             if (!hive) {
                 console.error("Error on getUserHives: invalid hive ID stored in db for userID " + user.userID);
                 return res.status(500).json({ msg:"Server Error." });
@@ -390,7 +391,7 @@ export const getHivePhase = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -424,7 +425,7 @@ export const getHiveTimer = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -464,7 +465,7 @@ export const getHiveInfo = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findOne({"code": req.query.code});
+        const hive = await getHiveFromDB({"code": req.query.code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found."});
         }
@@ -499,7 +500,7 @@ export const getMatchingGroup = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -557,7 +558,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
             return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -605,7 +606,7 @@ export const getIncomingInvites = async (req, res) => {
             return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -665,7 +666,7 @@ export const getOutgoingInvites = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -730,7 +731,7 @@ export const sendInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -820,7 +821,7 @@ export const acceptInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -932,7 +933,7 @@ export const rejectInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -995,7 +996,7 @@ export const getRoomConfigOptions = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findOne({"code": code});
+        const hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1033,7 +1034,7 @@ export const submitRoomConfigOptions = async(req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1103,7 +1104,7 @@ export const getHiveMatchingGroupCompletion = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -1146,7 +1147,7 @@ export const getUserDisplayName = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1197,7 +1198,7 @@ export const beginPhaseOne = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.body.hiveID);
+        const hive = await getHiveFromDBByID(req.body.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
