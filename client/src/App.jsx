@@ -10,7 +10,7 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import TeamProfile from './components/TeamProfile';
 import LoginHomePage from './components/LoginHomePage';
-
+import QuestionList from './components/QuestionList';
 function App() {
   return (
     <Router>
@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/roomConfig" element={<ConfigRoom />} />
+        <Route path="/roomConfig" element={<QuestionList />} />
         <Route path="/waiting1" element={< WaitingP1 />} />
         <Route path="/createHive" element={< CreateRoom />} />
         <Route path="/register" element={< Register />} />

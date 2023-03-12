@@ -4,14 +4,21 @@ import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
-
+import axios from 'axios';
+import { useNavigate, useLocation } from "react-router-dom";
+import getCookie from "../utils/getAuthToken.js"
 export default class QuestionList extends Component{
+
+
 	constructor(){
 		super()
 		this.state = {
 			questions: [],
 			selectedType: "DROPDOWN",
-			nextKey: 0
+			nextKey: 0,
+			hiveName: "df",
+			displayName:"fdfdf"
+
 		}
 		
 		this.addQuestion = this.addQuestion.bind(this)
@@ -84,6 +91,39 @@ export default class QuestionList extends Component{
 	
 	publish(event){
 		//
+		
+		
+		//const hiveName = location.state.hiveName;
+		//const displayName = location.state.displayName;
+		console.log('submit¬¬')
+		const token =  getCookie('x-auth-token');
+		
+        axios.post("/api/v1/createHive",
+            {
+                profilePicture: "sldkcndlkcns",
+                hiveName: this.hiveName,
+                displayName: this.displayName,
+                configOptions: "{}"
+                /*
+                UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
+                joinDate: this.state.joinDate,
+                joinTime: this.state.joinTime,
+                profileDate: this.state.profileDate,
+                profileTime: this.state.profileTime,
+                classDate: this.state.classDate,
+                classTime: this.state.classTime
+                */
+            }, {
+            headers: {
+                'x-auth-token': token
+            }
+        }
+        ).then(res => {
+            if (res.status === 200) {
+              //  navigate('/waiting1', { state: { code: res.data.code, token: token } })
+            }
+        })
+		
 	}
 	
 	render() {
@@ -107,6 +147,7 @@ export default class QuestionList extends Component{
 				<input
 					type="submit"
 					value="Publish"
+					
 					/>
 			</form>
 		)
