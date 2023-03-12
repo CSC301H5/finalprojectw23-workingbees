@@ -166,6 +166,11 @@ export const joinHive = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
 
+        // only phase 0 allows joining
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: You may only join a hive in phase 0."});
+        }
+
         // try and find user
         const user = await UserModel.findById(req.userID);
         if (!user) {
@@ -423,6 +428,12 @@ export const getHiveTimer = async (req, res) => {
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
+
+        // only phase 0 and 1 have timers available.
+        if (hive.phase === 2) {
+            return res.status(409).json({msg: "Error: No timer available for hive in phase 2."});
+        }
+
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg:"Permission denied." });
@@ -599,6 +610,11 @@ export const getIncomingInvites = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
 
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
+        }
+
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg: "Permission denied." });
@@ -652,6 +668,11 @@ export const getOutgoingInvites = async (req, res) => {
         const hive = await HiveModel.findById(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         // if user does not have permission to use the hive.
@@ -712,6 +733,11 @@ export const sendInvite = async (req, res) => {
         const hive = await HiveModel.findById(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
@@ -797,6 +823,11 @@ export const acceptInvite = async (req, res) => {
         const hive = await HiveModel.findById(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         if (!hive.attendeeIDs.includes(user.userID)) {
@@ -906,6 +937,11 @@ export const rejectInvite = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
 
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
+        }
+
         if (!hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({msg: "User must be an attendee of this hive"});
         }
@@ -1000,6 +1036,11 @@ export const submitRoomConfigOptions = async(req, res) => {
         const hive = await HiveModel.findById(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows group property modifications
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: You may only submit responses in phase 0."});
         }
 
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
