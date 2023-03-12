@@ -205,6 +205,12 @@ export const joinHive = async (req, res) => {
             leaderID: user.userID,
         })
 
+        // initalize hiveConfigResponses to no response
+        const configOptions = JSON.parse(hive.configOptions);
+        for (let j = 0; j < configOptions.questions.length; j++) {
+            matchingGroup.hiveConfigResponses.push("");
+        }
+
         matchingGroup.groupID = matchingGroup._id.toString();
         await matchingGroup.save();
 
@@ -1017,8 +1023,11 @@ export const submitRoomConfigOptions = async(req, res) => {
         }
 
         // check if a response has already been submitted
-        if (matchingGroup.hiveConfigResponses.length > 0) {
-            return res.status(409).json({msg: "Matching group response has already been submitted"});
+        const configOptions = JSON.parse(hive.configOptions);
+        for (let i = 0; i < configOptions.questions.length; i++) {
+            if (matchingGroup.hiveConfigResponses[i] !== "") {
+                return res.status(409).json({msg: "Matching group response has already been submitted"});
+            }
         }
 
         // check configOptionsResponse is valid
