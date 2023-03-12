@@ -12,16 +12,16 @@ const matchingGroupModel = mongoose.Schema({
         type: Array,  // of Strings, containing userIDs of the users that have been invited to this group.
         default: []
     }, 
-    hiveConfigResponses: { // JSON string of responses.
-        type: String,
-        default: ""
+    hiveConfigResponses: {
+        type: Array, // of responses (strings, numbers, and arrays)
+        default: []
     },
     recommendedPending: {
-        type: Array, // of userIDs (strings)
+        type: Array, // of matchingGroupIDs (strings)
         default: []
     },
     recommendedResponses: {
-        type: Array, // of userIDs (strings)
+        type: Array, // of matchingGroupIDs (strings)
         default: []
     }
 });

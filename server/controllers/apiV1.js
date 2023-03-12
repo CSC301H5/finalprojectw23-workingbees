@@ -981,10 +981,10 @@ export const getRoomConfigOptions = async(req, res) => {
 export const submitRoomConfigOptions = async(req, res) => {
 
     let hiveID = req.body.hiveID;
-    let configOptionsResponse = req.body.configOptionsResponse;
+    let responses = req.body.responses;
 
     // verify request
-    if (!hiveID || !configOptionsResponse) {
+    if (!hiveID || (!responses && responses !== [])) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -1011,23 +1011,23 @@ export const submitRoomConfigOptions = async(req, res) => {
             return res.status(500).json({msg: "Server Error."});
         }
 
-        if (user.userID != matchingGroup.leaderID) {
+        if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"});
         }
 
         // check if a response has already been submitted
-        if (matchingGroup.hiveConfigResponses) {
+        if (matchingGroup.hiveConfigResponses.length > 0) {
             return res.status(409).json({msg: "Matching group response has already been submitted"});
         }
 
         // check configOptionsResponse is valid
-        let configRes = await checkConfigOptionsResponse(hive, configOptionsResponse, res);
+        let configRes = await checkConfigOptionsResponse(hive, responses, res);
         if (configRes) {
             return;
         }
 
         // save and submit matching group response
-        matchingGroup.hiveConfigResponses = configOptionsResponse;
+        matchingGroup.hiveConfigResponses = responses;
         await matchingGroup.save();
 
         return res.status(200).json();
@@ -1126,6 +1126,201 @@ export const getUserDisplayName = async(req, res) => {
 
     } catch (e) {
         console.error("Error on getUserDisplayName controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+// Linearly transforms x in [a,b] to T(x) in [0, p]
+const transform = (a, b, p, x) => (p/(b-a)) * (x-a);
+
+const rank = (obj1, obj2) => obj2.score - obj1.score;
+
+function timeValue(timetable) {
+    let total = 0;
+    for (let i = 0; i < timetable.length; i++) {
+        for (let j = 0; j < timetable[i].length; j++) {
+            if (timetable[i][j] === 1) {
+                total += 1;
+            }
+        }
+    }
+    return total;
+}
+
+function intersection(timetable1, timetable2) {
+    let total = 0;
+    for (let i = 0; i < timetable1.length; i++) {
+        for (let j = 0; j < timetable1[i].length; j++) {
+            if (timetable1[i][j] === 1 && timetable2[i][j] === 1) {
+                total += 1;
+            }
+        }
+    }
+    return total;
+}
+
+async function getAttendeeData(hiveID, userID) {
+    const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": userID});
+    const data = {
+        name: attendee.name,
+        biography: attendee.biography,
+        profilePicture: attendee.profilePicture
+    }
+    return data;
+}
+
+export const getPendingMatchingGroupRecommendations = async(req, res) => {
+
+    let hiveID = req.body.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // check that the user is an attendee in this hive and get their matching group
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        let userMatchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!userMatchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        // check if calculation has to be made
+        if (userMatchingGroup.recommendedPending.length === 0 && userMatchingGroup.recommendedResponses.length === 0) {
+            // perform calculation
+            const configOptions = JSON.parse(hive.configOptions);
+            const userResponses = userMatchingGroup.hiveConfigResponses;
+            const questions = configOptions.questions;
+            const groupIDs = hive.groupIDs;
+            removeElement(groupIDs, attendee.groupID);
+            const ranking = [];
+
+            // for each matching group compute a compatibility score
+            for (let i = 0; i < groupIDs.length; i++) {
+                let matchingGroup = await MatchingGroupModel.findById(groupIDs[i]);
+                let responses = matchingGroup.hiveConfigResponses;
+                let score = 0;
+                let total = 0;
+                for (let j = 0; j < questions.length; j++) {
+                    let question = questions[j];
+                    let type = question.type;
+                    let p = question.priority;
+                    let a, b, x;
+
+                    /**
+                     * If both have responded: match normally
+                     * If only one has responded: the question counts but a score of 0 is given
+                     * If neither has responded or matchMode is "NONE": skip the question
+                     */
+                    if (question.matchMode !== "NONE" && (userResponses[j] !== "" || responses[j] !== "")) {
+                        total += p;
+                        if (userResponses[j] !== "" && responses[j] !== "") {
+                            // type
+                            if (type === "DROPDOWN") {
+                                a = 0;
+                                b = p;
+                                x = (userResponses[j] === responses[j]) ? p : 0;
+                            } else if (type === "MULTISELECT") {
+                                a = 0;
+                                b = Math.max(userResponses.length, responses.length);
+                                x = userResponses.filter(value => responses.includes(value)).length;
+                            } else if (type === "NUMBERLINE") {
+                                a = question.typeOptions.min;
+                                b = question.typeOptions.max;
+                                x = (b - a) - Math.abs(b - a);
+                            } else if (type === "TIMETABLE") {
+                                a = 0;
+                                b = Math.max(timeValue(userResponses[j]), timeValue(responses[i]));
+                                x = intersection(userResponses[j], responses[j]);
+                            }
+
+                            // matchMode
+                            if (question.matchMode === "SIMILAR") {
+                                score += transform(a, b, p, x);
+                            } else if (question.matchMode === "DIVERSE") {
+                                score += p - transform(a, b, p, x);
+                            }
+                        }
+                    }
+                }
+
+                // store matchingGroup data along with their score
+                score = (total > 0) ? transform(0, total, 100, score) : 50;
+                let users = [];
+                let leaderData = await getAttendeeData(hiveID, matchingGroup.leaderID);
+                users.push(leaderData);
+                for (var memberID in matchingGroup.memberIDs) {
+                    let memberData = await getAttendeeData(hiveID, memberID);
+                    users.push(memberData);
+                }
+
+                ranking.push({matchingGroupID: groupIDs[i], users:users, configOptionsResponses: responses, score: score});
+            }
+
+            // sort recommendations in order of decreasing compatibility
+            ranking.sort(rank);
+            const recommendations = [];
+            const recommendedPending = [];
+            for (let i = 0; i < ranking.length; i++) {
+                let data = {
+                    matchingGroupID: ranking[i].matchingGroupID,
+                    users: ranking[i].users,
+                    configOptionsResponses: ranking[i].configOptionsResponses
+                }
+                recommendations.push(data)
+                recommendedPending.push(ranking[i].matchingGroupID);
+            }
+            userMatchingGroup.recommendedPending = recommendedPending;
+            await userMatchingGroup.save();
+
+            return res.status(200).json({recommendations: recommendations});
+
+        } else {
+
+            const recommendations = [];
+            const recommendedPending = userMatchingGroup.recommendedPending;
+            for (let i = 0; i < recommendedPending.length; i++) {
+                let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i]);
+                let users = [];
+                let leaderData = await getAttendeeData(hiveID, matchingGroup.leaderID);
+                users.push(leaderData);
+                for (var memberID in matchingGroup.memberIDs) {
+                    let memberData = await getAttendeeData(hiveID, memberID);
+                    users.push(memberData);
+                }
+
+                let data = {
+                    matchingGroupID: recommendedPending[i],
+                    users: users,
+                    configOptionsResponses: matchingGroup.hiveConfigResponses
+                }
+                recommendations.push(data)
+            }
+
+            return res.status(200).json({recommendations: recommendations})
+        }
+
+    } catch (e) {
+        console.error("Error on getPendingMatchingGroupRecommendations controller!");
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
