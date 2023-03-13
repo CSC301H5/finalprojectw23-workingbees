@@ -6,6 +6,7 @@ import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast } from '../utils/wsutils.js';
 import { removeElement } from '../utils/arrayUtils.js';
+import { getPendingRecommendations } from '../utils/algorithm.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -194,18 +195,21 @@ export const joinHive = async (req, res) => {
             name: displayName,
             biography: biography,
             profilePicture: profilePicture,
-            groupID: "",
             swarmID: "",
-            recommendedPending: [],
-            recommendedResponses: []
+            pendingInvites: []
         })
 
         // create matchingGroup
         let matchingGroup = new MatchingGroupModel({
             hiveID: hive.hiveID,
-            leaderID: user.userID, // is used in the attendee class as well.
-            // groupID assigned after creation, memberIDs/outgoingInvites/hiveConfigResponses default.
+            leaderID: user.userID,
         })
+
+        // initalize hiveConfigResponses to no response
+        const configOptions = JSON.parse(hive.configOptions);
+        for (let j = 0; j < configOptions.questions.length; j++) {
+            matchingGroup.hiveConfigResponses.push("");
+        }
 
         matchingGroup.groupID = matchingGroup._id.toString();
         await matchingGroup.save();
@@ -984,10 +988,10 @@ export const getRoomConfigOptions = async(req, res) => {
 export const submitRoomConfigOptions = async(req, res) => {
 
     let hiveID = req.body.hiveID;
-    let configOptionsResponse = req.body.configOptionsResponse;
+    let responses = req.body.responses;
 
     // verify request
-    if (!hiveID || !configOptionsResponse) {
+    if (!hiveID || (!responses && responses !== [])) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -1014,23 +1018,26 @@ export const submitRoomConfigOptions = async(req, res) => {
             return res.status(500).json({msg: "Server Error."});
         }
 
-        if (user.userID != matchingGroup.leaderID) {
+        if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"});
         }
 
         // check if a response has already been submitted
-        if (matchingGroup.hiveConfigResponses) {
-            return res.status(409).json({msg: "Matching group response has already been submitted"});
+        const configOptions = JSON.parse(hive.configOptions);
+        for (let i = 0; i < configOptions.questions.length; i++) {
+            if (matchingGroup.hiveConfigResponses[i] !== "") {
+                return res.status(409).json({msg: "Matching group response has already been submitted"});
+            }
         }
 
         // check configOptionsResponse is valid
-        let configRes = await checkConfigOptionsResponse(hive, configOptionsResponse, res);
+        let configRes = await checkConfigOptionsResponse(hive, responses, res);
         if (configRes) {
             return;
         }
 
         // save and submit matching group response
-        matchingGroup.hiveConfigResponses = configOptionsResponse;
+        matchingGroup.hiveConfigResponses = responses;
         await matchingGroup.save();
 
         return res.status(200).json();
@@ -1129,6 +1136,55 @@ export const getUserDisplayName = async(req, res) => {
 
     } catch (e) {
         console.error("Error on getUserDisplayName controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getPendingMatchingGroupRecommendations = async(req, res) => {
+
+    let hiveID = req.query.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // only phase 1 allows recommendations
+        if (hive.phase !== 1) {
+            return res.status(409).json({msg: "Error: Recommendations only exist in phase 1."});
+        }
+
+        // check that the user is an attendee in this hive and get their matching group
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        let userMatchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!userMatchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        const recommendations = await getPendingRecommendations(hive, userMatchingGroup);
+        return res.status(200).json({recommendations: recommendations});
+
+    } catch (e) {
+        console.error("Error on getPendingMatchingGroupRecommendations controller!");
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
