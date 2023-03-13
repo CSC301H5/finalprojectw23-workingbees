@@ -20,7 +20,7 @@ export default class TimetableQuestion extends Question {
 	
 	render(){
 		return (
-			<div>
+			<div className='border'>
 				<QuestionText 
 					id={this.state.id}
 					title={this.state.title}
@@ -31,11 +31,12 @@ export default class TimetableQuestion extends Question {
 					selectMode={this.handleSelectChange}
 					/>
 				<div>
-					<label>
+					<label className="text">
 						Maximum number of 1-hour blocks allowed:
 					</label>
 					<input
 						type="number"
+						className="tinyInputBox"
 						value={this.state.maxAllowed}
 						onChange={this.handleNumberChange}
 						required /> <br />

@@ -88,25 +88,29 @@ export default class QuestionList extends Component{
 	
 	render() {
 		return (
-			<form onSubmit={this.publish}>
+			<form onSubmit={this.publish}
+				style={{width: '550px',}}>
 				<select value={this.state.SelectedType} 	
-						onChange={this.handleSelectChange}>
+						onChange={this.handleSelectChange}
+						className="smallInputBox">
 					<option value="DROPDOWN">Dropdown</option>
 					<option value="MULTISELECT">Multiselect</option>
 					<option value="NUMBERLINE">Numberline</option>
 					<option value="TIMETABLE">Timetable</option>
 				</select>
-				<div>
+				<div className="questionList">
 					{this.state.questions}
 				</div>
 				<input
 					type="button"
 					value="Add Question"
 					onClick={this.addQuestion}
+					className="secondaryButton"
 					/>
 				<input
 					type="submit"
 					value="Publish"
+					className="loginButton"
 					/>
 			</form>
 		)

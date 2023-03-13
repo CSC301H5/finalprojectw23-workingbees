@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import "./Style.css"
 import hives from '../Assets/hives.png'
-import Title1 from '../Assets/Title1.png'
 import Navbar from './Navbar';
+import QuestionList from './QuestionList'
 
 
 export default class RoomQuestionConfig extends Component {
@@ -16,9 +15,16 @@ export default class RoomQuestionConfig extends Component {
 				</ div>
 				<div class="right-side">
 					< Navbar />
-					<label> Specify some fields for attendees to match with</label>
-					<QuestionList />
-					
+					<div style={{
+						position: "absolute",
+						left: "796px",
+						top: "147px"
+					}}>
+						<label className="subtitle"> 
+							Specify some fields for attendees to match with
+						</label>
+						<QuestionList />
+					</div>
 				</ div>
 			</div>
 		)

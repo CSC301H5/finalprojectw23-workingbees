@@ -12,6 +12,7 @@ function Option(props){
 		<div>
 			<input
 				type="text"
+				className="text"
 				id={props.id}
 				key={props.id}
 				name={"option"}
@@ -21,7 +22,8 @@ function Option(props){
 				required />
 			<input
 				type="button"
-				value="Remove"
+				className="yellowText"
+				value="X"
 				onClick={() => props.removeOption(props.id)}
 				/>
 		</div>

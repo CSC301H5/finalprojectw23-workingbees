@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./Style.css"
 /*Necessary props
 	id
@@ -13,21 +13,23 @@ export default function QuestionText(props) {
 	return (
 		<div>
 			<input
-				//class="inputBox"
+				className="inputBox"
 				type="text"
 				name="title"
 				placeholder="Question"
 				value={props.title}
 				onChange={props.handleTextChange}
-				required />
+				required /> 
 			<input
 				type="button"
+				className="tinyButton"
 				name="remove"
-				value="Remove"
+				value="X"
 				onClick={() => {props.removeQuestion(props.id)}}
 			/>
 			<select
 				name={"matchMode"}
+				className="smallInputBox"
 				onChange={props.selectMode}
 				value={props.matchMode}
 				placeholder="Select Match Mode">
@@ -35,8 +37,8 @@ export default function QuestionText(props) {
 				<option value="DIVERSE">Diverse</option>
 				<option value="NONE">None</option>
 			</select> <br />
-			<input
-				type="text"
+			<textarea
+				className="explanation"
 				name={"explanation"}
 				placeholder="Explanation"
 				value={props.explanation}

@@ -22,7 +22,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
 	
 	render(){
 		return (
-			<div>
+			<div className='border'>
 				<QuestionText 
 					id={this.state.id}
 					title={this.state.title}
@@ -39,19 +39,21 @@ export default class MultiselectQuestion extends DropdownQuestion {
 					/>
 				<input
 					type="button"
+					className="small_button"
 					value="Add Answer"
 					onClick={this.addOption}
 					/> <br />
-				<label>Required</label>
+				<label className="text">Required</label>
 				<input 
 					type="checkbox"
 					checked={this.state.required}
 					onChange={this.changeRequired}
 					/> <br />
 					
-				<label>Maximum number of selected options</label>
+				<label className="text">Maximum number of selected options: </label>
 				<input 
 					type="number"
+					className="tinyInputBox"
 					value={this.state.maxAllowed}
 					onChange={this.changeMaxAllowed}
 					required />

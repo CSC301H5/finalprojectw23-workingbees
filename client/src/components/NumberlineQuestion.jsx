@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./Style.css"
 import QuestionText from './QuestionText'
 import Question from './Question'
@@ -29,7 +29,7 @@ export default class NumberlineQuestion extends Question {
 	
 	render(){
 		return (
-			<div>
+			<div className='border'>
 				<QuestionText 
 					id={this.state.id}
 					title={this.state.title}
@@ -40,25 +40,28 @@ export default class NumberlineQuestion extends Question {
 					selectMode={this.handleSelectChange}
 					/>
 				<div>
-					Start:
+					<label className="text">Start: </label>
 					<input 
 						type="number" 
+						className="tinyInputBox"
 						name={"min"} 
 						value={this.state.min} 
 						onChange={this.handleNumberChange} 
 						required /> <br />
-					Stop:
+					<label className="text">Stop: </label>
 					<input 
 						type="number" 
+						className="tinyInputBox"
 						name={"max"}  
-						value={this.state.question} 
+						value={this.state.max} 
 						onChange={this.handleNumberChange} 
 						required /> <br />
-					Increment:
+					<label className="text">Increment: </label>
 					<input 
 						type="number" 
+						className="tinyInputBox"
 						name={"step"}
-						value={this.state.question} 
+						value={this.state.step} 
 						onChange={this.handleNumberChange} 
 						required />
 				</div>

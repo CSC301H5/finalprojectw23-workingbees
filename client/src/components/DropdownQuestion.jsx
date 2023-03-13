@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./Style.css"
 import QuestionText from './QuestionText'
 import OptionTexts from './OptionTexts'
@@ -48,7 +48,7 @@ export default class DropdownQuestion extends Question {
 	
 	render(){
 		return (
-			<div>
+			<div className='border'>
 				<QuestionText 
 					id={this.state.id}
 					title={this.state.title}
@@ -65,10 +65,11 @@ export default class DropdownQuestion extends Question {
 					/>
 				<input
 					type="button"
+					className="small_button"
 					value="Add Answer"
 					onClick={this.addOption}
 					/> <br />
-				<label>Required</label>
+				<label className="text">Required</label>
 				<input 
 					type="checkbox"
 					checked={this.state.required}
