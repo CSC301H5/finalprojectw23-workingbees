@@ -1164,6 +1164,11 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
+        // only phase 1 allows recommendations
+        if (hive.phase !== 1) {
+            return res.status(409).json({msg: "Error: Recommendations only exist in phase 1."});
+        }
+
         // check that the user is an attendee in this hive and get their matching group
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
         if (!attendee) {
