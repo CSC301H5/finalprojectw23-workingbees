@@ -324,6 +324,11 @@ export const getHiveAttendeeNames = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg: "Permission denied." });
+        }
+
         // get attendee names
         const attendeeNames = [];
         for (let i = 0; i < hive.attendeeIDs.length; i++) {
@@ -396,7 +401,7 @@ export const getHivePhase = async (req, res) => {
         }
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         const data = {"phase": hive.phase};
@@ -430,7 +435,7 @@ export const getHiveTimer = async (req, res) => {
         }
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         const data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
@@ -500,7 +505,7 @@ export const getMatchingGroup = async (req, res) => {
 
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         // ensure they are not the host
@@ -558,7 +563,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
 
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         // ensure they are not the host
@@ -975,6 +980,11 @@ export const getRoomConfigOptions = async(req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg: "Permission denied." });
+        }
+
         return res.status(200).json(JSON.parse(hive.configOptions));
 
     } catch (e) {
@@ -1070,7 +1080,7 @@ export const getHiveMatchingGroupCompletion = async (req, res) => {
 
         // if user does not have permission to use the hive.
         if (hive.hostID != user.userID && !hive.attendeeIDs.includes(user.userID)) {
-            return res.status(401).json({ msg:"Permission denied." });
+            return res.status(401).json({ msg: "Permission denied." });
         }
 
         var acc = 0; // increment for each matchingGroup that's submitted data.
@@ -1185,6 +1195,56 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
 
     } catch (e) {
         console.error("Error on getPendingMatchingGroupRecommendations controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getMatchingGroupsDonePhaseOne = async(req, res) => {
+
+    let hiveID = req.query.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg: "Permission denied." });
+        }
+
+        // only phase 1 has matching groups
+        if (hive.phase !== 1) {
+            return res.status(409).json({msg: "Error: Matching groups only exist in phase 1."});
+        }
+
+        let completed = 0;
+        for (let i = 0; i < hive.groupIDs.length; i++) {
+            let matchingGroup = await MatchingGroupModel.findById(hive.groupIDs[i]);
+            if (matchingGroup.recommendedPending.length === 0 && matchingGroup.recommendedResponses.length > 0) {
+                completed++;
+            }
+        }
+
+        return res.status(200).json({completed: completed});
+
+    } catch (e) {
+        console.error("Error on getMatchingGroupsDonePhaseOne controller!");
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
