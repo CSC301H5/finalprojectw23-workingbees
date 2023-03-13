@@ -2,17 +2,12 @@ import { useState, useEffect } from "react"
 import axios from 'axios';
 import { getCookie } from './getAuthToken';
 import SmallEntry from "./SmallEntry";
-
-import useWebSocket from 'react-use-websocket'
-const WS_URL = 'ws://localhost:3030/initializews'
+import AcceptReject from "./AcceptReject";
 
 export default function PendingInviteList({ hiveID }) {
 
     const [invites, setInvites] = useState([]);
     const token = getCookie("x-auth-token");
-    const { lastJsonMessage } = useWebSocket(WS_URL, {
-        share: true,
-    });
 
     async function getIncomingInvites() {
         axios.get("/api/v1/getIncomingInvites", {
@@ -26,7 +21,7 @@ export default function PendingInviteList({ hiveID }) {
             if (res.status === 200) {
                 const rows = [];
                 for (let leaderName in res.data) {
-                    rows.push({ name: leaderName, component: <h4>Accept? or Reject ?</h4> })
+                    rows.push({ name: leaderName, component: <AcceptReject hiveID={hiveID} matchingGroupID={res.data[leaderName]} token={token} /> })
                 }
                 setInvites(rows);
             }

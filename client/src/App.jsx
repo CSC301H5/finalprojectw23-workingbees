@@ -12,15 +12,7 @@ import TeamProfile from './components/TeamProfile';
 import LoginHomePage from './components/LoginHomePage';
 import GroupCreation from './components/GroupCreation';
 
-import useWebSocket from 'react-use-websocket'
-const WS_URL = 'ws://localhost:3030/initializews'
-
 function App() {
-  useWebSocket(WS_URL, {
-    onOpen: () => {
-      console.log('Websocket connection established');
-    }
-  })
 
   return (
     <Router>
