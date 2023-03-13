@@ -8,6 +8,8 @@ import "./Style.css"
 	removeQuestion
 	matchMode
 	selectMode
+	priority
+	changePriority
 */
 export default function QuestionText(props) {
 	return (
@@ -37,6 +39,25 @@ export default function QuestionText(props) {
 				<option value="DIVERSE">Diverse</option>
 				<option value="NONE">None</option>
 			</select> <br />
+			<div onChange={props.changePriority}>
+				<label className="text">Matching Priority: </label>
+			
+				<input type="radio" id="mp1" name="priority" value="1"/>
+  				<label for="mp1" className="radioText">1</label>
+
+  				<input type="radio" id="mp2" name="priority" value="2"/>
+  				<label for="mp2" className="radioText">2</label>
+
+				<input type="radio" id="mp3" name="priority" value="3"/>
+  				<label for="mp3" className="radioText">3</label>
+
+				<input type="radio" id="mp4" name="priority" value="4"/>
+  				<label for="mp4" className="radioText">4</label>
+
+				<input type="radio" id="mp5" name="priority" value="5"/>
+  				<label for="mp5" className="radioText">5</label>
+			</div>
+			
 			<textarea
 				className="explanation"
 				name={"explanation"}

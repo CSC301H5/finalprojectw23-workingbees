@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import "./Style.css"
-import QuestionText from './QuestionText'
 
 /*Props must have:
 	key: int to uniquely identify the question
@@ -15,12 +14,13 @@ export default class Question extends Component{
 			title: "",
 			explanation: "",
 			matchMode: "SIMILAR",
+			priority: "1"
 		}
 		
 		this.handleTextChange = this.handleTextChange.bind(this)
 		this.removeQuestion = props.removeQuestion
 		this.handleSelectChange = this.handleSelectChange.bind(this)
-		
+		this.changePriority = this.changePriority.bind(this)
 	}
 	
 	handleSelectChange(event){
@@ -33,6 +33,10 @@ export default class Question extends Component{
 		} else if (event.target.name === "explanation"){
 			this.setState({explanation: event.target.value})
 		}
+	}
+	
+	changePriority(event){
+		this.setState({priority: event.target.value})
 	}
 	
 	// render isnt implemented because this class is meant to be abstract

@@ -31,6 +31,8 @@ export default class MultiselectQuestion extends DropdownQuestion {
 					removeQuestion={this.removeQuestion}
 					matchMode={this.state.matchMode}
 					selectMode={this.handleSelectChange}
+					priority={this.state.priority}
+					changePriority={this.changePriority}
 					/>
 				<OptionTexts
 					options={this.state.options}

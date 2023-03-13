@@ -38,6 +38,8 @@ export default class NumberlineQuestion extends Question {
 					removeQuestion={this.removeQuestion}
 					matchMode={this.state.matchMode}
 					selectMode={this.handleSelectChange}
+					priority={this.state.priority}
+					changePriority={this.changePriority}
 					/>
 				<div>
 					<label className="text">Start: </label>
