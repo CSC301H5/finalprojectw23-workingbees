@@ -624,3 +624,19 @@ color: #000000;
   line-height: 18.5px;
   margin-right: 30px
 }
+
+.acceptreject {
+  color: white;
+  border: none;
+  height: 50px;
+  width: 50px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: center;
+  font-weight: bold;
+  font-size: 15px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

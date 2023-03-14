@@ -4,7 +4,7 @@ const ErrorPage = () => {
 
     return <div>
         ERROR
-        </div>
-         ;
+    </div>
+        ;
 }
 export default ErrorPage;
