@@ -516,6 +516,9 @@ export const getMatchingGroup = async (req, res) => {
         const leader = await AttendeeModel.findOne({"userID": matchingGroup.leaderID});
         data["leaderName"] = leader.name;
 
+        // add username
+        data["userName"] = attendee.name;
+
         // add member names
         const memberNames = [];
         for (let i = 0; i < matchingGroup.memberIDs.length; i++) {

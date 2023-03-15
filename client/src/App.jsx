@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './components/Landing';
 import Login from './components/Login';
@@ -11,7 +11,9 @@ import Profile from './components/Profile';
 import TeamProfile from './components/TeamProfile';
 import LoginHomePage from './components/LoginHomePage';
 import GroupCreation from './components/GroupCreation';
+
 function App() {
+
   return (
     <Router>
       <Routes>
@@ -24,8 +26,7 @@ function App() {
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
-        <Route path="/GroupCreation" element={< GroupCreation />} />
-
+        <Route path="/groupcreation" element={< GroupCreation />} />
         <Route path="*" element={< ErrorPage />} />
       </Routes>
     </Router>

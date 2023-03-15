@@ -5,14 +5,12 @@ import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-import HiveComp from './LoginHive';
 import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
 import HiveList from './HiveList';
 import CircleWithName from './A';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
-  const { state } = useLocation();
   const x_auth_token = getCookie("x-auth-token");
   const navigate = useNavigate();
   const handleInputChange = (event) => {
@@ -42,32 +40,6 @@ function LoginHomePage() {
     getHiveName();
   }, [])
 
-  async function getHiveName2() {
-
-    axios.get("/api/v1/getUserHives ", {
-      params: {},
-      headers: {
-        "x-auth-token": x_auth_token
-      }
-    }).then(res => {
-      if (res.status === 200) {
-        console.log("DATA : ", res.data);
-
-        const rows = [];
-        for (var hiveID in res.data) {
-          rows.push(< HiveComp names={res.data[hiveID].name} phases={res.data[hiveID].phase} />)
-        }
-      }
-    });
-  }
-  useEffect(() => {
-    getHiveName2();
-  }, [])
-  getHiveName2();
-
-
-
-
 
   //Handle Join Hive button 
   const handleClick = () => {
@@ -75,15 +47,9 @@ function LoginHomePage() {
   }
 
   //Handle create new Hive button 
-
   const handleClick2 = () => {
-    //getHiveName2();
     navigate("/createHive");
   }
-
-
-
-
 
   return (
     <div class='grid'>
@@ -92,7 +58,6 @@ function LoginHomePage() {
       </div>
       <div class='right'>
         < Navbar />
-
         <div
           style={{
 
@@ -108,7 +73,6 @@ function LoginHomePage() {
 
           stfu@gmail.com
         </div>
-
         <input
           className='SmalltextBox'
           type="text"
@@ -116,7 +80,6 @@ function LoginHomePage() {
           placeholder="Room PIN"
           onChange={handleInputChange}
           value={room}
-
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         />
         <button onClick={handleClick} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '150px', height: '35px', left: '930px', top: '660px' }}>Join Hive</button>
