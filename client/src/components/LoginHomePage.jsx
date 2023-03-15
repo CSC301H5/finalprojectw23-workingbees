@@ -9,7 +9,7 @@ import HiveComp from './LoginHive';
 import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
 import HiveList from './HiveList';
-
+import CircleWithName from './A';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
   const { state } = useLocation();
@@ -95,11 +95,18 @@ function LoginHomePage() {
 
         <div
           style={{
+
             height: '500px',
             overflow: 'auto',
           }}
         >
           <HiveList />
+
+          <CircleWithName name={"name"} />
+          <CircleWithName name={"name"} />
+       
+
+          stfu@gmail.com
         </div>
 
         <input

@@ -640,3 +640,16 @@ color: #000000;
   margin-top: 8px;
   margin-bottom: 8px;
 }
+/* entry styling*/
+.entryBox {
+  background-color: #FFAF40; 
+  border-style: "2px solid";
+  border-radius: "25px";
+  overflow: hidden; 
+}
+
+.entry  li {
+  display: inline-block;
+  font-size: 20px;
+  padding: 20px;
+}
