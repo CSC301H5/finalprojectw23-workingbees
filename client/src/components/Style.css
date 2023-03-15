@@ -491,6 +491,140 @@ button:hover {
   padding-bottom: 50px
 }
 
+.secondaryButton{
+  height: 50px;
+  width: 225px;
+  margin-top: 8px;
+
+  border-radius: 8px;
+  padding: 16px 32px 16px 32px;
+  
+  background: #FFFFFF;
+  border: 1px solid #FFAF40;
+  border-radius: 8px;
+  
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+
+  text-align: center;
+
+  color: #FFAF40;
+  
+  cursor: pointer;
+
+}
+
+.yellowText{
+  background: #FFFFFF;
+  border: none;
+  
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+
+  text-align: center;
+
+  color: #FFAF40;
+  cursor: pointer;
+}
+
+.tinyButton{
+
+  padding:0px 8px 8px 0px;
+  
+  background: #FFFFFF;
+  border: none;
+  
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+
+
+  text-align: center;
+
+  color: #FFAF40;
+  
+  cursor: pointer;
+  margin: 8px;
+
+}
+
+.questionList {
+  overflow:scroll;
+  height: 500px;
+  border: 1px solid #FFAF40;
+
+}
+
+.smallInputBox {
+  position: center;
+  background: #F6F6F6;
+  border: 1px solid #FFAF40;
+  border-radius: 8px;
+  height: 50px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 18.5px;
+}
+
+.explanation {
+  display: block;
+  background-color: #F6F6F6;
+  font-family: 'Montserrat';
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #FFAF40;
+  border-radius: 5px;
+  font-size: 16px;
+  resize: vertical;
+
+  width: 475px;
+  height: 50px;
+}
+
+.border {border: 1px solid #FFAF40}
+
+.tinyInputBox {
+  position: center;
+  background: #F6F6F6;
+  border: 1px solid #FFAF40;
+  
+  width: 50px;
+  
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 14px;
+}
+
+.subtitle {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+
+/* identical to box height */
+
+color: #000000;
+}
+
+.radioText {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 18.5px;
+  margin-right: 30px
+}
+
 .acceptreject {
   color: white;
   border: none;

@@ -7,10 +7,10 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.post('/guestRegister', guestRegister);
-router.get('/getUserHives', auth, getUserHives); // protected.
+router.get('/getUserHives', auth, getUserHives);
 router.get('/getHiveTimer', auth, getHiveTimer);
 router.get('/getHivePhase', auth, getHivePhase);
-router.get('/getHiveInfo', auth, getHiveInfo); // still requires guest Auth.
+router.get('/getHiveInfo', auth, getHiveInfo);
 router.post('/joinHive', auth, joinHive);
 router.post('/createHive', auth, createHive);
 router.get('/getHiveAttendeeNames', auth, getHiveAttendeeNames);
