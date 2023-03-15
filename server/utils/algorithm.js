@@ -124,7 +124,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
                 configOptionsResponses: ranking[i].configOptionsResponses
             }
             recommendations.push(data)
-            userMatchingGroup.recommendedPending.push(ranking[i].matchingGroupID);
+            userMatchingGroup.recommendedPending.push({matchingGroupID: ranking[i].matchingGroupID, score: Number.parseFloat(ranking[i].score.toFixed(2))});
         }
         await userMatchingGroup.save();
 
@@ -135,7 +135,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
         const recommendations = [];
         const recommendedPending = userMatchingGroup.recommendedPending;
         for (let i = 0; i < recommendedPending.length; i++) {
-            let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i]);
+            let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i].matchingGroupID);
             let users = [];
             let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
             users.push(leaderData);
@@ -145,7 +145,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
             }
 
             let data = {
-                matchingGroupID: recommendedPending[i],
+                matchingGroupID: recommendedPending[i].matchingGroupID,
                 users: users,
                 configOptionsResponses: matchingGroup.hiveConfigResponses
             }
