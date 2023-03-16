@@ -12,6 +12,7 @@ import Navbar from './components/Navbar';
 import TeamProfile from './components/TeamProfile';
 
 import LoginHomePage from './components/LoginHomePage';
+import WaitingP2 from './components/Waitingp2';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/roomConfig" element={<ConfigRoom />} />
         <Route path="/waiting1" element={< WaitingP1 />} />
+        <Route path="/waiting2" element={< WaitingP2 />} />
         <Route path="/createHive" element={< CreateRoom />} />
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />

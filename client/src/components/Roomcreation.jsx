@@ -65,7 +65,8 @@ function CreateRoom() {
         }
         ).then(res => {
             if (res.status == 200) {
-                navigate('/waiting1', { state: { code: res.data.code, token: token } })
+                //console.log(res.data.hiveID)
+                navigate('/waiting1', { state: { code: res.data.code, token: token, hiveID: res.data.hiveID } })
             }
         })
     }

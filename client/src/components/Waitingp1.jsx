@@ -6,7 +6,12 @@ import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 import ProfileNumbers from "./ProfileNumbers";
 
-
+/*
+expects the following props
+  - hiveID
+  - token
+  - code
+*/
 function WaitingP1() {
   const [attendeeList, setAttendeeList] = useState([])
   const [numBees, setNumBees] = useState("0")
@@ -16,7 +21,7 @@ function WaitingP1() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    navigate('/waiting2')
+    navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID} })
   }
 
   return (
