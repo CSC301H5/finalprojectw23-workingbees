@@ -21,14 +21,15 @@ const Landing = () => {
 
       if (res.status == 201 ) {
 
-        const x_auth_token = res.data.token
+        //const x_auth_token = res.data.token
 
-        setToken(res.data.token)
-        document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
+        //setToken(res.data.token)
+        //document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
        // navigate("/profile", { state: { roomCode: roomCode } });
 
        console.log("ROOMCODE:", roomCode);
        console.log("res.data.token:", res.data.token);
+       setToken(res.data.token)
 
        async function  getHiveName(){
         console.log('room', roomCode);

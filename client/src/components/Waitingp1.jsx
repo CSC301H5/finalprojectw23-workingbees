@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
+import AttendeeList from "./AttendeeList";
 
 
 function WaitingP1() {
@@ -12,6 +13,8 @@ function WaitingP1() {
   const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
+
+  console.log(location.state.hiveID)
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -33,6 +36,7 @@ function WaitingP1() {
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
+          <AttendeeList hiveID={location.state.hiveID} token={location.state.token}/>
           <p className="attendeeList">{attendeeList}</p>
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
         </form>
