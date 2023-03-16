@@ -668,3 +668,62 @@ font-family:'Montserrat';
   border-bottom: 2px solid #FFAF40;
   background-color: #F6F6F6;
 }
+  .bigEntryWrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+    grid-auto-rows: 200px;
+  }
+  .box1 {
+    align-self: stretch;
+  }
+  .box2 {
+    align-self: start;
+  }
+
+.flex-grid {
+  display: flex;
+}
+
+.big-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.circle {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: #FFAF40;
+  margin-right: 20px;
+}
+
+.text-box {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+}
+
+.name {
+  font-family: 'Montserrat';
+  display: inline-block;
+  text-align: center; 
+  font-size: xx-large;
+  padding-right: 40px;
+}
+
+.details {
+  font-family: 'Montserrat';
+  display: inline-block;
+  text-align: center;
+  padding-right: 40px;
+}
+
+.pointer {
+  width: 100px;
+  height: 100px;
+  background-color: F6F6F6;
+  margin-left: 10px;
+}

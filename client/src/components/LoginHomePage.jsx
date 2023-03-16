@@ -9,6 +9,7 @@ import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
 import HiveList from './HiveList';
 import CircleWithName from './A';
+import BigEntry from './BigEntry';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
@@ -67,11 +68,8 @@ function LoginHomePage() {
         >
           <HiveList />
 
-          <CircleWithName name={"name"} />
-          <CircleWithName name={"name"} />
-       
 
-          stfu@gmail.com
+
         </div>
         <input
           className='SmalltextBox'
