@@ -14,7 +14,13 @@ function WaitingP1() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log(location.state.hiveID)
+  //console.log(location.state.hiveID)
+
+  const socket = new WebSocket('ws://localhost:3030/initializeWS')
+
+  socket.addEventListener('open', (event) => {
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(location.state.hiveID), token: location.state.token }));
+  });
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -27,7 +33,7 @@ function WaitingP1() {
         <img src={hives}></img>
       </ div>
       <div class="right">
-        <Navbar roomCode={location.state.code} token={location.state.token}/>
+        <Navbar roomCode={location.state.code} token={location.state.token} />
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>
         <form onSubmit={handleSubmit}>
@@ -36,8 +42,11 @@ function WaitingP1() {
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
-          <AttendeeList hiveID={location.state.hiveID} token={location.state.token}/>
-          <p className="attendeeList">{attendeeList}</p>
+          <AttendeeList
+            socket={socket}
+            attendeeList={attendeeList}
+            setAttendeeList={setAttendeeList}
+          />
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
         </form>
       </div>
