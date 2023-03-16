@@ -28,7 +28,6 @@ const GroupCreation = () => {
             }
         }).then(res => {
             if (res.status === 200) {
-                // confirmation message
                 console.log(res.status);
             }
         })

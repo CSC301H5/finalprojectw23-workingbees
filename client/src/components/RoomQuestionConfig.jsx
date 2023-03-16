@@ -6,7 +6,7 @@ import QuestionList from './QuestionList'
 
 
 export default class RoomQuestionConfig extends Component {
-	
+
 	render() {
 		return (
 			<div class="grid">
@@ -20,7 +20,7 @@ export default class RoomQuestionConfig extends Component {
 						left: "796px",
 						top: "147px"
 					}}>
-						<label className="subtitle"> 
+						<label className="subtitle">
 							Specify some fields for attendees to match with
 						</label>
 						<QuestionList />

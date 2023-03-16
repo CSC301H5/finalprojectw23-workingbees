@@ -1,13 +1,42 @@
 import { useState, useEffect } from "react"
 import axios from 'axios';
-import { getCookie } from './getAuthToken';
 import SmallEntry from "./SmallEntry";
 import AcceptReject from "./AcceptReject";
 
-export default function PendingInviteList({ hiveID }) {
+function indexOfObject(arr, key, value) {
+    for (let i = 0; i < i < arr.length; i++) {
+        if (arr[i][key] === value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+export default function PendingInviteList({ hiveID, token }) {
 
     const [invites, setInvites] = useState([]);
-    const token = getCookie("x-auth-token");
+
+    const socket = new WebSocket('ws://localhost:3030/initializeWS');
+
+    socket.addEventListener('open', (event) => {
+        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.event === "NEW_INVITE") {
+            setInvites((prevList) => [...prevList, {
+                name: data.leaderName,
+                component: <AcceptReject
+                    hiveID={hiveID}
+                    matchingGroupID={data.matchingGroupID}
+                    token={token}
+                />
+            }]);
+        } else if (data.event === "INVITE_CANCELED") {
+            setInvites((prevList) => prevList.slice(0, indexOfObject(prevList, "name", data.leaderName)).concat(prevList.slice(indexOfObject(prevList, "name", data.leaderName) + 1)));
+        }
+    });
 
     async function getIncomingInvites() {
         axios.get("/api/v1/getIncomingInvites", {
