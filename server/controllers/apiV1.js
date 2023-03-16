@@ -748,7 +748,14 @@ export const sendInvite = async (req, res) => {
             return res.status(409).json({msg: "User has already been invited"});
         }
 
-        // check that the inviting user is the leader of the hive
+        // check if your matching group is already the largest it can be
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            return res.status(409).json({msg: "Matching group is already the largest it can be"})
+        }
+
+        // check that the inviting user is the leader of the matching group
         if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"})
         }
@@ -813,11 +820,11 @@ export const acceptInvite = async (req, res) => {
         }
 
         if (!invitedAttendee.pendingInvites.includes(matchingGroupID)) {
-            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"})
+            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"});
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": "${invitedAttendee.name}"}`)
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": "${invitedAttendee.name}"}`);
 
         // accept the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
@@ -845,7 +852,28 @@ export const acceptInvite = async (req, res) => {
 
         // add user to their new matching group
         invitedAttendee.groupID = matchingGroupID;
-        matchingGroup.memberIDs.push(user.userID)
+        matchingGroup.memberIDs.push(user.userID);
+
+        // remove all remaining invitations sent by the matching group if it is now full
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            let numInvitesSent = matchingGroup.outgoingInvites.length;
+            for (let i = 0; i < numInvitesSent; i++) {
+                // update invitation status
+                let invitedID = matchingGroup.outgoingInvites.pop();
+                let invitedAttendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": invitedID});
+                removeElement(invitedAttendee.pendingInvites, matchingGroupID);
+                await invitedAttendee.save();
+
+                // notify previously invited attendees if they are active
+                let invitedUserSocket = getSocketOfUser(invitedID);
+                if (invitedUserSocket) {
+                    let leader = await AttendeeModel.findOne({"hiveID": hiveID, "userID": matchingGroup.leaderID});
+                    invitedUserSocket.send(`{"event": "INVITE_CANCELED", "leaderName": "${leader.name}"}`);
+                }
+            }
+        }
 
         await originalMatchingGroup.save();
         await matchingGroup.save();
