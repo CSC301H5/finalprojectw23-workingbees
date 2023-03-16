@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
+import ProfileNumbers from "./ProfileNumbers";
 
 
 function WaitingP1() {
@@ -31,6 +32,7 @@ function WaitingP1() {
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
           <label className="numsDescription" style={{ left: '1000px' }}>profiles completed</label>
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
+          <ProfileNumbers hiveID={location.state.hiveID} token={location.state.token}/>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
           <p className="attendeeList">{attendeeList}</p>
