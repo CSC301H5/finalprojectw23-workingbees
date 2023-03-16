@@ -2,8 +2,8 @@ import AttendeeModel from '../models/attendeeModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { removeElement } from '../utils/arrayUtils.js';
 
-// linearly transforms x in [a,b] to T(x) in [0, p]
-const transform = (a, b, p, x) => (p/(b-a)) * (x-a);
+// linearly transforms x in [0, b] to T(x) in [0, p]
+const transform = (b, p, x) => (p/b) * x;
 
 // defines a comparison function for ranking matchingGroups
 const rank = (obj1, obj2) => obj2.score - obj1.score;
@@ -66,7 +66,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
                 let question = questions[j];
                 let type = question.type;
                 let p = question.priority;
-                let a, b, x;
+                let b, x;
 
                 /**
                  * If both have responded: match normally
@@ -78,35 +78,31 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
                     if (userResponses[j] !== "" && responses[j] !== "") {
                         // type
                         if (type === "DROPDOWN") {
-                            a = 0;
                             b = p;
                             x = (userResponses[j] === responses[j]) ? p : 0;
                         } else if (type === "MULTISELECT") {
-                            a = 0;
                             b = Math.max(userResponses.length, responses.length);
                             x = userResponses.filter(value => responses.includes(value)).length;
                         } else if (type === "NUMBERLINE") {
-                            a = question.typeOptions.min;
-                            b = question.typeOptions.max;
-                            x = (b - a) - Math.abs(b - a);
+                            b = question.typeOptions.max - question.typeOptions.min;
+                            x = b - Math.abs(userResponses[j] - responses[j]);
                         } else if (type === "TIMETABLE") {
-                            a = 0;
                             b = Math.max(timeValue(userResponses[j]), timeValue(responses[i]));
                             x = intersection(userResponses[j], responses[j]);
                         }
 
                         // matchMode
                         if (question.matchMode === "SIMILAR") {
-                            score += transform(a, b, p, x);
+                            score += transform(b, p, x);
                         } else if (question.matchMode === "DIVERSE") {
-                            score += p - transform(a, b, p, x);
+                            score += p - transform(b, p, x);
                         }
                     }
                 }
             }
 
             // store matchingGroup data along with their score
-            score = (total > 0) ? transform(0, total, 100, score) : 50;
+            score = (total > 0) ? transform(total, 100, score) : 50;
             let users = [];
             let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
             users.push(leaderData);
@@ -128,7 +124,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
                 configOptionsResponses: ranking[i].configOptionsResponses
             }
             recommendations.push(data)
-            userMatchingGroup.recommendedPending.push(ranking[i].matchingGroupID);
+            userMatchingGroup.recommendedPending.push({matchingGroupID: ranking[i].matchingGroupID, score: Number.parseFloat(ranking[i].score.toFixed(2))});
         }
         await userMatchingGroup.save();
 
@@ -139,7 +135,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
         const recommendations = [];
         const recommendedPending = userMatchingGroup.recommendedPending;
         for (let i = 0; i < recommendedPending.length; i++) {
-            let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i]);
+            let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i].matchingGroupID);
             let users = [];
             let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
             users.push(leaderData);
@@ -149,7 +145,7 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
             }
 
             let data = {
-                matchingGroupID: recommendedPending[i],
+                matchingGroupID: recommendedPending[i].matchingGroupID,
                 users: users,
                 configOptionsResponses: matchingGroup.hiveConfigResponses
             }

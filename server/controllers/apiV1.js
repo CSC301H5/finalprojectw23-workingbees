@@ -5,7 +5,7 @@ import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast } from '../utils/wsutils.js';
-import { removeElement } from '../utils/arrayUtils.js';
+import { removeElement, getObject } from '../utils/arrayUtils.js';
 import { getPendingRecommendations } from '../utils/algorithm.js';
 
 import jwt from 'jsonwebtoken';
@@ -761,7 +761,7 @@ export const sendInvite = async (req, res) => {
             return res.status(409).json({msg: "Matching group is already the largest it can be"})
         }
 
-        // check that the inviting user is the leader of the hive
+        // check that the inviting user is the leader of the matching group
         if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"})
         }
@@ -1245,6 +1245,97 @@ export const getMatchingGroupsDonePhaseOne = async(req, res) => {
 
     } catch (e) {
         console.error("Error on getMatchingGroupsDonePhaseOne controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const respondToMatchingGroupRecommendation = async(req, res) => {
+    
+    let hiveID = req.body.hiveID;
+    let matchingGroupID = req.body.matchingGroupID;
+    let response = req.body.response;
+
+    // verify request
+    if (!hiveID || !matchingGroupID || !response) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // only phase 1 has matching groups
+        if (hive.phase !== 1) {
+            return res.status(409).json({msg: "Error: Matching groups only exist in phase 1."});
+        }
+
+        // check that the user is an attendee in this hive and get their matching group
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        let userMatchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        if (!userMatchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        // check that the responding user is the leader of the matching group
+        if (user.userID !== userMatchingGroup.leaderID) {
+            return res.status(401).json({msg: "User must be the leader of the matching group"})
+        }
+
+        // check if the given matchingGroupID exists in the hive
+        if (!hive.groupIDs.includes(matchingGroupID)) {
+            return res.status(404).json({msg: "Error: Matching group not found"});
+        }
+
+        // check that the given response is valid
+        if (response !== "YES" && response !== "NO" && response !== "MAYBE") {
+            return res.status(400).json({msg: "Response must be either YES, NO, or MAYBE"});
+        }
+
+        // check if the matchingGroup is pending and not yet responded
+        const recommendation = getObject(userMatchingGroup.recommendedPending, "matchingGroupID", matchingGroupID);
+        if (getObject(userMatchingGroup.recommendedResponses, "matchingGroupID", matchingGroupID)) {
+            if (!recommendation) {
+                return res.status(409).json({msg: "Response has already been recorded"});
+            } else { // recommendation exists in both pending and recommended, which should never happen
+                return res.status(500).json({msg: "Server Error"});
+            }
+        } else if (!recommendation) {
+            return res.status(404).json({msg: "Could not find matching group in pending recommendations"});
+        }
+        
+        // mark recommendation as responded
+        removeElement(userMatchingGroup.recommendedPending, recommendation);
+        recommendation["response"] = response;
+        userMatchingGroup.recommendedResponses.push(recommendation)
+        await userMatchingGroup.save();
+
+        // notify host if matching group has finished responding to recommendations
+        if (userMatchingGroup.recommendedPending.length === 0) {
+            let hostSocket = getSocketOfUser(hive.hostID);
+            if (hostSocket) {
+                hostSocket.send('{"event": "GROUP_DONE_RESPONDING"}');
+            }
+        }
+
+        return res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on respondToMatchingGroupRecommendation controller!");
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});

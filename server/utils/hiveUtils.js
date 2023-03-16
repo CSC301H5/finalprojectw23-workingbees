@@ -197,6 +197,8 @@ export async function checkConfigOptionsResponse(hive, responses, res) {
                 return res.status(400).json({msg: "Responses for question " + (i+1) + " must from its avaiable options"});
             } else if (response.length === 0) {
                 return res.status(400).json({msg: "question " + (i+1) + "is a required question that must be answered"});
+            } else if (response.length > typeOptions.maxAllowed) {
+                return res.status(400).json({msg: "Number of options selected for question " + (i+1) + " exceeds maximum options allowed"});
             }
         } else if (type === "NUMBERLINE") {
             if (!Number.isFinite(response)) {
