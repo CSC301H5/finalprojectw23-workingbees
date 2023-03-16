@@ -227,6 +227,12 @@ export const joinHive = async (req, res) => {
         user.hiveIDs.push(hive.hiveID);
         await user.save();
 
+        // notify the host that a user has joined
+        let hostSocket = getSocketOfUser(hive.hostID);
+        if (hostSocket) {
+            hostSocket.send(`{"event": "USER_JOIN", "username": "${attendee.name}"}`);
+        }
+
         return res.status(201).json({hiveID: hive.hiveID});
 
     } catch (e) {

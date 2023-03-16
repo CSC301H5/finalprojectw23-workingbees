@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
+import AttendeeList from "./AttendeeList";
 import ProfileNumbers from "./ProfileNumbers";
 
 /*
@@ -18,6 +19,14 @@ function WaitingP1() {
   const location = useLocation();
   const navigate = useNavigate();
   const [profileNums, setProfileNums] = useState(0)
+
+  //console.log(location.state.hiveID)
+
+  const socket = new WebSocket('ws://localhost:3030/initializeWS')
+
+  socket.addEventListener('open', (event) => {
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(location.state.hiveID), token: location.state.token }));
+  });
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -43,7 +52,11 @@ function WaitingP1() {
           />
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
-          <p className="attendeeList">{attendeeList}</p>
+          <AttendeeList
+            socket={socket}
+            attendeeList={attendeeList}
+            setAttendeeList={setAttendeeList}
+          />
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
         </form>
       </div>
