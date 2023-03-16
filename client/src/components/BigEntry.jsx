@@ -1,6 +1,6 @@
 import React from 'react';
 
-const smallEntry = ({ name, pictureUrl=null }) => {
+const BigEntry = ({ name, pictureUrl=null }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center', borderColor: '#FFAF40', borderBottom: "solid #FFAF40", backgroundColor:'#F6F6F6' }}>
       {pictureUrl ? (
@@ -15,16 +15,5 @@ const smallEntry = ({ name, pictureUrl=null }) => {
   );
 }
 
-export default smallEntry;
+export default BigEntry;
 
-/* The description should be "Phase N" if the user is the host,
-and "Team of N" if the user is an attendee
-*/
-export default function BigEntry({ name, description }) {
-    return (
-        <>
-            <h1>{name}</h1>
-            <h3>{description}</h3>
-        </>
-    )
-}

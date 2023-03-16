@@ -6,6 +6,9 @@ import hives from '../Assets/hives.png'
 import Navbar from "./Navbar";
 import MemberList from './MemberList';
 import PendingInvitesList from "./PendingInviteList"
+import SmallEntry from './SmallEntry';
+import crown from "../Assets/leader.png"
+import AcceptReject from './AcceptReject';
 
 const GroupCreation = () => {
     const navigate = useNavigate();
@@ -41,23 +44,33 @@ const GroupCreation = () => {
                 <div class="left">
                     <img src={hives}></img>
                 </div>
-                <div class="right">
+                <div class="right" >
+                    
                     < Navbar />
                     <label className="display" style={{ position: 'absolute ', left: '654px', width: '97px', height: '20px' }}>Your swarm</label>
 
+                  <div className="entryBox">
+
+                
                     <MemberList hiveID={hiveID} />
+             
+
                     <input class="textBox" value={username}
                         onChange={e => setName(e.target.value)} placeholder="Username" style={{
                             width: "400px",
-                            height: "50px"
+                            height: "50px",
+                            position: 'absolute',
+                            top: '390px'
+                          
                         }}></input>
+                  </div>
                     <button onClick={handleInvite} style={{ position: 'absolute ', left: '1010px', top: '380px' }}>Invite</button>
+                    <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites </label>
 
-                    <div style={{ position: 'absolute ', left: '594px', top: '480px', width: '150px', height: '20px' }}>
-                        <label className="display" >Pending invites</label>
+                    <div  className="entryBox"style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
                         <PendingInvitesList hiveID={hiveID} />
                     </div>
-                    <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
+                    <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '699px' }}>Continue</button>
                 </div>
 
             </div>

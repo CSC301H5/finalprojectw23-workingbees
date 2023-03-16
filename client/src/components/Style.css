@@ -642,14 +642,29 @@ color: #000000;
 }
 /* entry styling*/
 .entryBox {
-  background-color: #FFAF40; 
-  border-style: "2px solid";
+  background-color: #F6F6F6; 
+  border-style: solid;
+  border-width: 2px;
+  border-color: #FFAF40;
   border-radius: "25px";
   overflow: hidden; 
+  border-radius: 25px;
+font-family:'Montserrat';
+  height: 250px;
+  margin: 7px;
+
 }
 
 .entry  li {
   display: inline-block;
   font-size: 20px;
   padding: 20px;
+}
+.entryWrapper {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
+  border-color: #FFAF40;
+  border-bottom: 2px solid #FFAF40;
+  background-color: #F6F6F6;
 }

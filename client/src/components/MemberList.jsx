@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import axios from 'axios';
 import { getCookie } from './getAuthToken';
 import SmallEntry from "./SmallEntry";
-import crown from "../Assets/leader.png"
 
 export default function MemberList({ hiveID }) {
 
@@ -23,7 +22,7 @@ export default function MemberList({ hiveID }) {
             if (res.status === 200) {
                 // Set leader
                 if (res.data.leaderName === res.data.userName) {
-                    setLeader(`You (${res.data.leaderName})`);
+                    setLeader(`${res.data.leaderName}(You)`);
                 } else {
                     setLeader(res.data.leaderName);
                 }
@@ -32,7 +31,7 @@ export default function MemberList({ hiveID }) {
                 const currentMembers = [];
                 for (let i = 0; i < res.data.members.length; i++) {
                     if (res.data.members[i] === res.data.userName) {
-                        currentMembers.push(`You (${res.data.userName})`);
+                        currentMembers.push(`${res.data.userName}(You)`);
                     } else {
                         currentMembers.push(res.data.members[i]);
                     }
@@ -68,21 +67,14 @@ export default function MemberList({ hiveID }) {
 
     return (
         <div>
-            <SmallEntry name={leader}>
-                <img
-                    src={crown}
-                    alt="Team Leader"
-                />
-            </SmallEntry>
+            <SmallEntry name={leader} status='leader'/>
+     
             {members.map(member => (
-                <SmallEntry name={member}>
-                    <h3>Accepted</h3>
-                </SmallEntry>
+                <SmallEntry name={member} status='Accepted'/>
             ))}
             {invitedUsers.map(invitedUser => (
-                <SmallEntry name={invitedUser}>
-                    <h3>Invited</h3>
-                </SmallEntry>
+                <SmallEntry name={invitedUser} status='Invited'/>
+              
             ))}
         </div>
     )
