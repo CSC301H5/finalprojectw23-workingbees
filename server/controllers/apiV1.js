@@ -748,7 +748,14 @@ export const sendInvite = async (req, res) => {
             return res.status(409).json({msg: "User has already been invited"});
         }
 
-        // check that the inviting user is the leader of the hive
+        // check if your matching group is already the largest it can be
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            return res.status(409).json({msg: "Matching group is already the largest it can be"})
+        }
+
+        // check that the inviting user is the leader of the matching group
         if (user.userID !== matchingGroup.leaderID) {
             return res.status(401).json({msg: "User must be the leader of the matching group"})
         }
@@ -840,6 +847,27 @@ export const acceptInvite = async (req, res) => {
             } else {
                 originalMatchingGroup.leaderID = originalMatchingGroup.memberIDs[0];
                 originalMatchingGroup.memberIDs.shift();
+            }
+        }
+
+        // remove all remaining invitations sent by the matching group if it is now full
+        const configOptions = JSON.parse(hive.configOptions);
+        const max = configOptions.groupSizeRange[1];
+        if (matchingGroup.memberIDs.length === max - 1) {
+            let numInvitesSent = matchingGroup.outgoingInvites.length;
+            for (let i = 0; i < numInvitesSent; i++) {
+                // update invitation status
+                let invitedID = matchingGroup.outgoingInvites.pop();
+                let invitedAttendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": invitedID});
+                removeElement(invitedAttendee.pendingInvites, matchingGroupID);
+                await invitedAttendee.save();
+
+                // notify previously invited attendees if they are active
+                let invitedUserSocket = getSocketOfUser(invitedID);
+                if (invitedUserSocket) {
+                    let leader = await AttendeeModel.findOne({"hiveID": hiveID, "userID": matchingGroup.leaderID});
+                    invitedUserSocket.send(`{"event": "INVITE_CANCELED", "leaderName": "${leader.name}"}`);
+                }
             }
         }
 
