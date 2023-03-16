@@ -14,7 +14,9 @@ function CreateRoom() {
     const [profileTime, setProfileTime] = useState('')
     const [classDate, setClassDate] = useState('')
     const [classTime, setClassTime] = useState('')
-    const [groupSize, setGroupSize] = useState('')
+   
+    const [groupSizeMax, setGroupSizeMax] = useState('')
+    const [groupSizeMin, setGroupSizeMin] = useState('')
     const navigate = useNavigate();
     //guest token
     //const [token, setToken] = useState('')
@@ -27,14 +29,24 @@ function CreateRoom() {
     const handleProfileTime = (e) => { setProfileTime(e.target.value) }
     const handleClassDate = (e) => { setClassDate(e.target.value) }
     const handleClassTime = (e) => { setClassTime(e.target.value) }
-    const handleGroupSize = (e) => { setGroupSize(e.target.value) }
+    const handleGroupSizeMax = (e) => { setGroupSizeMax(parseInt(e.target.value))}
+    const handleGroupSizeMin = (e) => { setGroupSizeMin(parseInt(e.target.value))}
 
  
     const token =  getCookie('x-auth-token');
-    console.log('token in ROOMCREATION.JSX',token);
 
     const handleSubmit = e => {
+        e.preventDefault();
+        if  (groupSizeMax < groupSizeMin){ 
+            console.log("groupSizeMax < groupSizeMin")
+        }
+        
+
+        else{
+        
+        
         navigate('/roomConfig', { state: { hiveName: hiveName, 
+            token: token,
             displayName: displayName, 
             joinDate:joinDate, 
             profileDate:profileDate,
@@ -42,40 +54,13 @@ function CreateRoom() {
             profileTime:profileTime,
             classDate:classDate,
             classTime:classTime,
-            groupSize:groupSize
+            groupSizeMax:groupSizeMax,
+            groupSizeMin: groupSizeMin,
 
-            
-        } })
-        
-    
-
-        e.preventDefault();
-        axios.post("/api/v1/createHive",
-            {
-                profilePicture: "sldkcndlkcns",
-                hiveName: hiveName,
-                displayName: displayName,
-                configOptions: "{}"
-                /*
-                UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
-                joinDate: this.state.joinDate,
-                joinTime: this.state.joinTime,
-                profileDate: this.state.profileDate,
-                profileTime: this.state.profileTime,
-                classDate: this.state.classDate,
-                classTime: this.state.classTime
-                */
-            }, {
-            headers: {
-                'x-auth-token': token
-            }
-        }
-        ).then(res => {
-            if (res.status === 200) {
-                navigate('/waiting1', { state: { code: res.data.code, token: token } })
-            }
-        })
+        } })   }
     }
+
+    
 
     return (
         <div className="grid">
@@ -83,7 +68,7 @@ function CreateRoom() {
                 <img src={hives}></img>
             </div>
             <div class="right">
-                < Navbar />
+                
                 <h2 className="h2">Let's get some basic info down for your new hive.</h2>
                 <form onSubmit={handleSubmit}>
                     <label className="display" style={{ width: '150px', height: '20px', left: '753px', top: '200px' }}>Hive name</label>
@@ -98,14 +83,23 @@ function CreateRoom() {
                         className="displayNameField"
                         type="text"
                         required
-                        onChange={handleDisplayName}
+                        onChange={handleDisplayName} //handleDisplayName
                     />
                      <label className="display" style={{ width: '150px', height: '20px', left: '753px', top: '370px' }}>Group size:</label>
-                     <input className="textBox" style={{ width: '400px', height: '50px', left: '753px', top: '395px' }}
+
+                     <input className="SmalltextBox" style={{ height: '50px', left: '753px', top: '395px' }}
                         type="text"
                         required
-                        //onChange={(e) => this.setState({hiveName: e.target.value})}
-                        onChange={handleHiveName}
+                       //handleGroupSize
+                       placeholder="Max"
+                        onChange={handleGroupSizeMax}
+                    />
+                     <input className="SmalltextBox" style={{ height: '50px', left: '900px', top: '395px' }}
+                        type="text"
+                        required
+                       //handleGroupSize
+                       placeholder="Min"
+                        onChange={handleGroupSizeMin}
                     />
                    
                     <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '455px' }}>Join/pregroup deadline (Optional)</label>

@@ -22,7 +22,7 @@ function Option(props){
 			<input
 				type="button"
 				value="Remove"
-				onClick={() => props.removeOption(props.id)}
+				onClick={() => props.removeOption(props.id, props.opt)}
 				/>
 		</div>
 	)
@@ -43,7 +43,7 @@ export default function OptionTexts (props){
 			key={i}
 			opt={props.options[i]} 
 			handleOptionChange={props.handleOptionChange}
-			removeOption={() => props.removeOption(i)}
+			removeOption={() => props.removeOption(i,props.options[i])}
 			/>
 		)
 	}

@@ -68,10 +68,14 @@ export async function checkConfigOptions(req, res) {
     let groupSizeRange = configOptions.groupSizeRange;
     let questions = configOptions.questions;
     if (!groupSizeRange || !questions) {
-        return res.status(400).json({msg: "Malformed request."});
+        console.log("groupSizeRange",groupSizeRange);
+        console.log("bomboombitch");
+        return res.status(400).json({msg: "Malformed request. 1212"});
     } else if (!Array.isArray(groupSizeRange) || !Array.isArray(questions) || groupSizeRange.length !== 2) {
-        return res.status(400).json({msg: "Malformed request."});
+        console.log("bomboombitch  1");
+        return res.status(400).json({msg: "Malformed request.434343"});
     } else if (questions.length === 0) {
+        console.log("bomboombitch   2");
         return res.status(400).json({msg: "Error: Hive must have at least one question"});
     }
 

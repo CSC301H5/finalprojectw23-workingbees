@@ -24,7 +24,10 @@ export default function QuestionText(props) {
 				type="button"
 				name="remove"
 				value="Remove"
-				onClick={() => {props.removeQuestion(props.id)}}
+				onClick={() => {props.removeQuestion(props.id)
+
+				 props.removeQuestionInput(props.id)
+				 console.log("good bye question props.id:", props.id)}}
 			/>
 			<select
 				name={"matchMode"}

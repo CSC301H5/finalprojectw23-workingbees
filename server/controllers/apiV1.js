@@ -240,10 +240,16 @@ export const createHive = async (req, res) => {
     let hiveName = req.body.hiveName;
     let configOptions = req.body.configOptions;
     let code = await getUniqueCode();
-
+    console.log(" ------------- " );
+    console.log("profilePicture: ", profilePicture);
+    console.log("displayName: ", displayName);
+    console.log("hiveName: ", hiveName);
+    console.log("configOptions: ", configOptions);
+    console.log("typeOptions: ", configOptions["questions"]["options"]);
+    console.log(" ------------- " );
     // verify request
     if (!displayName || !profilePicture || !hiveName || !configOptions) {
-        return res.status(400).json({msg: "Malformed request."});
+        return res.status(400).json({msg: "Malformed request. HERER"});
     }
 
     try {
@@ -256,9 +262,10 @@ export const createHive = async (req, res) => {
         // check config options
         let configRes = await checkConfigOptions(req, res);
         if (configRes) {
+            
             return;
         }
-
+        console.log("pass requirments")
         // create host
         let host = new HostModel({
             name: displayName,
@@ -287,7 +294,7 @@ export const createHive = async (req, res) => {
         // update user's hives
         user.hiveIDs.push(hive.hiveID);
         await user.save();
-
+        console.log("200000")
         return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {

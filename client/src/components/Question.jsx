@@ -22,6 +22,19 @@ export default class Question extends Component{
 		this.handleSelectChange = this.handleSelectChange.bind(this)
 		
 	}
+	updateInput(){
+		this.state.index = this.props.addQuestionInput({
+			type : this.state.type,
+			title :this.state.title,
+			explanation : this.state.explanation,
+			matchMode : this.state.matchMode,
+			priority: 0,
+			typeOptions: { options : this.state.options,
+				required : this.state.required 
+			}
+		}, this.state.index)
+		console.log()
+	}
 	
 	handleSelectChange(event){
 		this.setState({matchMode: event.target.value})
@@ -30,8 +43,10 @@ export default class Question extends Component{
 	handleTextChange(event){
 		if (event.target.name === "title"){
 			this.setState({title: event.target.value})
+			this.updateInput()
 		} else if (event.target.name === "explanation"){
 			this.setState({explanation: event.target.value})
+			this.updateInput()
 		}
 	}
 	
