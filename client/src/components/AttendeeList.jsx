@@ -28,6 +28,7 @@ function AttendeeList(props) {
     return (
         <div>
             <h1 className="text">{attendeeList}</h1>
+            <h1 className="text">{attendeeList.length}</h1>
         </div>
     )
 
