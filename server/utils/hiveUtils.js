@@ -15,52 +15,6 @@ export async function getUniqueCode() {
     }
 }
 
-// returns a 1D time interval representation of the given 2D timetable
-export function timetableToInterval(timetable) {
-    let index = 0;
-    const timeInterval = [];
-    let started = false;
-    for (let i = 0; i < timetable.length; i++) {
-        for (let j = 0; j < timetable[i].length; j++) {
-            if (timetable[i][j] === 1 && !started) {
-                timeInterval.push(index);
-                started = true;
-            } else if (timetable[i][j] === 0 && started) {
-                timeInterval.push(index);
-                started = false;
-            }
-            index++;
-        }
-    }
-    if (started) {
-        timeInterval.push(index);
-    }
-    return timeInterval;
-}
-
-// returns a 2D timetable representation of the given 1D time interval
-export function intervalToTimetable(interval) {
-    let index = 0;
-    let counter = 0;
-    const timetable = [];
-    for (let i = 0; i < 7; i++) {
-        let day = []
-        for (let j = 0; j < 24; j++) {
-            if (counter < interval.length && interval[counter] <= index && index < interval[counter + 1]) {
-                day.push(1);
-            } else {
-                day.push(0);
-            }
-            if (index === interval[counter + 1]) {
-                counter += 2;
-            }
-            index++;
-        }
-        timetable.push(day);
-    }
-    return timetable;
-}
-
 export async function checkConfigOptions(req, res) {
 
     // check config options body is as desired
@@ -90,10 +44,11 @@ export async function checkConfigOptions(req, res) {
         let title = questions[i].title;
         let explanation = questions[i].explanation;
         let matchMode = questions[i].matchMode;
+        let priority = questions[i].priority;
         let typeOptions = questions[i].typeOptions;
 
         // check the question fields exist
-        if (!type || !title || !explanation || !matchMode || !typeOptions) {
+        if (!type || !title || !explanation || !matchMode || (!priority && priority !== 0) || !typeOptions) {
             return res.status(400).json({msg: "Malformed request. (question " + (i+1) + ")"});
         }
 
@@ -102,6 +57,11 @@ export async function checkConfigOptions(req, res) {
             return res.status(400).json({msg: "Error: Invalid type for question " + (i+1)});
         } else if (matchMode !== "SIMILAR" && matchMode !== "DIVERSE" && matchMode !== "NONE") {
             return res.status(400).json({msg: "Error: Invalid matchMode for question " + (i+1)});
+        }
+
+        // check if priority is valid
+        if (matchMode !== "NONE" && (!Number.isInteger(priority) || priority < 1 || priority > 5)) {
+            return res.status(400).json({msg: "Error: priority must be an integer from 1 to 5 (inclusive) for question " + (i+1)});
         }
 
         // check if typeOptions is valid
@@ -202,14 +162,14 @@ export async function checkConfigOptions(req, res) {
     }
 }
 
-export async function checkConfigOptionsResponse(hive, configOptionsResponse, res) {
+export async function checkConfigOptionsResponse(hive, responses, res) {
 
-    let questions = hive.configOptions.questions;
+    const configOptions = JSON.parse(hive.configOptions);
+    let questions = configOptions.questions;
     if (!questions) { // this should always exist if the hive exists, so something went terribly wrong.
         return res.status(500).json("Server Error.");
     }
 
-    let responses = configOptionsResponse.responses;
     if (!responses && responses !== []) {
         return res.status(400).json({msg: "Malformed request: could not find responses within configOptionResponse"});
     } else if (!Array.isArray(responses)) {
@@ -237,6 +197,8 @@ export async function checkConfigOptionsResponse(hive, configOptionsResponse, re
                 return res.status(400).json({msg: "Responses for question " + (i+1) + " must from its avaiable options"});
             } else if (response.length === 0) {
                 return res.status(400).json({msg: "question " + (i+1) + "is a required question that must be answered"});
+            } else if (response.length > typeOptions.maxAllowed) {
+                return res.status(400).json({msg: "Number of options selected for question " + (i+1) + " exceeds maximum options allowed"});
             }
         } else if (type === "NUMBERLINE") {
             if (!Number.isFinite(response)) {
