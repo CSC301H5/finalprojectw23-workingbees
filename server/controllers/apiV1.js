@@ -820,11 +820,11 @@ export const acceptInvite = async (req, res) => {
         }
 
         if (!invitedAttendee.pendingInvites.includes(matchingGroupID)) {
-            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"})
+            return res.status(409).json({msg: "User does not have a pending invitation from this matching group"});
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": "${invitedAttendee.name}"}`)
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": "${invitedAttendee.name}"}`);
 
         // accept the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
@@ -850,6 +850,10 @@ export const acceptInvite = async (req, res) => {
             }
         }
 
+        // add user to their new matching group
+        invitedAttendee.groupID = matchingGroupID;
+        matchingGroup.memberIDs.push(user.userID);
+
         // remove all remaining invitations sent by the matching group if it is now full
         const configOptions = JSON.parse(hive.configOptions);
         const max = configOptions.groupSizeRange[1];
@@ -870,10 +874,6 @@ export const acceptInvite = async (req, res) => {
                 }
             }
         }
-
-        // add user to their new matching group
-        invitedAttendee.groupID = matchingGroupID;
-        matchingGroup.memberIDs.push(user.userID)
 
         await originalMatchingGroup.save();
         await matchingGroup.save();
