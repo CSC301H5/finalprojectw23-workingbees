@@ -44,8 +44,11 @@ function LoginHomePage() {
 
   async function getHiveName2() {
 
+  
+
     axios.get("/api/v1/getUserHives ", {
       params: {},
+
       headers: {
         "x-auth-token": x_auth_token
       }
@@ -53,16 +56,19 @@ function LoginHomePage() {
       if (res.status === 200) {
         console.log("DATA : ", res.data);
 
+
         const rows = [];
         for (var hiveID in res.data) {
           rows.push(< HiveComp names={res.data[hiveID].name} phases={res.data[hiveID].phase} />)
         }
+        
       }
     });
   }
   useEffect(() => {
     getHiveName2();
   }, [])
+
   getHiveName2();
 
 
@@ -74,6 +80,7 @@ function LoginHomePage() {
     getHiveName();
   }
 
+  //Handle create new Hive button 
   //Handle create new Hive button 
 
   const handleClick2 = () => {
@@ -121,3 +128,4 @@ function LoginHomePage() {
 };
 
 export default LoginHomePage;
+        
