@@ -111,7 +111,7 @@ export const login = async (req, res) => {
 }
 
 
-export const guestRegister = async (res) => {
+export const guestRegister = async (req, res) => {
 
     try {
 
@@ -756,7 +756,7 @@ export const sendInvite = async (req, res) => {
         // notify the invited user if they are active
         let invitedUserSocket = getSocketOfUser(invitedUser.userID);
         if (invitedUserSocket) {
-            invitedUserSocket.send(`{"event": NEW_INVITE, "username": ${attendee.name}}`);
+            invitedUserSocket.send(`{"event": "NEW_INVITE", "leaderName": "${attendee.name}", "matchingGroupID": "${matchingGroup.groupID}"}`);
         }
 
         // send the invitation and update invitation status
@@ -817,7 +817,7 @@ export const acceptInvite = async (req, res) => {
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event: "INVITE_ACCEPTED" + "username": ${invitedAttendee.name}}`)
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_ACCEPTED", "username": "${invitedAttendee.name}"}`)
 
         // accept the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
@@ -904,7 +904,7 @@ export const rejectInvite = async (req, res) => {
         }
 
         // notify members of the matching group if they are active
-        broadcast(hiveID, matchingGroup, `{"event: "INVITE_REJECTED" + "username": ${invitedAttendee.name}}`);
+        broadcast(hiveID, matchingGroup, `{"event": "INVITE_REJECTED", "username": "${invitedAttendee.name}"}`);
 
         // reject the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.

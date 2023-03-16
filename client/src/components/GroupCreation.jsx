@@ -25,7 +25,6 @@ const GroupCreation = () => {
             }
         }).then(res => {
             if (res.status === 200) {
-                // confirmation message
                 console.log(res.status);
             }
         })
@@ -45,7 +44,7 @@ const GroupCreation = () => {
                     < Navbar />
                     <label className="display" style={{ position: 'absolute ', left: '654px', width: '97px', height: '20px' }}>Your swarm</label>
 
-                    <MemberList hiveID={hiveID} />
+                    <MemberList hiveID={hiveID} token={token} />
                     <input class="textBox" value={username}
                         onChange={e => setName(e.target.value)} placeholder="Username" style={{
                             width: "400px",
@@ -55,7 +54,7 @@ const GroupCreation = () => {
 
                     <div style={{ position: 'absolute ', left: '594px', top: '480px', width: '150px', height: '20px' }}>
                         <label className="display" >Pending invites</label>
-                        <PendingInvitesList hiveID={hiveID} />
+                        <PendingInvitesList hiveID={hiveID} token={token} />
                     </div>
                     <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
                 </div>
