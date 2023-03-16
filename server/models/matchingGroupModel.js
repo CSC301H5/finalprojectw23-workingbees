@@ -9,7 +9,7 @@ const matchingGroupModel = mongoose.Schema({
         default: []
     },
     outgoingInvites: { 
-        type: Array,  // of Strings, containing userIDs of the users that have been invited to this group.
+        type: Array,  // of strings, containing userIDs of the users that have been invited to this group.
         default: []
     }, 
     hiveConfigResponses: {
@@ -17,11 +17,11 @@ const matchingGroupModel = mongoose.Schema({
         default: []
     },
     recommendedPending: {
-        type: Array, // of matchingGroupIDs (strings)
+        type: Array, // of objects, which store: matchingGroupID, score
         default: []
     },
     recommendedResponses: {
-        type: Array, // of matchingGroupIDs (strings)
+        type: Array, // of objects, which store: matchingGroupID, score, response
         default: []
     }
 });
