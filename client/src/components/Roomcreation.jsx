@@ -48,7 +48,48 @@ function CreateRoom() {
                 profilePicture: "sldkcndlkcns",
                 hiveName: hiveName,
                 displayName: displayName,
-                configOptions: "{}"
+                configOptions: {
+                   
+                        groupSizeRange: [1, 4],
+                        questions: [
+                            {
+                                type: "DROPDOWN",
+                            title: "Meow",
+                                explanation: "There is no explanation, only banana",
+                                matchMode: "SIMILAR",
+                                priority: 4,
+                                typeOptions: {
+                                    options: ["apple", "potato"],
+                                    required: false
+                                }
+                            },
+                            {
+                                type: "MULTISELECT",
+                                title: "Multi-Meow",
+                                explanation: "There is no explanation, only banana",
+                                matchMode: "SIMILAR",
+                                priority: 3,
+                                typeOptions: {
+                                    options: ["apple", "potato", "dinosaur"],
+                                    maxAllowed: 2,
+                                    required: false
+                                }
+                            },
+                            {
+                                type: "NUMBERLINE",
+                                title: "Number-Meow",
+                                explanation: "There is no explanation, only banana",
+                                matchMode: "SIMILAR",
+                                priority: 2,
+                                typeOptions: {
+                                    min: 0,
+                                    max: 100,
+                                    step: 0.5
+                                }
+                            }
+                    ]
+                    }
+           
                 /*
                 UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
                 joinDate: this.state.joinDate,
@@ -65,7 +106,7 @@ function CreateRoom() {
         }
         ).then(res => {
             if (res.status === 200) {
-                navigate('/waiting1', { state: { code: res.data.code, token: token } })
+                navigate('/waiting1', { state: { code: res.data.code, token: token, hiveID: res.data.hiveID } })
             }
         })
     }

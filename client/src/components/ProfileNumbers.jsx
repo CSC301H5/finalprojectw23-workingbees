@@ -18,7 +18,6 @@ function ProfileNumbers(props) {
 
     return (
         <div>
-            <h1 className="text">{props.profileNums}</h1>
         </div>
     )
 
