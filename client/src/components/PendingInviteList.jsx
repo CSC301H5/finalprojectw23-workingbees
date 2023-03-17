@@ -12,15 +12,9 @@ function indexOfObject(arr, key, value) {
     return -1;
 }
 
-export default function PendingInviteList({ hiveID, token }) {
+export default function PendingInviteList({ hiveID, token, socket }) {
 
     const [invites, setInvites] = useState([]);
-
-    const socket = new WebSocket('ws://localhost:3030/initializeWS');
-
-    socket.addEventListener('open', (event) => {
-        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
-    });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);

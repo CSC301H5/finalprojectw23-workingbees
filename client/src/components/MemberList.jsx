@@ -2,17 +2,11 @@ import { useState, useEffect } from "react"
 import axios from 'axios';
 import SmallEntry from "./SmallEntry";
 
-export default function MemberList({ hiveID, token }) {
+export default function MemberList({ hiveID, token, socket }) {
 
     const [leader, setLeader] = useState('');
     const [members, setMembers] = useState([]);
     const [invitedUsers, setInvitedUsers] = useState([]);
-
-    const socket = new WebSocket('ws://localhost:3030/initializeWS');
-
-    socket.addEventListener('open', (event) => {
-        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
-    });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
@@ -81,14 +75,12 @@ export default function MemberList({ hiveID, token }) {
 
     return (
         <div>
-            <SmallEntry name={leader} status='leader'/>
-     
+            <SmallEntry name={leader} status='leader' />
             {members.map(member => (
-                <SmallEntry name={member} status='Accepted'/>
+                <SmallEntry name={member} status='Accepted' />
             ))}
             {invitedUsers.map(invitedUser => (
-                <SmallEntry name={invitedUser} status='Invited'/>
-              
+                <SmallEntry name={invitedUser} status='Invited' />
             ))}
         </div>
     )
