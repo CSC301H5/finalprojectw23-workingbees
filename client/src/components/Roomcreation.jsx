@@ -44,7 +44,7 @@ function CreateRoom() {
 
         else{
         
-        
+        console.log(hiveName)
         navigate('/roomConfig', { state: { hiveName: hiveName, 
             token: token,
             displayName: displayName, 
@@ -55,7 +55,7 @@ function CreateRoom() {
             classDate:classDate,
             classTime:classTime,
             groupSizeMax:groupSizeMax,
-            groupSizeMin: groupSizeMin
+            groupSizeMin: groupSizeMin,
 
         } })   }
     }

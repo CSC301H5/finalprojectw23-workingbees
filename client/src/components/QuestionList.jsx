@@ -30,8 +30,11 @@ export default class QuestionList extends Component{
 		console.log(this.props.joinTime, "#########joinTime###########");
 		console.log(this.props.profileTime, "#########profileTime###########");
 		console.log(this.props.classDate, "#########classDate###########");
+		//console.log(questions, "#########questions###########");
+	
 		console.log(this.props.groupSizeMax, "#########groupSizeMax###########");
 		console.log(this.props.groupSizeMin, "#########groupSizeMin###########");
+		
 		this.addQuestion = this.addQuestion.bind(this)
 		this.removeQuestion = this.removeQuestion.bind(this)
 		this.handleSelectChange = this.handleSelectChange.bind(this)
@@ -170,8 +173,8 @@ export default class QuestionList extends Component{
 		console.log('this.props.hiveName ', this.props.hiveName)
 		console.log('this.props.displayName ', this.props.displayName)
 		console.log('token', token)
-		console.log('this.props.groupSizeMin', this.props.groupSizeMin)
-		console.log('this.props.groupSizeMax', this.props.groupSizeMax)
+		console.log('this.props.groupSizeMin', this.props.groupSize)
+		console.log('this.props.groupSizeMax', this.props.groupSize)
 		console.log('this.questionsInput', this.questionsInput)
 		console.log("this.state.questions", this.state.questions)
 			axios.post("/api/v1/createHive",
