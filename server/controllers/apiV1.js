@@ -781,6 +781,12 @@ export const sendInvite = async (req, res) => {
             invitedUserSocket.send(`{"event": "NEW_INVITE", "leaderName": "${attendee.name}", "matchingGroupID": "${matchingGroup.groupID}"}`);
         }
 
+        // notify the user if they are active
+        let userSocket = getSocketOfUser(user.userID);
+        if (userSocket) {
+            userSocket.send(`{"event": "INVITE_SENT", "username": "${username}"}`);
+        }
+
         // send the invitation and update invitation status
         matchingGroup.outgoingInvites.push(invitedUser.userID);
         invitedAttendee.pendingInvites.push(matchingGroup.groupID);
@@ -948,6 +954,13 @@ export const rejectInvite = async (req, res) => {
 
         // notify members of the matching group if they are active
         broadcast(hiveID, matchingGroup, `{"event": "INVITE_REJECTED", "username": "${invitedAttendee.name}"}`);
+
+        // notify the user if they are active
+        let userSocket = getSocketOfUser(user.userID);
+        if (userSocket) {
+            const leader = await AttendeeModel.findOne({"hiveID": hiveID, "userID": matchingGroup.leaderID});
+            userSocket.send(`{"event": "INVITE_CANCELED", "leaderName": "${leader.name}"}`);
+        }
 
         // reject the invitation and update invitation status
         if (!removeElement(matchingGroup.outgoingInvites, user.userID)) { // this should always exist if pending invite exists, so something went terribly wrong.
