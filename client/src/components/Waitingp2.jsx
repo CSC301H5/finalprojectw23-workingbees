@@ -5,6 +5,7 @@ import "./Style.css"
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 import StaticAttendeeList from "./StaticAttendeeList";
+import SwipedNumbers from "./SwipedNumbers";
 
 
 function WaitingP1() {
@@ -13,6 +14,7 @@ function WaitingP1() {
   const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
+  const [profileNums, setProfileNums] = useState(0)
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -29,6 +31,7 @@ function WaitingP1() {
         <form onSubmit={handleSubmit}>
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
           <label className="numsDescription" style={{ left: '1000px' }}>users done swiping</label>
+          <SwipedNumbers socket={location.state.socket} profileNums={profileNums} setProfileNums={setProfileNums} />
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>

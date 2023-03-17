@@ -11,11 +11,11 @@ function ClientCalendar(props) {
     // Sunday = 0, Saturday = 6
     // 9am = 0, 9pm = 12
     const dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    const times = Array(13).fill().map((item, idx) => String(idx + 9))
+    const times = Array(24).fill().map((item, idx) => String(idx))
 
     const setArray = (e) => {
         // loop through e and update arr
-        let newArr = Array(7).fill(0).map(row => new Array(13).fill(0))
+        let newArr = Array(7).fill(0).map(row => new Array(24).fill(0))
         for (let i=0; i<e.length; i++) {
             let date = String(e[i]).slice(0, 3)
             let time = String(e[i]).slice(16, 18)
@@ -50,7 +50,8 @@ function ClientCalendar(props) {
                 unselectedColor={"#dbd9d9"}
                 startDate={new Date('Sun Feb 26 2023')}
                 dateFormat="ddd"
-                maxTime={22}
+                minTime={0}
+                maxTime={24}
             />
         </div>
     )
