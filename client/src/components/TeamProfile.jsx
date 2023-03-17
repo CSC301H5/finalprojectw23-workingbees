@@ -10,7 +10,7 @@ import axios from 'axios';
 // expects code and token
 function TeamProfile() {
     // stores availability as 2D array arr in calendar
-    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(13).fill(0)))
+    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(24).fill(0)))
     // stores client input value in slider
     const [num, setNum] = useState(0)
     // stores client response in dropdown
@@ -48,6 +48,7 @@ function TeamProfile() {
         // calendar
         if (configOptions.questions[i].type === "TIMETABLE") {
             rows.push(<ClientCalendar maxAllowed={configOptions.questions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} />);
+            console.log(arr)
         }
         if (configOptions.questions[i].type === "DROPDOWN") {
             rows.push(<ClientDropdown options={configOptions.questions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions.questions[i].explanation} />);
