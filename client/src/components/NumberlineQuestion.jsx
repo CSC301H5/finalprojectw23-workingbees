@@ -19,11 +19,11 @@ export default class NumberlineQuestion extends Question {
 		let t = event.target.name
 
 		if (t === "min") {
-			this.setState({ min: event.target.value })
+			this.setState({ min: parseInt(event.target.value) })
 		} else if (t === "max") {
-			this.setState({ max: event.target.value })
+			this.setState({ max:parseInt( event.target.value) })
 		} else if (t === "step") {
-			this.setState({ step: event.target.value })
+			this.setState({ step: parseInt(event.target.value) })
 		}
 		this.updateInput()
 	}

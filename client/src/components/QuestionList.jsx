@@ -6,7 +6,7 @@ import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
 import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
-import getCookie from "../utils/getAuthToken.js"
+import getCookie from "./getAuthToken.js"
 
 
 export default class QuestionList extends Component{
@@ -198,6 +198,7 @@ export default class QuestionList extends Component{
 					//let navigate = useNavigate();
 					console.log("200 works")
 					//navigate('/waiting1', { state: { code: res.data.code, token: token } })
+					window.location.replace("/waiting1")
 					console.log(res.data.code , "Room code ")
 					console.log(res.data.hiveID, "HiveID")
 				}

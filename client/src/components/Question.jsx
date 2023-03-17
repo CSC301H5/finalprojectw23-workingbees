@@ -77,7 +77,7 @@ export default class Question extends Component {
 				matchMode : this.state.matchMode,
 				priority: parseInt(this.state.priority),
 				typeOptions: { 
-					maxAllowed: this.state.maxAllowed
+					maxAllowed: parseInt(this.state.maxAllowed)
 
 				}
 			}, this.state.index)

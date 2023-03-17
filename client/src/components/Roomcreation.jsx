@@ -4,7 +4,7 @@ import "./Style.css"
 import { useNavigate, useNavigation } from "react-router-dom";
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
-import getCookie from "../utils/getAuthToken.js"
+import getCookie from "./getAuthToken.js"
 function CreateRoom() {
     const [hiveName, setHiveName] = useState('')
     const [displayName, setDisplayName] = useState('')

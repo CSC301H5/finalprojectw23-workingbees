@@ -22,9 +22,9 @@ export async function checkConfigOptions(req, res) {
     let groupSizeRange = configOptions.groupSizeRange;
     let questions = configOptions.questions;
     if (!groupSizeRange || !questions) {
-        return res.status(400).json({msg: "Malformed request."});
+        return res.status(400).json({msg: "Malformed request. 1"});
     } else if (!Array.isArray(groupSizeRange) || !Array.isArray(questions) || groupSizeRange.length !== 2) {
-        return res.status(400).json({msg: "Malformed request."});
+        return res.status(400).json({msg: "Malformed request.2"});
     } else if (questions.length === 0) {
         return res.status(400).json({msg: "Error: Hive must have at least one question"});
     }
@@ -132,23 +132,23 @@ export async function checkConfigOptions(req, res) {
 
             // check if fields exist and are of the correct type
             if ((!min && min !== 0) || (!max && max !== 0) || !step) {
-                return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
+                return res.status(400).json({msg: "Error: Malformed typeOptions for question 1" + (i+1)});
             } else if (!Number.isFinite(min) || !Number.isFinite(max) || !Number.isFinite(step)) {
-                return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
+                return res.status(400).json({msg: "Error: Malformed typeOptions for question 2" + (i+1)});
             }
 
             // check if the question is possible to answer
             if (min > max || step > max - min || (max - min) % step !== 0) {
-                return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
+                return res.status(400).json({msg: "Error: Malformed typeOptions for question 3  " + (i+1)});
             }
         } else if (type === "TIMETABLE") {
             let maxAllowed = typeOptions.maxAllowed;
 
             // check if fields exist and are of the correct type
             if (!maxAllowed && maxAllowed !== 0) {
-                return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
+                return res.status(400).json({msg: "Error: Malformed typeOptions for question4 " + (i+1)});
             } else if (!Number.isInteger(maxAllowed)) {
-                return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
+                return res.status(400).json({msg: "Error: Malformed typeOptions for question 5" + (i+1)});
             }
 
             // check if the question is possible to answer

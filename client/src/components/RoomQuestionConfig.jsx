@@ -86,7 +86,7 @@ export default function RoomQuestionConfig (){
 				<div class="left-side">
 					<img src={hives}></img>
 				</ div>
-				<div class="right-side" style={{ height: '500px', position: 'absolute',
+				<div class="right-side" style={{ height: '500px', position: 'absolute', right:"800px",
             overflow: 'auto',}}>
 					
 					<label class="display"> Specify some fields for attendees to match with</label>
