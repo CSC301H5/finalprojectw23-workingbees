@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import "./Style.css"
@@ -6,9 +6,6 @@ import hives from '../Assets/hives.png'
 import Navbar from "./Navbar";
 import MemberList from './MemberList';
 import PendingInvitesList from "./PendingInviteList"
-import SmallEntry from './SmallEntry';
-import crown from "../Assets/leader.png"
-import AcceptReject from './AcceptReject';
 
 const GroupCreation = () => {
     const navigate = useNavigate();
@@ -44,30 +41,22 @@ const GroupCreation = () => {
                     <img src={hives}></img>
                 </div>
                 <div class="right" >
-                    
                     < Navbar />
 
-                  <div className="entryBox">
-
-             
-                    <MemberList hiveID={hiveID} token={token}/>
-             
-
-                    <input class="textBox" value={username}
-                        onChange={e => setName(e.target.value)} placeholder="Username" style={{
-                            width: "400px",
-                            height: "50px",
-                            position: 'absolute',
-                            top: '390px'
-                          
-                        }}></input>
-                  </div>
+                    <div className="entryBox">
+                        <MemberList hiveID={hiveID} token={token} />
+                        <input class="textBox" value={username}
+                            onChange={e => setName(e.target.value)} placeholder="Username" style={{
+                                width: "400px",
+                                height: "50px",
+                                position: 'absolute',
+                                top: '390px'
+                            }} />
+                    </div>
                     <button onClick={handleInvite} style={{ position: 'absolute ', left: '1010px', top: '380px' }}>Invite</button>
                     <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites </label>
-
-                    <div  className="entryBox"style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
-                        <PendingInvitesList hiveID={hiveID} token={token}/>
-                        
+                    <div className="entryBox" style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
+                        <PendingInvitesList hiveID={hiveID} token={token} />
                     </div>
                     <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '699px' }}>Continue</button>
                 </div>
