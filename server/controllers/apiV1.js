@@ -223,7 +223,7 @@ export const joinHive = async (req, res) => {
         user.hiveIDs.push(hive.hiveID);
         await user.save();
 
-        return res.status(200).json({hiveID: hive.hiveID});
+        return res.status(201).json({hiveID: hive.hiveID});
 
     } catch (e) {
         console.error("Error on joinHive controller!");
@@ -1089,5 +1089,52 @@ export const getHiveMatchingGroupCompletion = async (req, res) => {
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getUserDisplayName = async(req, res) => {
+
+    let hiveID = req.query.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await HiveModel.findById(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // try and find user
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        // determine whether the user is an attendee or host in the hive
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee && !host) {
+            return res.status(401).json({msg: "User must be an attendee or host of this hive"});
+        }
+
+        if (attendee && host) { // the user can only have one role in the hive, so something went terribly wrong
+            return res.status(500).json({msg: "Server Error."});
+        }
+
+        if (attendee) {
+            return res.status(200).json({"name": attendee.name});
+        } else {
+            return res.status(200).json({"name": host.name});
+        }
+
+    } catch (e) {
+        console.error("Error on getUserDisplayName controller!");
+        console.error(e.message);
+        console.error(e.stack);
+        res.status(500).json({msg: "Server Error."});
     }
 }
