@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './components/Landing';
 import Login from './components/Login';
@@ -8,10 +8,9 @@ import ConfigRoom from './components/Roomconfig';
 import WaitingP1 from './components/Waitingp1';
 import Register from './components/Register';
 import Profile from './components/Profile';
-import Navbar from './components/Navbar';
 import TeamProfile from './components/TeamProfile';
-
 import LoginHomePage from './components/LoginHomePage';
+import GroupCreation from './components/GroupCreation';
 import WaitingP2 from './components/Waitingp2';
 
 function App() {
@@ -28,7 +27,8 @@ function App() {
         <Route path="/register" element={< Register />} />
         <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
-        <Route path="*" element={< ErrorPage/>} />
+        <Route path="/groupcreation" element={< GroupCreation />} />
+        <Route path="*" element={< ErrorPage />} />
       </Routes>
     </Router>
   );
