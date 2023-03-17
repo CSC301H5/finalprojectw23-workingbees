@@ -23,19 +23,51 @@ export default class Question extends Component{
 		
 	}
 	updateInput(){
+		if (this.state.type == "DROPDOWN"){
+			this.state.index = this.props.addQuestionInput({
+				type : this.state.type,
+				title :this.state.title,
+				explanation : this.state.explanation,
+				matchMode : this.state.matchMode,
+				priority: 0,
+				typeOptions: { options : this.state.options,
+					required : this.state.required 
+				}
+			}, this.state.index)
+		}
+		else if(this.state.type == "MULTISELECT")
+		{
 		this.state.index = this.props.addQuestionInput({
 			type : this.state.type,
 			title :this.state.title,
 			explanation : this.state.explanation,
 			matchMode : this.state.matchMode,
 			priority: 0,
-			typeOptions: { options : this.state.options,
+			typeOptions: { 
+				options : this.state.min,
+				maxAllowed: this.state.max,
 				required : this.state.required 
 			}
-		}, this.state.index)
-		console.log()
+		}, this.state.index)}
+		else if (this.state.type == "NUMBERLINE"){
+			this.state.index = this.props.addQuestionInput({
+				type : this.state.type,
+				title :this.state.title,
+				explanation : this.state.explanation,
+				matchMode : this.state.matchMode,
+				priority: 0,
+				typeOptions: { 
+					min : this.state.options,
+					max: this.state.maxAllowed,
+					step : this.state.step
+				}
+			}, this.state.index)
+
+
+		}
+
 	}
-	
+
 	handleSelectChange(event){
 		this.setState({matchMode: event.target.value})
 	}

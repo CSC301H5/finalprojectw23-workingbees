@@ -11,7 +11,10 @@ export default class NumberlineQuestion extends Question {
 		this.state.min = 0
 		this.state.max = 100
 		this.state.step = 5
-		
+		this.state.required = false
+		this.state.options = []
+		this.state.index = null
+
 		this.handleNumberChange = this.handleNumberChange.bind(this)
 	}
 	
@@ -25,6 +28,21 @@ export default class NumberlineQuestion extends Question {
 		} else if (t === "step") {
 			this.setState({step: event.target.value})
 		}
+
+		this.state.index = this.props.addQuestionInput({
+			type : this.state.type,
+			title :this.state.title,
+			explanation : this.state.explanation,
+			matchMode : this.state.matchMode,
+			priority: 0,
+			typeOptions: { 
+				min: this.state.min,
+				max: this.state.max,
+				step: this.state.step
+			}
+		}, this.state.index)
+		
+	
 	}
 	
 	render(){

@@ -45,13 +45,17 @@ export default class QuestionList extends Component{
 	addQuestionInput = (question, i ) =>  {
 		if ( i == null){
 			i = this.questionsInput.length;
-		this.questionsInput.push(question); // update the array
+			console.log( "Before ", question, i );
+			this.questionsInput[i] = question;
+		//this.questionsInput.push(question); // update the array
+		console.log(this.questionsInput, "should have new question : ", question);
 		console.log("index assign : ", i )
 		}
 		else {
 			this.questionsInput[i] = question;
 		}
 		console.log(this.questionsInput); // verify that the array has been updated
+		
 		return i
 	  }
 
@@ -59,6 +63,7 @@ export default class QuestionList extends Component{
 		console.log("removeQuestionInput : ", i)
 		this.questionsInput[i] = null
 	  }
+	
 
 	removeOptionInput =(i, v)=>{
 		console.log("v in removeOptionInput", v)
@@ -171,7 +176,7 @@ export default class QuestionList extends Component{
 		console.log('this.props.groupSizeMin', this.props.groupSize)
 		console.log('this.props.groupSizeMax', this.props.groupSize)
 		console.log('this.questionsInput', this.questionsInput)
-		
+		console.log("this.state.questions", this.state.questions)
 			axios.post("/api/v1/createHive",
 			{
 				profilePicture: "sldkcndlkcns",
