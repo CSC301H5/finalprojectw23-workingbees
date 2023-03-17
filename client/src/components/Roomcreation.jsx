@@ -30,7 +30,7 @@ function CreateRoom() {
     async function getToken() {
         //get a guest token
         axios.post("/api/v1/guestRegister", {}).then(res => {
-            if (res.status == 201) {
+            if (res.status === 201) {
                 setToken(res.data.token)
             }
         })
@@ -64,7 +64,7 @@ function CreateRoom() {
             }
         }
         ).then(res => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 navigate('/waiting1', { state: { code: res.data.code, token: token } })
             }
         })

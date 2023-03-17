@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import "./Style.css"
 import hives from '../Assets/hives.png'
-import Title1 from '../Assets/Title1.png'
 import Navbar from './Navbar';
 
 export default class Login extends Component {
@@ -39,11 +38,11 @@ export default class Login extends Component {
 
 	//this updates the object state if any changes happen
 	handleTextChange = (event) => {
-		if (event.target.name == "username") {
+		if (event.target.name === "username") {
 			this.setState({ username: event.target.value });
-		} else if (event.target.name == "password") {
+		} else if (event.target.name === "password") {
 			this.setState({ password: event.target.value });
-		} else if (event.target.name == "confirmpassword") {
+		} else if (event.target.name === "confirmpassword") {
 			this.setState({ confirmPassword: event.target.value });
 		}
 	}
@@ -60,12 +59,12 @@ export default class Login extends Component {
 			this.setState({ errText: "Invalid email or password, passwords must be between 8-32 characters long and consist of alphanumeric characters, spaces and .,-_!@#%$" })
 		} else {
 			axios.post("/api/v1/login", { email: this.state.username, password: this.state.password }).then(res => {
-				if (res.status == 200) {
+				if (res.status === 200) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
 					console.log(res.data.token)
 					window.location.replace("/LoginHomePage")
-				} else if (res.status == 401) {
+				} else if (res.status === 401) {
 					this.setState({ errText: "Incorrect username or password" })
 				} else {
 					this.setState({ errText: "Server error" })
