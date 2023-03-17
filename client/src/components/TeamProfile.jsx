@@ -121,6 +121,30 @@ function TeamProfile() {
     // stores user responses to be sent
     const userResponses = [];
 
+    const handleSubmit = e => {
+
+        e.preventDefault();
+        axios.post("/api/v1/submitRoomConfigOptions",
+            {
+                hiveID: location.state.hiveID,
+                configOptionsResponse: {
+                    responses: userResponses
+                }
+            }, {
+            headers: {
+                'x-auth-token': location.state.token
+            }
+        }
+        ).then(res => {
+            if (res.status === 200) {
+                // redirect
+            }
+        })
+    }
+
+    // stores user responses to be sent
+    const userResponses = [];
+
     const rows = [];
     for (let i = 0; i < configOptions.questions.length; i++) {
         // calendar

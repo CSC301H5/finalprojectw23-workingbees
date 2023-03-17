@@ -7,9 +7,9 @@ import Question from './Question'
 /* Necessary props are same as parent class
 */
 export default class DropdownQuestion extends Question {
+
 	constructor(props) {
 		super(props)
-
 		this.state.type = "DROPDOWN"
 		this.state.required = false
 		this.state.options = []
@@ -45,7 +45,7 @@ export default class DropdownQuestion extends Question {
 			required: event.target.checked
 		})
 	}
-
+  
 	render() {
 		return (
 			<div className='border'>
@@ -77,7 +77,6 @@ export default class DropdownQuestion extends Question {
 					checked={this.state.required}
 					onChange={this.changeRequired}
 				/>
-
 			</div>
 		)
 	}

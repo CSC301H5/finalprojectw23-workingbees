@@ -14,6 +14,7 @@ import GroupCreation from './components/GroupCreation';
 import WaitingP2 from './components/Waitingp2';
 
 function App() {
+
   return (
     <Router>
       <Routes>

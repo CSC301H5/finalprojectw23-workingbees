@@ -26,5 +26,4 @@ const smallEntry = ({ name, status = null, pictureUrl = null, children }) => {
   );
 };
 
-
 export default smallEntry;

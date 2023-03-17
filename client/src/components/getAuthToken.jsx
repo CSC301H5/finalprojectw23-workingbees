@@ -1,6 +1,4 @@
 import "./Style.css"
-import Navbar from "./Navbar";
-import ScrollPage from './scroll';
 
 function getAuthToken(name) {
   const cookies = document.cookie.split(';');
