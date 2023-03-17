@@ -26,7 +26,7 @@ const Profile = () => {
         "x-auth-token": token
       }
     }).then(res => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         const hiveID = res.data.hiveID;
         console.log("hiveID sent from Profile:", hiveID);
         navigate("/groupcreation", { state: { token, hiveID } });
