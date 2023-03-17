@@ -13,6 +13,7 @@ const GroupCreation = () => {
     const location = useLocation();
     const token = location.state.token;
     const hiveID = location.state.hiveID;
+    const code = location.state.code;
 
     const handleInvite = () => {
         axios.post('/api/v1/sendInvite',
