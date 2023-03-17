@@ -57,7 +57,7 @@ function LoginHomePage() {
         <img src={hives}></img>
       </div>
       <div class='right'>
-        < Navbar />
+      <div className='display' style={{ position:'relative', width: '507px', height: '200px', top: '60px', fontWeight: "500px", fontSize: "94px", lineHeight: "115px" }}> HIVEMIND </div>
         <div
           style={{
 

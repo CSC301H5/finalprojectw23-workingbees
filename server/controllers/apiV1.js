@@ -251,6 +251,13 @@ export const createHive = async (req, res) => {
     let configOptions = req.body.configOptions;
     let code = await getUniqueCode();
 
+    console.log(" ------------- " );
+    console.log("profilePicture: ", profilePicture);
+    console.log("displayName: ", displayName);
+    console.log("hiveName: ", hiveName);
+    console.log("configOptions: ", configOptions);
+    console.log("typeOptions: ", configOptions["questions"]["options"]);
+    console.log(" ------------- " );
     // verify request
     if (!displayName || !profilePicture || !hiveName || !configOptions) {
         return res.status(400).json({msg: "Malformed request."});
@@ -259,6 +266,7 @@ export const createHive = async (req, res) => {
     try {
         // try and find user
         const user = await UserModel.findById(req.userID);
+        console.log("pass requirments")
         if (!user) {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
@@ -297,7 +305,7 @@ export const createHive = async (req, res) => {
         // update user's hives
         user.hiveIDs.push(hive.hiveID);
         await user.save();
-
+        console.log("200")
         return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {
