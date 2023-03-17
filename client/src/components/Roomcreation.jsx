@@ -45,7 +45,8 @@ function CreateRoom() {
         else{
         
         console.log(hiveName)
-        navigate('/roomConfig', { state: { hiveName: hiveName, 
+        navigate('/roomConfig', { 
+            state: { hiveName: hiveName, 
             token: token,
             displayName: displayName, 
             joinDate:joinDate, 
