@@ -19,14 +19,7 @@ export default function PendingInviteList({ hiveID, token, socket }) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.event === "NEW_INVITE") {
-            setInvites((prevList) => [...prevList, {
-                name: data.leaderName,
-                component: <AcceptReject
-                    hiveID={hiveID}
-                    matchingGroupID={data.matchingGroupID}
-                    token={token}
-                />
-            }]);
+            getIncomingInvites();
         } else if (data.event === "INVITE_CANCELED") {
             setInvites((prevList) => prevList.slice(0, indexOfObject(prevList, "name", data.leaderName)).concat(prevList.slice(indexOfObject(prevList, "name", data.leaderName) + 1)));
         }
