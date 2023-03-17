@@ -13,7 +13,7 @@ import LoginHomePage from './components/LoginHomePage';
 import GroupCreation from './components/GroupCreation';
 import QuestionList from './components/QuestionList';
 import WaitingP2 from './components/Waitingp2';
-
+import RoomQuestionConfig from './components/RoomQuestionConfig';
 function App() {
   return (
     <Router>
@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/roomConfig" element={<QuestionList  />} />
+        <Route path="/roomConfig" element={<RoomQuestionConfig  />} />
         <Route path="/waiting1" element={< WaitingP1 />} />
         <Route path="/waiting2" element={< WaitingP2 />} />
         <Route path="/createHive" element={< CreateRoom />} />
