@@ -6,22 +6,22 @@ import Question from './Question'
 */
 
 export default class TimetableQuestion extends Question {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state.type = "TIMETABLE"
 		this.state.maxAllowed = 6
-	
+
 		this.handleNumberChange = this.handleNumberChange.bind(this)
 	}
-	
-	handleNumberChange(event){
-		this.setState({maxAllowed: event.target.value})
+
+	handleNumberChange(event) {
+		this.setState({ maxAllowed: event.target.value })
 	}
-	
-	render(){
+
+	render() {
 		return (
 			<div className='border'>
-				<QuestionText 
+				<QuestionText
 					id={this.state.id}
 					title={this.state.title}
 					explanation={this.state.explanation}
@@ -31,7 +31,7 @@ export default class TimetableQuestion extends Question {
 					selectMode={this.handleSelectChange}
 					priority={this.state.priority}
 					changePriority={this.changePriority}
-					/>
+				/>
 				<div>
 					<label className="text">
 						Maximum number of 1-hour blocks allowed:
