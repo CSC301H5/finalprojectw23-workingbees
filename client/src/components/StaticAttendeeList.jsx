@@ -10,30 +10,33 @@ expects the following props
 */
 
 function StaticAttendeeList(props) {
-    const [attendeeList, setAttendeeList] = useState([])
+  const [attendeeList, setAttendeeList] = useState([])
 
-    async function getAttendeeList() {
-        axios.get("/api/v1/getHiveAttendeeNames",
-          {
-            params: {
-                hiveID: props.hiveID
-            },
-            headers: {
-              'x-auth-token': props.token
-            }
-          }).then(res => {
-            if (res.status == 200) {
-              setAttendeeList(res.data.attendeeNames)
-            }
-          })
-      }
-      useEffect(() => {
-        getAttendeeList();
-      }, [])
+  async function getAttendeeList() {
+    axios.get("/api/v1/getHiveAttendeeNames",
+      {
+        params: {
+          hiveID: props.hiveID
+        },
+        headers: {
+          'x-auth-token': props.token
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          setAttendeeList(res.data.attendeeNames)
+        }
+      })
+  }
+  useEffect(() => {
+    getAttendeeList();
+  }, [])
 
-      return (
-        <h1>{attendeeList}</h1>
-      )
+  return (
+    <div>
+      <h1>{attendeeList}</h1>
+      <h1>{attendeeList.length}</h1>
+    </div>
+  )
 
 
 } export default StaticAttendeeList
