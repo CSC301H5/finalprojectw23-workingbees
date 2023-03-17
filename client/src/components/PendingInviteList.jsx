@@ -12,27 +12,14 @@ function indexOfObject(arr, key, value) {
     return -1;
 }
 
-export default function PendingInviteList({ hiveID, token }) {
+export default function PendingInviteList({ hiveID, token, socket }) {
 
     const [invites, setInvites] = useState([]);
-
-    const socket = new WebSocket('ws://localhost:3030/initializeWS');
-
-    socket.addEventListener('open', (event) => {
-        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
-    });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.event === "NEW_INVITE") {
-            setInvites((prevList) => [...prevList, {
-                name: data.leaderName,
-                component: <AcceptReject
-                    hiveID={hiveID}
-                    matchingGroupID={data.matchingGroupID}
-                    token={token}
-                />
-            }]);
+            getIncomingInvites();
         } else if (data.event === "INVITE_CANCELED") {
             setInvites((prevList) => prevList.slice(0, indexOfObject(prevList, "name", data.leaderName)).concat(prevList.slice(indexOfObject(prevList, "name", data.leaderName) + 1)));
         }
