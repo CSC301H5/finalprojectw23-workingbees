@@ -24,7 +24,11 @@ function TeamProfile() {
     const navigate = useNavigate();
 
     // get configOptions
+    console.log('location.state.code: ', location.state.code)
+    console.log('x-auth-token:', location.state.token)
     async function getConfigOptions() {
+        console.log('location.state.code: ', location.state.code)
+        console.log('x-auth-token:', location.state.token)
         axios.get("/api/v1/getRoomConfigOptions",
             {
                 params: {
@@ -36,7 +40,8 @@ function TeamProfile() {
             }).then(res => {
                 if (res.status == 200) {
                     setConfigOptions(res.data.configOptions)
-                    console.log("200 get ")
+                    console.log("res.data.configOptions:", res.data["questions"])
+                    
                 }
                 else {
                     console.log("GGG ")
@@ -46,7 +51,7 @@ function TeamProfile() {
     useEffect(() => {
         getConfigOptions();
     }, [])
-
+    getConfigOptions() 
     const rows = [];
     console.log("configOptions ",configOptions)
     for (let i = 0; i < configOptions.questions.length; i++) {

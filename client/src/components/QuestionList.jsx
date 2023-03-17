@@ -221,7 +221,8 @@ export default class QuestionList extends Component{
 		return (
 			<form onSubmit={this.publish}>
 				<select value={this.state.SelectedType} 	
-						onChange={this.handleSelectChange}>
+						onChange={this.handleSelectChange}
+						className="display">
 					<option value="DROPDOWN">Dropdown</option>
 					<option value="MULTISELECT">Multiselect</option>
 					<option value="NUMBERLINE">Numberline</option>
@@ -231,11 +232,13 @@ export default class QuestionList extends Component{
 					{this.state.questions}
 				</div>
 				<input
+				className='small_button'
 					type="button"
 					value="Add Question"
 					onClick={this.addQuestion}
 					/>
 				<input
+				     className='small_button'
 					type="submit"
 					value="Publish"
 					

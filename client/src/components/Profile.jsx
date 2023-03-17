@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 
 const Profile = () => {
   const location = useLocation();
-  const code = location.state.code;
+  const code = parseInt(location.state.code);
   const token = location.state.token;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -28,8 +28,9 @@ const Profile = () => {
     }).then(res => {
       if (res.status === 201) {
         const hiveID = res.data.hiveID;
-        console.log("hiveID sent from Profile:", hiveID);
-        navigate("/teamProfile", { state: { token, hiveID } });
+        console.log("hiveID sent from Profile:", parseInt(code));
+
+        navigate("/teamProfile", { state: { token, code} });
       }
       console.log(res.data);
     }).catch(err => {
@@ -54,7 +55,7 @@ const Profile = () => {
       <div class='left'>
         <img src={hives}></img>
       </div>
-      <div class='right'>
+      <div class='right'  >
         < Navbar />
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>

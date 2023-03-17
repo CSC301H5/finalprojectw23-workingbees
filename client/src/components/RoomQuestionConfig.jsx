@@ -86,9 +86,10 @@ export default function RoomQuestionConfig (){
 				<div class="left-side">
 					<img src={hives}></img>
 				</ div>
-				<div class="right-side">
+				<div class="right-side" style={{ height: '500px', position: 'absolute',
+            overflow: 'auto',}}>
 					
-					<label> Specify some fields for attendees to match with</label>
+					<label class="display"> Specify some fields for attendees to match with</label>
 					<QuestionList 
                     displayName={displayName}
                     hiveName = {hiveName} 
