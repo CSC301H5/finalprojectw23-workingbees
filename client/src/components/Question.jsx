@@ -14,7 +14,7 @@ export default class Question extends Component {
 			title: "",
 			explanation: "",
 			matchMode: "SIMILAR",
-			priority: "1"
+			priority: 1
 		}
 
 		this.handleTextChange = this.handleTextChange.bind(this)
@@ -33,7 +33,7 @@ export default class Question extends Component {
 				title :this.state.title,
 				explanation : this.state.explanation,
 				matchMode : this.state.matchMode,
-				priority: 0,
+				priority: parseInt(this.state.priority),
 				typeOptions: { options : this.state.options,
 					required : this.state.required 
 				}
@@ -46,10 +46,10 @@ export default class Question extends Component {
 			title :this.state.title,
 			explanation : this.state.explanation,
 			matchMode : this.state.matchMode,
-			priority: 0,
+			priority: parseInt(this.state.priority),
 			typeOptions: { 
-				options : this.state.min,
-				maxAllowed: this.state.max,
+				options : this.state.options,
+				maxAllowed: parseInt(this.state.maxAllowed),
 				required : this.state.required 
 			}
 		}, this.state.index)}
@@ -59,14 +59,28 @@ export default class Question extends Component {
 				title :this.state.title,
 				explanation : this.state.explanation,
 				matchMode : this.state.matchMode,
-				priority: 0,
+				priority: parseInt(this.state.priority),
 				typeOptions: { 
-					min : this.state.options,
-					max: this.state.maxAllowed,
-					step : this.state.step
+					min : parseInt(this.state.min),
+					max: parseInt(this.state.max),
+					step : parseInt(this.state.step)
 				}
 			}, this.state.index)
 
+
+		}
+		else if (this.state.type == "TIMETABLE" ){
+			this.state.index = this.props.addQuestionInput({
+				type : this.state.type,
+				title :this.state.title,
+				explanation : this.state.explanation,
+				matchMode : this.state.matchMode,
+				priority: parseInt(this.state.priority),
+				typeOptions: { 
+					maxAllowed: this.state.maxAllowed
+
+				}
+			}, this.state.index)
 
 		}
 

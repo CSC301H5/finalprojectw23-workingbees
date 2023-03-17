@@ -18,17 +18,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
 
 	changeMaxAllowed(event){
 		this.setState({maxAllowed: event.target.value})
-		this.state.index = this.props.addQuestionInput({
-			type : this.state.type,
-			title :this.state.title,
-			explanation : this.state.explanation,
-			matchMode : this.state.matchMode,
-			priority: 0,
-			typeOptions: { options : this.state.options,
-				maxAllowed: this.state.maxAllowed,
-				required : this.state.required 
-			}
-		}, this.state.index)
+		 this.updateInput()
 
 	}
 

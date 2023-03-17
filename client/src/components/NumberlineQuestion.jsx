@@ -25,18 +25,7 @@ export default class NumberlineQuestion extends Question {
 		} else if (t === "step") {
 			this.setState({ step: event.target.value })
 		}
-		this.state.index = this.props.addQuestionInput({
-			type : this.state.type,
-			title :this.state.title,
-			explanation : this.state.explanation,
-			matchMode : this.state.matchMode,
-			priority: 0,
-			typeOptions: { 
-				min: this.state.min,
-				max: this.state.max,
-				step: this.state.step
-			}
-		}, this.state.index)
+		this.updateInput()
 	}
 
 	render() {

@@ -26,32 +26,7 @@ export default class DropdownQuestion extends Question {
 		let newOptions = this.state.options.map((x) => x)
 		newOptions[i] = event.target.value
 		this.setState({ options: newOptions })
-		if (this.state.type == "DROPDOWN"){
-			this.state.index = this.props.addQuestionInput({
-				type : this.state.type,
-				title :this.state.title,
-				explanation : this.state.explanation,
-				matchMode : this.state.matchMode,
-				priority: 0,
-				typeOptions: { options : this.state.options,
-					required : this.state.required 
-				}
-			}, this.state.index)}
-			else if(this.state.type == "MULTISELECT")
-			{
-			this.state.index = this.props.addQuestionInput({
-				type : this.state.type,
-				title :this.state.title,
-				explanation : this.state.explanation,
-				matchMode : this.state.matchMode,
-				priority: 0,
-				typeOptions: { options : this.state.options,
-					maxAllowed: this.state.maxAllowed,
-					required : this.state.required 
-				}
-			}, this.state.index)
-		}
-			
+		this.updateInput()
 			//console.log( "this.state.default ",this.state.default)
 			console.log( "this.state.index ",this.state.index)
 	
@@ -62,32 +37,7 @@ export default class DropdownQuestion extends Question {
 		let newOptions = this.state.options.map((x) => x)
 		newOptions.push("")
 		this.setState({ options: newOptions })
-		if (this.state.type == "DROPDOWN"){
-			this.state.index = this.props.addQuestionInput({
-				type : this.state.type,
-				title :this.state.title,
-				explanation : this.state.explanation,
-				matchMode : this.state.matchMode,
-				priority: 0,
-				typeOptions: { options : this.state.options,
-					required : this.state.required 
-				}
-			}, this.state.index)
-		}
-		else if(this.state.type == "MULTISELECT")
-		{
-		this.state.index = this.props.addQuestionInput({
-			type : this.state.type,
-			title :this.state.title,
-			explanation : this.state.explanation,
-			matchMode : this.state.matchMode,
-			priority: 0,
-			typeOptions: { options : this.state.options,
-				maxAllowed: this.state.maxAllowed,
-				required : this.state.required 
-			}
-		}, this.state.index)
-	}
+		this.updateInput()
 		console.log( "this.state.default ",this.state.default)
 		console.log( "this.state.index ",this.state.index)
 	}
@@ -99,32 +49,8 @@ export default class DropdownQuestion extends Question {
 		})
 		this.props.removeOptionInput(this.state.index, opt)
 
-		if (this.state.type == "DROPDOWN"){
-			this.state.index = this.props.addQuestionInput({
-				type : this.state.type,
-				title :this.state.title,
-				explanation : this.state.explanation,
-				matchMode : this.state.matchMode,
-				priority: 0,
-				typeOptions: { options : this.state.options,
-					required : this.state.required 
-				}
-			}, this.state.index)
-		}
-		else if(this.state.type == "MULTISELECT")
-		{
-		this.state.index = this.props.addQuestionInput({
-			type : this.state.type,
-			title :this.state.title,
-			explanation : this.state.explanation,
-			matchMode : this.state.matchMode,
-			priority: 0,
-			typeOptions: { options : this.state.options,
-				maxAllowed: this.state.maxAllowed,
-				required : this.state.required 
-			}
-		}, this.state.index)
-	}
+
+		this.updateInput()
 		console.log( "this.state.default",this.state.default)
 	}
 
@@ -132,32 +58,7 @@ export default class DropdownQuestion extends Question {
 		this.setState({
 			required: event.target.checked
 		})
-		if (this.state.type == "DROPDOWN"){
-			this.state.index = this.props.addQuestionInput({
-				type : this.state.type,
-				title :this.state.title,
-				explanation : this.state.explanation,
-				matchMode : this.state.matchMode,
-				priority: 0,
-				typeOptions: { options : this.state.options,
-					required : this.state.required 
-				}
-			}, this.state.index)
-		}
-		else if(this.state.type == "MULTISELECT")
-		{
-		this.state.index = this.props.addQuestionInput({
-			type : this.state.type,
-			title :this.state.title,
-			explanation : this.state.explanation,
-			matchMode : this.state.matchMode,
-			priority: 0,
-			typeOptions: { options : this.state.options,
-				maxAllowed: this.state.maxAllowed,
-				required : this.state.required 
-			}
-		}, this.state.index)
-	}
+		this.updateInput()
 	}
 
 	render() {

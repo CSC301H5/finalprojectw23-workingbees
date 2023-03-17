@@ -36,6 +36,10 @@ function TeamProfile() {
             }).then(res => {
                 if (res.status == 200) {
                     setConfigOptions(res.data.configOptions)
+                    console.log("200 get ")
+                }
+                else {
+                    console.log("GGG ")
                 }
             })
     }
@@ -44,11 +48,12 @@ function TeamProfile() {
     }, [])
 
     const rows = [];
+    console.log("configOptions ",configOptions)
     for (let i = 0; i < configOptions.questions.length; i++) {
         // calendar
         if (configOptions.questions[i].type === "TIMETABLE") {
             rows.push(<ClientCalendar maxAllowed={configOptions.questions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} />);
-            console.log(arr)
+            
         }
         if (configOptions.questions[i].type === "DROPDOWN") {
             rows.push(<ClientDropdown options={configOptions.questions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions.questions[i].explanation} />);

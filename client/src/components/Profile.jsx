@@ -29,7 +29,7 @@ const Profile = () => {
       if (res.status === 201) {
         const hiveID = res.data.hiveID;
         console.log("hiveID sent from Profile:", hiveID);
-        navigate("/groupcreation", { state: { token, hiveID } });
+        navigate("/teamProfile", { state: { token, hiveID } });
       }
       console.log(res.data);
     }).catch(err => {
