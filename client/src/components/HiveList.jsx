@@ -37,7 +37,7 @@ export default function HiveList() {
             {hiveData.map(hiveDatum => (
                 <BigEntry
                     name={hiveDatum.name}
-                    description={hiveDatum.description}
+                    detail={hiveDatum.description}
                 />
             ))}
         </div>
