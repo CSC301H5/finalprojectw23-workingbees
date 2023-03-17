@@ -31,7 +31,7 @@ const GroupCreation = () => {
     };
 
     const handleNavigation = () => {
-        navigate("/roomConfig", { state: { token } })
+        navigate("/teamProfile", { state: { token: token, code: location.state.code} })
     };
 
     return (
@@ -41,7 +41,7 @@ const GroupCreation = () => {
                     <img src={hives}></img>
                 </div>
                 <div class="right" >
-                    < Navbar />
+                    < Navbar roomCode={location.state.code} token={location.state.token}/>
 
                     <div className="entryBox">
                         <MemberList hiveID={hiveID} token={token} />
