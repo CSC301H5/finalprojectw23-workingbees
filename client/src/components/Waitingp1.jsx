@@ -29,7 +29,7 @@ function WaitingP1() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID} })
+    navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID, socket: socket} })
   }
   
 

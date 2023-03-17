@@ -12,7 +12,7 @@ import hives from '../Assets/hives.png'
 // expects code, token, and hiveID 
 function TeamProfile() {
     // stores availability as 2D array arr in calendar
-    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(13).fill(0)))
+    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(24).fill(0)))
     // stores client input value in slider
     const [num, setNum] = useState(0)
     // stores client response in dropdown

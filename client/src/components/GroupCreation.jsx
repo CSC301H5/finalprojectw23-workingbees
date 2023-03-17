@@ -15,6 +15,11 @@ const GroupCreation = () => {
     const hiveID = location.state.hiveID;
     const code = location.state.code;
 
+    const socket = new WebSocket('ws://localhost:3030/initializeWS');
+    socket.addEventListener('open', (event) => {
+        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
+    });
+
     const handleInvite = () => {
         axios.post('/api/v1/sendInvite',
             {
@@ -39,13 +44,13 @@ const GroupCreation = () => {
         <>
             <div class="grid">
                 <div class="left">
-                    <img src={hives}></img>
+                    <img src={hives} />
                 </div>
                 <div class="right" >
                     < Navbar roomCode={location.state.code} token={location.state.token}/>
 
                     <div className="entryBox">
-                        <MemberList hiveID={hiveID} token={token} />
+                        <MemberList hiveID={hiveID} token={token} socket={socket} />
                         <input class="textBox" value={username}
                             onChange={e => setName(e.target.value)} placeholder="Username" style={{
                                 width: "400px",
@@ -55,9 +60,9 @@ const GroupCreation = () => {
                             }} />
                     </div>
                     <button onClick={handleInvite} style={{ position: 'absolute ', left: '1010px', top: '380px' }}>Invite</button>
-                    <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites </label>
+                    <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites</label>
                     <div className="entryBox" style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
-                        <PendingInvitesList hiveID={hiveID} token={token} />
+                        <PendingInvitesList hiveID={hiveID} token={token} socket={socket} />
                     </div>
                     <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '699px' }}>Continue</button>
                 </div>
