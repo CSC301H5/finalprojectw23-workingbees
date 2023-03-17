@@ -16,7 +16,7 @@ export async function getUniqueCode() {
 }
 
 export async function checkConfigOptions(req, res) {
-
+        
     // check config options body is as desired
     let configOptions = req.body.configOptions;
     let groupSizeRange = configOptions.groupSizeRange;

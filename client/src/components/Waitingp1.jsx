@@ -23,7 +23,6 @@ function WaitingP1() {
   //console.log(location.state.hiveID)
 
   const socket = new WebSocket('ws://localhost:3030/initializeWS')
-
   socket.addEventListener('open', (event) => {
     socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(location.state.hiveID), token: location.state.token }));
   });
@@ -32,6 +31,7 @@ function WaitingP1() {
     e.preventDefault();
     navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID, socket: socket} })
   }
+  
 
   return (
     <div className="grid">
@@ -39,26 +39,31 @@ function WaitingP1() {
         <img src={hives}></img>
       </ div>
       <div class="right">
+        
         <Navbar roomCode={location.state.code} token={location.state.token} />
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>
         <form onSubmit={handleSubmit}>
-          <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
-          <label className="numsDescription" style={{ left: '1000px' }}>profiles completed</label>
+          <label className="numsDescription" style={{ left: '762px' }}> bees in the hive</label>
+          <label className="numsDescription" style={{  left: '1000px' }}>profiles completed</label>
           <ProfileNumbers
             socket={socket}
             profileNums={profileNums}
             setProfileNums={setProfileNums}
           />
-          <p className="nums" style={{ left: '820px' }}>{numBees}</p>
-          <label className="attendees">Attendee list</label>
+          <p className="nums" style={{ left: '820px'}}>{attendeeList.length}</p>
+          <p className="nums" style={{ left: '1070px'}}>{profileNums}</p>
+
+          <label className="attendees">Attendee list
+
           <AttendeeList
             socket={socket}
             attendeeList={attendeeList}
             setAttendeeList={setAttendeeList}
           />
+          </label>
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
-        </form>
+        </form> 
       </div>
     </div>
   );

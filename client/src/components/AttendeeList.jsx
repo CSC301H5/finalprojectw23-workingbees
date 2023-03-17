@@ -1,29 +1,39 @@
 import { useState } from "react"
 import "./Style.css"
+import MiniEntry from "./miniEntry";
+import VerticalGrid from "./Grid";
 
-/*
-expects the following props:
-    - socket
-    - attendeeList, setAttendeeList
-*/
 function AttendeeList(props) {
-
+    // Don't define props.attendeeList here, use the prop that is passed to the component instead
+    
     props.socket.addEventListener('message', (event) => {
-        //console.log('received: %s', event.data);
         let data = JSON.parse(event.data);
         if (data.event === "USER_JOIN") {
-            //console.log(data.username)
             props.setAttendeeList((prevList) => 
                         [...prevList, (data.username)])
         }
     });
 
     return (
-        <div>
-            <h1 className="text">{props.attendeeList}</h1>
-            <h1 className="text">{props.attendeeList.length}</h1>
-        </div>
-    )
+        <div
+        className="entryBox"
+        style={{
+          position: "absolute",
+          left: "-60px",
+          top: "50px",
+          width: "570px",
+          height: "200px",
+          display: "inline-block",
+          overflowY: "scroll",
+          
+        }}
+      >
+        {props.attendeeList.map((name) => (
+          <MiniEntry key={name} name={name} style={{}} />
+        ))}
+      </div>
+    );
+  }
+  
 
-}
-export default AttendeeList
+export default AttendeeList;

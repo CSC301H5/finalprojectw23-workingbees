@@ -13,6 +13,7 @@ const GroupCreation = () => {
     const location = useLocation();
     const token = location.state.token;
     const hiveID = location.state.hiveID;
+    const code = location.state.code;
 
     const socket = new WebSocket('ws://localhost:3030/initializeWS');
     socket.addEventListener('open', (event) => {
@@ -36,7 +37,7 @@ const GroupCreation = () => {
     };
 
     const handleNavigation = () => {
-        navigate("/roomConfig", { state: { token } })
+        navigate("/teamProfile", { state: { token: token, code: location.state.code} })
     };
 
     return (
@@ -46,7 +47,7 @@ const GroupCreation = () => {
                     <img src={hives} />
                 </div>
                 <div class="right" >
-                    < Navbar />
+                    < Navbar roomCode={location.state.code} token={location.state.token}/>
 
                     <div className="entryBox">
                         <MemberList hiveID={hiveID} token={token} socket={socket} />
