@@ -13,6 +13,7 @@ const GroupCreation = () => {
     const location = useLocation();
     const token = location.state.token;
     const hiveID = location.state.hiveID;
+    const code = location.state.code;
 
     const handleInvite = () => {
         axios.post('/api/v1/sendInvite',
@@ -41,7 +42,7 @@ const GroupCreation = () => {
                     <img src={hives}></img>
                 </div>
                 <div class="right" >
-                    < Navbar />
+                    < Navbar roomCode={code} token={token} />
 
                     <div className="entryBox">
                         <MemberList hiveID={hiveID} token={token} />
