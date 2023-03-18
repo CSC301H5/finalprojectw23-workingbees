@@ -1,7 +1,7 @@
 import { Component, useEffect, useState } from "react";
 import axios from 'axios';
 import "./Style.css"
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 
@@ -15,8 +15,9 @@ function CreateRoom() {
     const [classDate, setClassDate] = useState('')
     const [classTime, setClassTime] = useState('')
     const navigate = useNavigate();
-    //guest token
-    const [token, setToken] = useState('')
+    const location = useLocation();
+
+    const token = location.state.token;
 
     const handleHiveName = (e) => { setHiveName(e.target.value) }
     const handleDisplayName = (e) => { setDisplayName(e.target.value) }
@@ -27,19 +28,6 @@ function CreateRoom() {
     const handleClassDate = (e) => { setClassDate(e.target.value) }
     const handleClassTime = (e) => { setClassTime(e.target.value) }
 
-    async function getToken() {
-        //get a guest token
-        axios.post("/api/v1/guestRegister", {}).then(res => {
-            if (res.status === 201) {
-                setToken(res.data.token)
-            }
-        })
-    }
-    useEffect(() => {
-        getToken();
-    }, [])
-
-
     const handleSubmit = e => {
 
         e.preventDefault();
@@ -49,47 +37,47 @@ function CreateRoom() {
                 hiveName: hiveName,
                 displayName: displayName,
                 configOptions: {
-                   
-                        groupSizeRange: [1, 4],
-                        questions: [
-                            {
-                                type: "DROPDOWN",
+
+                    groupSizeRange: [1, 4],
+                    questions: [
+                        {
+                            type: "DROPDOWN",
                             title: "Meow",
-                                explanation: "There is no explanation, only banana",
-                                matchMode: "SIMILAR",
-                                priority: 4,
-                                typeOptions: {
-                                    options: ["apple", "potato"],
-                                    required: false
-                                }
-                            },
-                            {
-                                type: "MULTISELECT",
-                                title: "Multi-Meow",
-                                explanation: "There is no explanation, only banana",
-                                matchMode: "SIMILAR",
-                                priority: 3,
-                                typeOptions: {
-                                    options: ["apple", "potato", "dinosaur"],
-                                    maxAllowed: 2,
-                                    required: false
-                                }
-                            },
-                            {
-                                type: "NUMBERLINE",
-                                title: "Number-Meow",
-                                explanation: "There is no explanation, only banana",
-                                matchMode: "SIMILAR",
-                                priority: 2,
-                                typeOptions: {
-                                    min: 0,
-                                    max: 100,
-                                    step: 0.5
-                                }
+                            explanation: "There is no explanation, only banana",
+                            matchMode: "SIMILAR",
+                            priority: 4,
+                            typeOptions: {
+                                options: ["apple", "potato"],
+                                required: false
                             }
+                        },
+                        {
+                            type: "MULTISELECT",
+                            title: "Multi-Meow",
+                            explanation: "There is no explanation, only banana",
+                            matchMode: "SIMILAR",
+                            priority: 3,
+                            typeOptions: {
+                                options: ["apple", "potato", "dinosaur"],
+                                maxAllowed: 2,
+                                required: false
+                            }
+                        },
+                        {
+                            type: "NUMBERLINE",
+                            title: "Number-Meow",
+                            explanation: "There is no explanation, only banana",
+                            matchMode: "SIMILAR",
+                            priority: 2,
+                            typeOptions: {
+                                min: 0,
+                                max: 100,
+                                step: 0.5
+                            }
+                        }
                     ]
-                    }
-           
+                }
+
                 /*
                 UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
                 joinDate: this.state.joinDate,

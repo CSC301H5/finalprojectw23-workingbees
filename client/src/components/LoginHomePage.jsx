@@ -14,35 +14,14 @@ function LoginHomePage() {
     setRoom(event.target.value);
   }
 
-  async function getHiveName() {
-    const roomInt = parseInt(room);
-
-    axios.get("/api/v1/getHiveInfo", {
-      params: {
-        code: room
-      },
-      headers: {
-        "x-auth-token": x_auth_token
-      }
-    }).then(res => {
-      if (res.status === 200) {
-        navigate("/Profile", { state: { code: room, token: x_auth_token } })
-      }
-    })
-  }
-  useEffect(() => {
-    getHiveName();
-  }, [])
-
-
-  //Handle Join Hive button 
-  const handleClick = () => {
-    getHiveName();
+  // Handle Join Hive button 
+  const handleJoinHive = () => {
+    navigate("/Profile", { state: { code: room, token: x_auth_token } });
   }
 
-  //Handle create new Hive button 
-  const handleClick2 = () => {
-    navigate("/createHive");
+  // Handle create new hive button 
+  const handleCreateHive = () => {
+    navigate("/createHive", { state: { token: x_auth_token } });
   }
 
   return (
@@ -70,8 +49,8 @@ function LoginHomePage() {
           value={room}
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         />
-        <button onClick={handleClick} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '150px', height: '35px', left: '930px', top: '660px' }}>Join Hive</button>
-        <button onClick={handleClick2} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Create new Hive</button>
+        <button onClick={handleJoinHive} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '150px', height: '35px', left: '930px', top: '660px' }}>Join Hive</button>
+        <button onClick={handleCreateHive} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Create new Hive</button>
 
       </div>
     </div>
