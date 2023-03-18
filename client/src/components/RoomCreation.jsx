@@ -3,7 +3,7 @@ import axios from 'axios';
 import "./Style.css"
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
-import hives from '../Assets/hives.png'
+import hives from '../Assets/hives.png';
 
 function CreateRoom() {
     const [hiveName, setHiveName] = useState('')
@@ -94,7 +94,7 @@ function CreateRoom() {
         }
         ).then(res => {
             if (res.status === 200) {
-                navigate('/waiting1', { state: { code: res.data.code, token: token, hiveID: res.data.hiveID } })
+                navigate('/RoomConfig', { state: { code: res.data.code, token: token, hiveID: res.data.hiveID } })
             }
         })
     }
