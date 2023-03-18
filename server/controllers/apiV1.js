@@ -4,9 +4,11 @@ import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
-import { getSocketOfUser, broadcast } from '../utils/wsutils.js';
+import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
+import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
 import { removeElement, getObject } from '../utils/arrayUtils.js';
 import { getPendingRecommendations } from '../utils/algorithm.js';
+
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -162,9 +164,14 @@ export const joinHive = async (req, res) => {
 
     try {
         // check if the code corresponds to an existing hive
-        let hive = await HiveModel.findOne({"code": code});
+        let hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows joining
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: You may only join a hive in phase 0."});
         }
 
         // try and find user
@@ -250,7 +257,6 @@ export const createHive = async (req, res) => {
     let hiveName = req.body.hiveName;
     let configOptions = req.body.configOptions;
     let code = await getUniqueCode();
-
     // verify request
     if (!displayName || !profilePicture || !hiveName || !configOptions) {
         return res.status(400).json({msg: "Malformed request."});
@@ -319,7 +325,7 @@ export const getHiveAttendeeNames = async (req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -363,7 +369,7 @@ export const getUserHives = async (req, res) => {
 
         var acc = {};
         for (var i=0; i < user.hiveIDs.length; i++) {
-            var hive = await HiveModel.findById(user.hiveIDs[i]);
+            var hive = await getHiveFromDBByID(user.hiveIDs[i]);
             if (!hive) {
                 console.error("Error on getUserHives: invalid hive ID stored in db for userID " + user.userID);
                 return res.status(500).json({ msg:"Server Error." });
@@ -401,7 +407,7 @@ export const getHivePhase = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -435,10 +441,16 @@ export const getHiveTimer = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
+
+        // only phase 0 and 1 have timers available.
+        if (hive.phase === 2) {
+            return res.status(409).json({msg: "Error: No timer available for hive in phase 2."});
+        }
+
         // if user does not have permission to use the hive.
         if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
             return res.status(401).json({ msg: "Permission denied." });
@@ -469,7 +481,7 @@ export const getHiveInfo = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findOne({"code": req.query.code});
+        const hive = await getHiveFromDB({"code": req.query.code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found."});
         }
@@ -504,7 +516,7 @@ export const getMatchingGroup = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -565,7 +577,7 @@ export const roomConfigOptionsCompleted = async (req, res) => {
             return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -613,9 +625,14 @@ export const getIncomingInvites = async (req, res) => {
             return res.status(401).json({ msg: "Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         // if user does not have permission to use the hive.
@@ -668,9 +685,14 @@ export const getOutgoingInvites = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         // if user does not have permission to use the hive.
@@ -728,9 +750,14 @@ export const sendInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
@@ -819,9 +846,14 @@ export const acceptInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         if (!hive.attendeeIDs.includes(user.userID)) {
@@ -927,9 +959,14 @@ export const rejectInvite = async (req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows invites
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Invites only exist in phase 0."});
         }
 
         if (!hive.attendeeIDs.includes(user.userID)) {
@@ -992,7 +1029,7 @@ export const getRoomConfigOptions = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findOne({"code": code});
+        const hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1035,9 +1072,14 @@ export const submitRoomConfigOptions = async(req, res) => {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
 
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        // only phase 0 allows group property modifications
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: You may only submit responses in phase 0."});
         }
 
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
@@ -1073,6 +1115,12 @@ export const submitRoomConfigOptions = async(req, res) => {
         matchingGroup.hiveConfigResponses = responses;
         await matchingGroup.save();
 
+        // send an update to the host
+        let hostSocket = getSocketOfUser(hive.hostID);
+        if (hostSocket) {
+            hostSocket.send('{"event": "GROUP_PROFILE_CREATED"}');
+        }
+
         return res.status(200).json();
 
     } catch (e) {
@@ -1096,7 +1144,7 @@ export const getHiveMatchingGroupCompletion = async (req, res) => {
             return res.status(401).json({ msg:"Invalid user. Action forbidden." });
         }
 
-        const hive = await HiveModel.findById(req.query.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive does not exist"});
         }
@@ -1139,7 +1187,7 @@ export const getUserDisplayName = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1172,6 +1220,60 @@ export const getUserDisplayName = async(req, res) => {
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const beginPhaseOne = async (req, res) => {
+
+    try {
+
+        if (!req.body.hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await getHiveFromDBByID(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // ensure they are host
+        const host = await HostModel.findOne({"hiveID": req.body.hiveID, "userID": user.userID});
+        if (!host) {
+            return res.status(409).json({msg: "Not the host of the specified hive."})
+        }
+
+        // ensure phase one can be begun (is in phase 0)
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Hive is not in phase 0."});
+        }
+
+        // update hive
+        hive.phase = 1;
+        await hive.save();
+
+        // notify all clients of change
+        let clients = getSocketsInHive(hive.hiveID);
+        for (var key in clients) {
+            clients[key].send('{"event": "PHASE_SKIP", "newPhase": 1}');
+        }
+
+        res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on beginPhaseOne controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
     }
 }
 
