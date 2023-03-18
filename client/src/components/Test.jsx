@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Link } from 'react-router-dom'
 export default class TestComponent extends Component {
     constructor() {
         super();
@@ -20,8 +19,8 @@ export default class TestComponent extends Component {
 
     handleCreateButtonClick = () => {
         axios.post("/test")
-        }
-    
+    }
+
 
     render() {
         return (

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Login from './Login.jsx';
 import "./Style.css"
@@ -12,14 +12,11 @@ export default class Register extends Login {
 	constructor() {
 		super()
 		this.state.confirmPassword = ''
-
 		this.handleRegister = this.handleRegister.bind(this)
-
 	}
 
 	handleRegister = (event) => {
 		//checks input validity then sends the post request
-
 		event.preventDefault()
 		if (this.state.password !== this.state.confirmPassword) {
 			this.setState({ errText: "Password and confirm password must match" })
@@ -31,7 +28,6 @@ export default class Register extends Login {
 				if (res.status === 201) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
-
 					window.location.replace("")
 				} else if (res.status === 401) {
 					this.setState({ errText: "Incorrect username or password" })

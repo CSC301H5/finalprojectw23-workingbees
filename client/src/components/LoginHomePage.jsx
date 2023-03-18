@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-import ScrollPage from './scroll';
-import { getCookie } from './getAuthToken';
+import { getCookie } from '../utils/getAuthToken';
 import HiveList from './HiveList';
-import BigEntry from './BigEntry';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
@@ -18,10 +15,7 @@ function LoginHomePage() {
   }
 
   async function getHiveName() {
-    console.log('room', room);
-    console.log('x-auth-token', x_auth_token);
     const roomInt = parseInt(room);
-    console.log('roomInt', roomInt);
 
     axios.get("/api/v1/getHiveInfo", {
       params: {
@@ -54,7 +48,7 @@ function LoginHomePage() {
   return (
     <div class='grid'>
       <div class='left'>
-        <img src={hives}></img>
+        <img src={hives} />
       </div>
       <div class='right'>
         < Navbar />

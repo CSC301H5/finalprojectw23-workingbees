@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from 'axios';
 import BigEntry from './BigEntry';
-import { getCookie } from './getAuthToken';
+import { getCookie } from '../utils/getAuthToken';
 
 export default function HiveList() {
 

@@ -37,7 +37,7 @@ const GroupCreation = () => {
     };
 
     const handleNavigation = () => {
-        navigate("/teamProfile", { state: { token: token, code: code} })
+        navigate("/teamProfile", { state: { token: token, code: code } })
     };
 
     return (
