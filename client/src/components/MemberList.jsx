@@ -2,17 +2,11 @@ import { useState, useEffect } from "react"
 import axios from 'axios';
 import SmallEntry from "./SmallEntry";
 
-export default function MemberList({ hiveID, token }) {
+export default function MemberList({ hiveID, token, socket }) {
 
     const [leader, setLeader] = useState('');
     const [members, setMembers] = useState([]);
     const [invitedUsers, setInvitedUsers] = useState([]);
-
-    const socket = new WebSocket('ws://localhost:3030/initializeWS');
-
-    socket.addEventListener('open', (event) => {
-        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
-    });
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
@@ -21,6 +15,8 @@ export default function MemberList({ hiveID, token }) {
             setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
         } else if (data.event === "INVITE_REJECTED") {
             setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
+        } else if (data.event === "INVITE_SENT") {
+            setInvitedUsers((prevList) => [...prevList, data.username]);
         }
     });
 
@@ -36,7 +32,7 @@ export default function MemberList({ hiveID, token }) {
             if (res.status === 200) {
                 // Set leader
                 if (res.data.leaderName === res.data.userName) {
-                    setLeader(`${res.data.leaderName}(You)`);
+                    setLeader(`You (${res.data.leaderName})`);
                 } else {
                     setLeader(res.data.leaderName);
                 }
@@ -45,7 +41,7 @@ export default function MemberList({ hiveID, token }) {
                 const currentMembers = [];
                 for (let i = 0; i < res.data.members.length; i++) {
                     if (res.data.members[i] === res.data.userName) {
-                        currentMembers.push(`${res.data.userName}(You)`);
+                        currentMembers.push(`You (${res.data.userName})`);
                     } else {
                         currentMembers.push(res.data.members[i]);
                     }

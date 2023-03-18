@@ -22,9 +22,6 @@ export default class Login extends Component {
 		return (<div><p>{props.text}</p></div>)
 	}
 
-
-
-
 	checkInputs = (username, password) => {
 		// checks username and password formatting
 		//emails have to follow tstandard email formatting
@@ -46,7 +43,6 @@ export default class Login extends Component {
 			this.setState({ confirmPassword: event.target.value });
 		}
 	}
-
 
 	handleLogin = (event) => {
 		//checks inputs, then sends the request,

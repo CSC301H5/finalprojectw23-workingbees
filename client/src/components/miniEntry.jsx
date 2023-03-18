@@ -1,6 +1,6 @@
 import React from 'react';
 import crown from "../Assets/leader.png"
-const smallEntry = ({ name, status = null, pictureUrl = null, children }) => {
+const MiniEntry = ({ name, status = null, pictureUrl = null, children }) => {
   return (
     <div className="entryWrapper">
       {pictureUrl ? (
@@ -19,11 +19,12 @@ const smallEntry = ({ name, status = null, pictureUrl = null, children }) => {
             src={crown}
             alt={name}
             style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px", marginLeft: "150px" }}
-          />) : (<p style={{ color: "#FFAF40", textAlign: "left", paddingRight: "40px", fontFamily: "Montserrat", marginLeft: "150px" }}>{status}</p>
+          />) : (<p style={{ color: "#FFAF40", textAlign: "left", paddingRight: "40px", fontFamily: "Montserrat",  }}>{status}</p>
 
         )}</div>)}
     </div>
   );
 };
 
-export default smallEntry;
+
+export default MiniEntry;

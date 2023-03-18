@@ -11,15 +11,12 @@ function ClientSlider(props) {
     const setNum = props.setNum
     const explanation = props.explanation
 
-
     const handleChange = (e) => { setNum(e.target.value) }
-
 
     return (
         <div>
             <label className="text">{explanation}     </label>
             <label className="text" style={{ color: "#FFAF40", fontSize: "24px", fontWeight: "light" }}>{num}%</label> <br />
-
             <label className="text" style={{ color: "#FFAF40", fontSize: "13px" }}>{min}%</label>
             <input
                 className="slider"
@@ -30,7 +27,6 @@ function ClientSlider(props) {
                 onChange={handleChange}
             />
             <label className="text" style={{ color: "#FFAF40", fontSize: "13px", marginRight: "50px" }}>{max}%</label>
-
         </div>
     )
 } export default ClientSlider

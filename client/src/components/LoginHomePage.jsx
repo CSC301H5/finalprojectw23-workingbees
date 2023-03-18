@@ -8,7 +8,6 @@ import Navbar from "./Navbar";
 import ScrollPage from './scroll';
 import { getCookie } from './getAuthToken';
 import HiveList from './HiveList';
-import CircleWithName from './A';
 import BigEntry from './BigEntry';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
@@ -67,9 +66,6 @@ function LoginHomePage() {
           }}
         >
           <HiveList />
-
-
-
         </div>
         <input
           className='SmalltextBox'

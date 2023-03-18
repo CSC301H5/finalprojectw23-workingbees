@@ -26,10 +26,10 @@ const Profile = () => {
         "x-auth-token": token
       }
     }).then(res => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         const hiveID = res.data.hiveID;
         console.log("hiveID sent from Profile:", hiveID);
-        navigate("/groupcreation", { state: { token, hiveID } });
+        navigate("/groupcreation", { state: { token, hiveID, code } });
       }
       console.log(res.data);
     }).catch(err => {
@@ -55,7 +55,7 @@ const Profile = () => {
         <img src={hives}></img>
       </div>
       <div class='right'>
-        < Navbar />
+        < Navbar roomCode={parseInt(code)} token={location.state.token}/>
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>
             <Avatr width={300}

@@ -655,6 +655,26 @@ font-family:'Montserrat';
 
 }
 
+.verticalGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 200px; /* Set a fixed row height */
+  grid-gap: 20px;
+}
+
+.entryBox2 {
+  background-color: #F6F6F6; 
+  border-style: solid;
+  border-width: 2px;
+  border-color: #FFAF40;
+  border-radius: "25px"; 
+  border-radius: 25px;
+font-family:'Montserrat';
+  height: 250px;
+  margin: 7px;
+
+}
+
 .entry  li {
   display: inline-block;
   font-size: 20px;
@@ -668,6 +688,16 @@ font-family:'Montserrat';
   border-bottom: 2px solid #FFAF40;
   background-color: #F6F6F6;
 }
+
+.miniEntryWrapper {
+  display: grid;
+  grid-template-columns: auto 30px 30px;
+  align-items: center;
+  border-color: #FFAF40;
+  background-color: #F6F6F6;
+  border-right:2px #FFAF40;
+}
+
   .bigEntryWrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -690,6 +720,7 @@ font-family:'Montserrat';
   flex-direction: row;
   align-items: center;
   padding-bottom: 20px;
+  overflow: scroll;
 }
 
 .circle {

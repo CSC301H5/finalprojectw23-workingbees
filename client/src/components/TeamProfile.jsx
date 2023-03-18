@@ -12,7 +12,7 @@ import hives from '../Assets/hives.png'
 // expects code, token, and hiveID 
 function TeamProfile() {
     // stores availability as 2D array arr in calendar
-    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(13).fill(0)))
+    const [arr, setArr] = useState(Array(7).fill(0).map(row => new Array(24).fill(0)))
     // stores client input value in slider
     const [num, setNum] = useState(0)
     // stores client response in dropdown
@@ -20,12 +20,63 @@ function TeamProfile() {
     // stores selected options in multiselect
     const [selected, setSelected] = useState([])
     // stores configOptions
-    const [configOptions, setConfigOptions] = useState('')
+    //const [configOptions, setConfigOptions] = useState('')
 
     const location = useLocation();
     const navigate = useNavigate();
 
+    const configOptions =  {
+        groupSizeRange: [1, 4],
+        questions: [
+            {
+                type: "DROPDOWN",
+                title: "Meow",
+                explanation: "Select one",
+                matchMode: "SIMILAR",
+                priority: 4,
+                typeOptions: {
+                    options: ["A", "B", "C", "D"],
+                    required: false
+                }
+            },
+            {
+                type: "MULTISELECT",
+                title: "Multi-Meow",
+                explanation: "Select one or more (max 2)",
+                matchMode: "SIMILAR",
+                priority: 3,
+                typeOptions: {
+                    options: ["A", "B", "C", "D"],
+                    maxAllowed: 2,
+                    required: false
+                }
+            },
+            {
+                type: "NUMBERLINE",
+                title: "Number-Meow",
+                explanation: "Choose a value",
+                matchMode: "SIMILAR",
+                priority: 2,
+                typeOptions: {
+                    min: 0,
+                    max: 100,
+                    step: 0.5
+                }
+            },
+            {
+                type: "TIMETABLE",
+                title: "Number-Meow",
+                explanation: "Availability (max 5)",
+                matchMode: "SIMILAR",
+                priority: 2,
+                typeOptions: {
+                    maxAllowed: 5
+                }
+            }
+    ]
+    }
 
+/*
     // get configOptions
     async function getConfigOptions() {
         axios.get("/api/v1/getRoomConfigOptions",
@@ -45,6 +96,30 @@ function TeamProfile() {
     useEffect(() => {
         getConfigOptions();
     }, [])
+*/
+    const handleSubmit = e => {
+
+        e.preventDefault();
+        axios.post("/api/v1/submitRoomConfigOptions",
+            {
+                hiveID: location.state.hiveID,
+                configOptionsResponse: {
+                    responses: userResponses
+                }
+            }, {
+            headers: {
+                'x-auth-token': location.state.token
+            }
+        }
+        ).then(res => {
+            if (res.status === 200) {
+                // redirect
+            }
+        })
+    }
+
+    // stores user responses to be sent
+    const userResponses = [];
 
     const handleSubmit = e => {
 
@@ -97,7 +172,7 @@ function TeamProfile() {
                 <img src={hives}></img>
             </div>
             <div class="right">
-                <Navbar roomCode={location.state.code} />
+                <Navbar roomCode={location.state.code} token={location.state.token} />
                 <div style={{ overflow: "auto", maxHeight: "70vh" }}>
                     <tbody>{rows}</tbody>
                 </div>
