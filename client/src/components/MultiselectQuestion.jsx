@@ -1,53 +1,66 @@
 import "./Style.css"
 import QuestionText from './QuestionText'
-import AnswerTexts from "./AnswerTexts"
+import OptionTexts from "./OptionTexts"
+import DropdownQuestion from './DropdownQuestion'
 
-/* Necessary props:
-    index: index in the list of questions
-    question: question text
-    options, maxAllowed, required: multiselect parameters
-    handleTextChange: function to change state in parent
-    removeQuestion: function to remove element from parent state list
-    setRequired: function to change state in parent
+/* Necessary props same as parent
 */
-export default function MultiselectQuestion(props) {
-    return (
-        <div>
-            <QuestionText
-                index={props.index}
-                question={props.question}
-                handleTextChange={props.handleTextChange}
-                removeQuestion={props.removeQuestion}
-            />
-            <label>Options:</label>
-            <AnswerTexts
-                index={props.index}
-                answers={props.answers}
-                handleTextChange={props.handleTextChange}
-                removeAnswer={props.removeAnswer}
-            />
-            <input
-                type="button"
-                name={"addanswer-" + props.index}
-                value="Add Answer"
-                onClick={props.addAnswer}
-            /> <br />
-            <label>Maximum number of options allowed:</label>
-            <input
-                type="number"
-                name={"max-" + props.index}
-                value={props.max}
-                onChange={props.handleTextChange}
-                required /> <br />
-            <label>Required?</label>
-            <select
-				name={"required-" + props.index}
-				onChange={props.setRequired}
-				value={props.required}
-				placeholder="Required">
-				<option>Yes</option>
-				<option>No</option>
-			</select> <br />
-        </div>
-    )
+
+export default class MultiselectQuestion extends DropdownQuestion {
+    constructor(props) {
+        super(props)
+
+        this.state.type = "MULTISELECT"
+        this.state.maxAllowed = 0
+
+        this.changeMaxAllowed = this.changeMaxAllowed.bind(this)
+    }
+
+    changeMaxAllowed(event) {
+        this.setState({ maxAllowed: event.target.value })
+    }
+
+    render() {
+        return (
+            <div className='border'>
+                <QuestionText
+                    id={this.state.id}
+                    title={this.state.title}
+                    explanation={this.state.explanation}
+                    handleTextChange={this.handleTextChange}
+                    removeQuestion={this.removeQuestion}
+                    matchMode={this.state.matchMode}
+                    selectMode={this.handleSelectChange}
+                    priority={this.state.priority}
+                    changePriority={this.changePriority}
+                />
+                <OptionTexts
+                    options={this.state.options}
+                    handleOptionChange={this.handleOptionChange}
+                    removeOption={this.removeOption}
+                />
+                <input
+                    type="button"
+                    className="small_button"
+                    value="Add Answer"
+                    onClick={this.addOption}
+                /> <br />
+                <label className="text">Required</label>
+                <input
+                    type="checkbox"
+                    checked={this.state.required}
+                    onChange={this.changeRequired}
+                /> <br />
+
+                <label className="text">Maximum number of selected options: </label>
+                <input
+                    type="number"
+                    className="tinyInputBox"
+                    value={this.state.maxAllowed}
+                    onChange={this.changeMaxAllowed}
+                    required />
+
+            </div>
+        )
+    }
 }

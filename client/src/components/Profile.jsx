@@ -5,46 +5,36 @@ import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-import { getCookie } from './getAuthToken';
-const Profile = () => {
 
+const Profile = () => {
   const location = useLocation();
   const code = location.state.code;
   const token = location.state.token;
-   console.log("code :", code);
-   console.log("x-auth-token from landing", token);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [profilePicture, setProfilePicture] = useState(null);
-  let navigate = useNavigate();
- 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ name, description, preview });
-    const x_auth_token = getCookie("x-auth-token");
-      console.log("x-auth-token", token);
-      console.log("typeof(code) : ", typeof(code));
-      axios.post('/api/v1/joinHive', {
-        
-          code: Number(code),
-          profilePicture: preview,
-          displayName: name,
-          biography: description
-  
-        },{
-        headers: {
-          "x-auth-token": token
-        }}
 
-       ).then(res => {
-        if (res.status ==201) 
-        {  console.log("hiveID :",res.data.hiveID);
-          //navigate("/Profile" , { state: { code: code} } )
-        }
-        console.log(res.data);
-      }).catch(err => {
-        console.error(err.response.data);
-      });
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    axios.post('/api/v1/joinHive', {
+      code: parseInt(code),
+      profilePicture: preview,
+      displayName: name,
+      biography: description
+    }, {
+      headers: {
+        "x-auth-token": token
+      }
+    }).then(res => {
+      if (res.status === 201) {
+        const hiveID = res.data.hiveID;
+        console.log("hiveID sent from Profile:", hiveID);
+        navigate("/groupcreation", { state: { token, hiveID, code } });
+      }
+      console.log(res.data);
+    }).catch(err => {
+      console.error(err.response.data);
+    });
   };
 
   const [src, setSrc] = useState(null);
@@ -57,10 +47,7 @@ const Profile = () => {
     setPreview(view);
   }
   useEffect(() => {
-    //console.log(preview)
   })
-
-
 
   return (
     <div class='grid'>
@@ -68,19 +55,17 @@ const Profile = () => {
         <img src={hives}></img>
       </div>
       <div class='right'>
-        < Navbar />
+        < Navbar roomCode={parseInt(code)} token={location.state.token}/>
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>
-
-
             <Avatr width={300}
               height={200}
               onCrop={onCrop}
               onClose={onClose}
               src={src}
             />
-          </div>    </form>
-
+          </div>
+        </form>
 
         <label className="display" style={{ top: '385px', left: '700px', width: '300px', height: '20px' }}>Help others identify you </label>
 
@@ -109,7 +94,7 @@ const Profile = () => {
           class='multiline-textbox'
           value={description}
           onChange={e => setDescription(e.target.value)}
- 
+
           placeholder="Type your message here..." />
         <button onClick={handleSubmit} type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
 

@@ -8,8 +8,8 @@ import "./Style.css"
 	handleText:
 	removeAnswer:
 */
-function Answer(props){
-	return ( 
+function Answer(props) {
+	return (
 		<div>
 			<input
 				type="text"
@@ -23,7 +23,7 @@ function Answer(props){
 				value="Remove"
 				name={"removeanswer-" + props.questionIndex + "-" + props.answerIndex}
 				onClick={props.removeAnswer}
-				/>
+			/>
 		</div>
 	)
 }
@@ -34,21 +34,21 @@ function Answer(props){
 	handleTextChange:
 	removeAnswer:
 */
-export default function AnswerTexts (props){
+export default function AnswerTexts(props) {
 	let answerTexts = []
-	
-	for(let i=0; i < props.answerslength; i++){
+
+	for (let i = 0; i < props.answerslength; i++) {
 		answerTexts.push(
-		<Answer
-			questionIndex={props.index}
-			answerIndex={i}
-			answer={props.answers[i]} 
-			handleTextChange={props.handleTextChange}
-			removeAnswer={props.removeAnswer}
+			<Answer
+				questionIndex={props.index}
+				answerIndex={i}
+				answer={props.answers[i]}
+				handleTextChange={props.handleTextChange}
+				removeAnswer={props.removeAnswer}
 			/>
 		)
 	}
-	
+
 	return answerTexts
 
 }

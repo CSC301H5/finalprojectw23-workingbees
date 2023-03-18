@@ -9,8 +9,6 @@ const attendeeModel = mongoose.Schema({
     groupID: String,
     swarmID: String,
     pendingInvites: Array, // of strings of matchingGroupsIDs that have sent invites to this attendee. 
-    recommendedPending: Array, // of userIDs (strings)
-    recommendedResponses: Array // of userIDs (strings)
 });
 
 const AttendeeModel = mongoose.model('Attendee', attendeeModel);
