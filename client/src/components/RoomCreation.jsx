@@ -102,7 +102,7 @@ function CreateRoom() {
     return (
         <div className="grid">
             <div class="left">
-                <img src={hives}></img>
+                <img src={hives} alt="" />
             </div>
             <div class="right">
                 < Navbar />

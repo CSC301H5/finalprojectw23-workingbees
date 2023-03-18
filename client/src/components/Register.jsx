@@ -44,7 +44,7 @@ export default class Register extends Login {
 		return (
 			<div class="grid">
 				<div class="left-side">
-					<img src={hives}></img>
+					<img src={hives} alt="" />
 				</div>
 				<div class="right-side">
 					< Navbar />

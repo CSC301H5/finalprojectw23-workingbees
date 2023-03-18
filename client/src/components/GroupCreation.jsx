@@ -44,7 +44,7 @@ const GroupCreation = () => {
         <>
             <div class="grid">
                 <div class="left">
-                    <img src={hives} />
+                    <img src={hives} alt="" />
                 </div>
                 <div class="right" >
                     < Navbar roomCode={code} token={token} />

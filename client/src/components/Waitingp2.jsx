@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import Navbar from "./Navbar";
@@ -23,10 +22,10 @@ function WaitingP1() {
   return (
     <div className="grid">
       <div class="left">
-        <img src={hives}></img>
+        <img src={hives} alt="" />
       </ div>
       <div class="right">
-        <Navbar roomCode={location.state.code} token={location.state.token}/>
+        <Navbar roomCode={location.state.code} token={location.state.token} />
         <h2 className="roomCode">Phase 1 </h2>
         <form onSubmit={handleSubmit}>
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
@@ -35,7 +34,7 @@ function WaitingP1() {
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
-          <StaticAttendeeList hiveID={location.state.hiveID} token={location.state.token}/>
+          <StaticAttendeeList hiveID={location.state.hiveID} token={location.state.token} />
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 2</button>
         </form>
       </div>

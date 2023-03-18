@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
@@ -27,7 +26,7 @@ function LoginHomePage() {
   return (
     <div class='grid'>
       <div class='left'>
-        <img src={hives} />
+        <img src={hives} alt="" />
       </div>
       <div class='right'>
         < Navbar />

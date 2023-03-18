@@ -11,7 +11,7 @@ export default class RoomQuestionConfig extends Component {
 		return (
 			<div class="grid">
 				<div class="left-side">
-					<img src={hives}></img>
+					<img src={hives} alt="" />
 				</ div>
 				<div class="right-side">
 					< Navbar />

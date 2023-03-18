@@ -14,7 +14,7 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = "dogol
           <div class="details">{detail}</div>
         </div>
         <div class="pointer" >
-          <img src={arrow} style={{ cursor: "pointer", width: "30px", height: "100px", marginLeft: "150px", }} onClick={handleClick} />
+          <img src={arrow} alt="" style={{ cursor: "pointer", width: "30px", height: "100px", marginLeft: "150px", }} onClick={handleClick} />
         </div>
 
       </div>

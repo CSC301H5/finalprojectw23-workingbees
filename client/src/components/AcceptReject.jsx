@@ -46,10 +46,12 @@ function AcceptReject(props) {
             <img className="acceptreject"
                 onClick={handleAccept}
                 src={tick}
+                alt="Accept invitation button"
             />
             <img className="acceptreject"
                 onClick={handleReject}
                 src={cross}
+                alt="Reject invitation button"
             />
         </div>
     )
