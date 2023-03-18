@@ -1,31 +1,30 @@
 import React from 'react';
-import axios from 'axios'
-import getCookie from './getAuthToken'
+import axios from 'axios';
+import { getCookie } from '../utils/getAuthToken';
 
 sendMatchingResponse(hiveID, matchingID, response, next) {
 	token = getCookie('x-auth-token')
 	axios.post("/api/v1/respondToMatchingGroupRecommendation", {
-          params: {
-            "hiveID": hiveID,
+		params: {
+			"hiveID": hiveID,
 			"matchingGroupID": matchingID,
 			"response": response
-          },
-          headers: {
-            "x-auth-token": token
-          }
-        }).then(res => {
-          console.log("x2 : ",token);
-          if (res.status ==200) {
+		},
+		headers: {
+			"x-auth-token": token
+		}
+	}).then(res => {
+		console.log("x2 : ", token);
+		if (res.status == 200) {
 			console.log("30000");
 			console.log("x2 ", token);
-            next()
-          }
-          console.log(res.data);
-        }).catch(err => {
-          console.error(err.response.data);
-        });
+			next()
+		}
+		console.log(res.data);
+	}).catch(err => {
+		console.error(err.response.data);
+	});
 }
-
 
 
 /*necessary props
@@ -34,7 +33,7 @@ sendMatchingResponse(hiveID, matchingID, response, next) {
 	next: some function to iterate through the list of profiles in parent component
 */
 
-export default function ResponseButtons (props) {
+export default function ResponseButtons(props) {
 	return (
 		<div>
 			<input

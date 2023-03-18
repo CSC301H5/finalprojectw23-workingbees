@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from 'axios';
-import Avatr from "react-avatar-edit"
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-import ScrollPage from './scroll';
-import { getCookie } from './getAuthToken';
+import { getCookie } from '../utils/getAuthToken';
 import HiveList from './HiveList';
-import BigEntry from './BigEntry';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
@@ -17,44 +13,20 @@ function LoginHomePage() {
     setRoom(event.target.value);
   }
 
-  async function getHiveName() {
-    console.log('room', room);
-    console.log('x-auth-token', x_auth_token);
-    const roomInt = parseInt(room);
-    console.log('roomInt', roomInt);
-
-    axios.get("/api/v1/getHiveInfo", {
-      params: {
-        code: room
-      },
-      headers: {
-        "x-auth-token": x_auth_token
-      }
-    }).then(res => {
-      if (res.status === 200) {
-        navigate("/Profile", { state: { code: room, token: x_auth_token } })
-      }
-    })
-  }
-  useEffect(() => {
-    getHiveName();
-  }, [])
-
-
-  //Handle Join Hive button 
-  const handleClick = () => {
-    getHiveName();
+  // Handle Join Hive button 
+  const handleJoinHive = () => {
+    navigate("/Profile", { state: { code: room, token: x_auth_token } });
   }
 
-  //Handle create new Hive button 
-  const handleClick2 = () => {
-    navigate("/createHive");
+  // Handle create new hive button 
+  const handleCreateHive = () => {
+    navigate("/createHive", { state: { token: x_auth_token } });
   }
 
   return (
     <div class='grid'>
       <div class='left'>
-        <img src={hives}></img>
+        <img src={hives} alt="" />
       </div>
       <div class='right'>
         < Navbar />
@@ -76,8 +48,8 @@ function LoginHomePage() {
           value={room}
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         />
-        <button onClick={handleClick} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '150px', height: '35px', left: '930px', top: '660px' }}>Join Hive</button>
-        <button onClick={handleClick2} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Create new Hive</button>
+        <button onClick={handleJoinHive} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '150px', height: '35px', left: '930px', top: '660px' }}>Join Hive</button>
+        <button onClick={handleCreateHive} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Create new Hive</button>
 
       </div>
     </div>

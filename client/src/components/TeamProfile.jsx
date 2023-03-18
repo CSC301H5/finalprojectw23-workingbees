@@ -25,7 +25,7 @@ function TeamProfile() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const configOptions =  {
+    const configOptions = {
         groupSizeRange: [1, 4],
         questions: [
             {
@@ -73,53 +73,30 @@ function TeamProfile() {
                     maxAllowed: 5
                 }
             }
-    ]
+        ]
     }
 
-/*
-    // get configOptions
-    async function getConfigOptions() {
-        axios.get("/api/v1/getRoomConfigOptions",
-            {
-                params: {
-                    code: location.state.code
-                },
-                headers: {
-                    'x-auth-token': location.state.token
-                }
-            }).then(res => {
-                if (res.status === 200) {
-                    setConfigOptions(res.data.configOptions)
-                }
-            })
-    }
-    useEffect(() => {
-        getConfigOptions();
-    }, [])
-*/
-    const handleSubmit = e => {
-
-        e.preventDefault();
-        axios.post("/api/v1/submitRoomConfigOptions",
-            {
-                hiveID: location.state.hiveID,
-                configOptionsResponse: {
-                    responses: userResponses
-                }
-            }, {
-            headers: {
-                'x-auth-token': location.state.token
-            }
+    /*
+        // get configOptions
+        async function getConfigOptions() {
+            axios.get("/api/v1/getRoomConfigOptions",
+                {
+                    params: {
+                        code: location.state.code
+                    },
+                    headers: {
+                        'x-auth-token': location.state.token
+                    }
+                }).then(res => {
+                    if (res.status === 200) {
+                        setConfigOptions(res.data.configOptions)
+                    }
+                })
         }
-        ).then(res => {
-            if (res.status === 200) {
-                // redirect
-            }
-        })
-    }
-
-    // stores user responses to be sent
-    const userResponses = [];
+        useEffect(() => {
+            getConfigOptions();
+        }, [])
+    */
 
     const handleSubmit = e => {
 
@@ -169,7 +146,7 @@ function TeamProfile() {
     return (
         <div className="grid">
             <div class="left">
-                <img src={hives}></img>
+                <img src={hives} alt="" />
             </div>
             <div class="right">
                 <Navbar roomCode={location.state.code} token={location.state.token} />

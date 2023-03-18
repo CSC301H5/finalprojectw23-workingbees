@@ -19,7 +19,7 @@ const MiniEntry = ({ name, status = null, pictureUrl = null, children }) => {
             src={crown}
             alt={name}
             style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px", marginLeft: "150px" }}
-          />) : (<p style={{ color: "#FFAF40", textAlign: "left", paddingRight: "40px", fontFamily: "Montserrat",  }}>{status}</p>
+          />) : (<p style={{ color: "#FFAF40", textAlign: "left", paddingRight: "40px", fontFamily: "Montserrat", }}>{status}</p>
 
         )}</div>)}
     </div>

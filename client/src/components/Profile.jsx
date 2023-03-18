@@ -52,10 +52,10 @@ const Profile = () => {
   return (
     <div class='grid'>
       <div class='left'>
-        <img src={hives}></img>
+        <img src={hives} alt="" />
       </div>
       <div class='right'>
-        < Navbar roomCode={parseInt(code)} token={location.state.token}/>
+        < Navbar roomCode={parseInt(code)} token={location.state.token} />
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>
             <Avatr width={300}

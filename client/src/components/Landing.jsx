@@ -49,7 +49,7 @@ const Landing = () => {
     <>
       <div class="grid">
         <div class="left">
-          <img src={hives} />
+          <img src={hives} alt="" />
         </div>
         <div class="right">
           <div className='display' style={{ width: '507px', height: '115px', left: '740px', top: '261px', fontWeight: "500px", fontSize: "94px", lineHeight: "115px" }}> HIVEMIND </div>

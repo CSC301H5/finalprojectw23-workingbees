@@ -30,7 +30,7 @@ export default function Navbar({ roomCode, timer, token }) {
     <div class="grid">
       <div class="right">
         <nav class="nav">
-          <h1>{hiveName}</h1> {/* should be hiveName instead of roomCode */}
+          <h1>{hiveName}</h1>
           <h1 style={{ color: '#FFAF40' }}>{timer}</h1>
           <h1>HIVEMIND</h1>
         </nav>
