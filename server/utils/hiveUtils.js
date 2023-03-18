@@ -15,63 +15,17 @@ export async function getUniqueCode() {
     }
 }
 
-// returns a 1D time interval representation of the given 2D timetable
-export function timetableToInterval(timetable) {
-    let index = 0;
-    let timeInterval = [];
-    let started = false;
-    for (let i = 0; i < timetable.length; i++) {
-        for (let j = 0; j < timetable[i].length; j++) {
-            if (timetable[i][j] == 1 && !started) {
-                timeInterval.push(index);
-                started = true;
-            } else if (timetable[i][j] == 0 && started) {
-                timeInterval.push(index);
-                started = false;
-            }
-            index++;
-        }
-    }
-    if (started) {
-        timeInterval.push(index);
-    }
-    return timeInterval;
-}
-
-// returns a 2D timetable representation of the given 1D time interval
-export function intervalToTimetable(interval) {
-    let index = 0;
-    let counter = 0;
-    let timetable = [];
-    for (let i = 0; i < 7; i++) {
-        let day = []
-        for (let j = 0; j < 24; j++) {
-            if (counter < interval.length && interval[counter] <= index && index < interval[counter + 1]) {
-                day.push(1);
-            } else {
-                day.push(0);
-            }
-            if (index == interval[counter + 1]) {
-                counter += 2;
-            }
-            index++;
-        }
-        timetable.push(day);
-    }
-    return timetable;
-}
-
 export async function checkConfigOptions(req, res) {
-
+        
     // check config options body is as desired
     let configOptions = req.body.configOptions;
     let groupSizeRange = configOptions.groupSizeRange;
     let questions = configOptions.questions;
-    if (!groupSizeRange || ! questions) {
+    if (!groupSizeRange || !questions) {
         return res.status(400).json({msg: "Malformed request."});
-    } else if (!Array.isArray(groupSizeRange) || !Array.isArray(questions) || groupSizeRange.length != 2) {
+    } else if (!Array.isArray(groupSizeRange) || !Array.isArray(questions) || groupSizeRange.length !== 2) {
         return res.status(400).json({msg: "Malformed request."});
-    } else if (questions.length == 0) {
+    } else if (questions.length === 0) {
         return res.status(400).json({msg: "Error: Hive must have at least one question"});
     }
 
@@ -90,22 +44,28 @@ export async function checkConfigOptions(req, res) {
         let title = questions[i].title;
         let explanation = questions[i].explanation;
         let matchMode = questions[i].matchMode;
+        let priority = questions[i].priority;
         let typeOptions = questions[i].typeOptions;
 
         // check the question fields exist
-        if (!type || !title || !explanation || !matchMode || !typeOptions) {
+        if (!type || !title || !explanation || !matchMode || (!priority && priority !== 0) || !typeOptions) {
             return res.status(400).json({msg: "Malformed request. (question " + (i+1) + ")"});
         }
 
         // check if type and matchMode are valid
-        if (type != "DROPDOWN" && type != "MULTISELECT" && type != "NUMBERLINE" && type != "TIMETABLE") {
+        if (type !== "DROPDOWN" && type !== "MULTISELECT" && type !== "NUMBERLINE" && type !== "TIMETABLE") {
             return res.status(400).json({msg: "Error: Invalid type for question " + (i+1)});
-        } else if (matchMode != "SIMILAR" && matchMode != "DIVERSE" && matchMode != "NONE") {
+        } else if (matchMode !== "SIMILAR" && matchMode !== "DIVERSE" && matchMode !== "NONE") {
             return res.status(400).json({msg: "Error: Invalid matchMode for question " + (i+1)});
         }
 
+        // check if priority is valid
+        if (matchMode !== "NONE" && (!Number.isInteger(priority) || priority < 1 || priority > 5)) {
+            return res.status(400).json({msg: "Error: priority must be an integer from 1 to 5 (inclusive) for question " + (i+1)});
+        }
+
         // check if typeOptions is valid
-        if (type == "DROPDOWN") {
+        if (type === "DROPDOWN") {
             let options = typeOptions.options;
             let required = typeOptions.required;
 
@@ -127,17 +87,17 @@ export async function checkConfigOptions(req, res) {
             }
 
             // check if the question is possible to answer
-            if (required && options.length == 0) {
+            if (required && options.length === 0) {
                 return res.status(400).json({msg: "Error: question " + (i+1) + " needs at least one option if it's required"});
             }
 
-        } else if (type == "MULTISELECT") {
+        } else if (type === "MULTISELECT") {
             let options = typeOptions.options;
             let maxAllowed = typeOptions.maxAllowed;
             let required = typeOptions.required;
 
             // check if fields exist and are of the correct type
-            if (!options || (!maxAllowed && maxAllowed != 0) || (!required && required !== false)) {
+            if (!options || (!maxAllowed && maxAllowed !== 0) || (!required && required !== false)) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
             } else if (!isArrayOfStrings(options) || !Number.isInteger(maxAllowed) || (required !== false && required !== true)) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
@@ -154,7 +114,7 @@ export async function checkConfigOptions(req, res) {
             }
 
             // check if the question is possible to answer
-            if (required && options.length == 0) {
+            if (required && options.length === 0) {
                 return res.status(400).json({msg: "Error: question " + (i+1) + " needs at least one option if it's required"});
             } else if (required && maxAllowed <= 0) {
                 return res.status(400).json({msg: "Error: question " + (i+1) + " needs at least one allowed response if it's required"});
@@ -165,27 +125,27 @@ export async function checkConfigOptions(req, res) {
             // limit maxAllowed to the number of available options
             configOptions.questions[i].typeOptions.maxAllowed = Math.min(maxAllowed, options.length);
 
-        } else if (type == "NUMBERLINE") {
+        } else if (type === "NUMBERLINE") {
             let min = typeOptions.min;
             let max = typeOptions.max;
             let step = typeOptions.step;
 
             // check if fields exist and are of the correct type
-            if ((!min && min != 0) || (!max && max != 0) || !step) {
+            if ((!min && min !== 0) || (!max && max !== 0) || !step) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
             } else if (!Number.isFinite(min) || !Number.isFinite(max) || !Number.isFinite(step)) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
             }
-            
+
             // check if the question is possible to answer
-            if (min > max || step > max - min || (max - min) % step != 0) {
+            if (min > max || step > max - min || (max - min) % step !== 0) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
             }
-        } else if (type == "TIMETABLE") {
+        } else if (type === "TIMETABLE") {
             let maxAllowed = typeOptions.maxAllowed;
 
             // check if fields exist and are of the correct type
-            if (!maxAllowed && maxAllowed != 0) {
+            if (!maxAllowed && maxAllowed !== 0) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
             } else if (!Number.isInteger(maxAllowed)) {
                 return res.status(400).json({msg: "Error: Malformed typeOptions for question " + (i+1)});
@@ -202,21 +162,21 @@ export async function checkConfigOptions(req, res) {
     }
 }
 
-export async function checkConfigOptionsResponse(hive, configOptionsResponse, res) {
+export async function checkConfigOptionsResponse(hive, responses, res) {
 
-    let questions = hive.configOptions.questions;
+    const configOptions = JSON.parse(hive.configOptions);
+    let questions = configOptions.questions;
     if (!questions) { // this should always exist if the hive exists, so something went terribly wrong.
         return res.status(500).json("Server Error.");
     }
 
-    let responses = configOptionsResponse.responses;
     if (!responses && responses !== []) {
         return res.status(400).json({msg: "Malformed request: could not find responses within configOptionResponse"});
     } else if (!Array.isArray(responses)) {
         return res.status(400).json({msg: "Malformed request: responses must be an array"});
     }
 
-    if (responses.length != questions.length) {
+    if (responses.length !== questions.length) {
         return res.status(400).json({msg: "Malformed request: number of responses does not match number of questions"});
     }
 
@@ -224,35 +184,37 @@ export async function checkConfigOptionsResponse(hive, configOptionsResponse, re
         let type = questions[i].type;
         let typeOptions = questions[i].typeOptions;
         let response = responses[i];
-        if (type == "DROPDOWN") {
+        if (type === "DROPDOWN") {
             if (!typeOptions.options.includes(response)) {
                 return res.status(400).json({msg: `${response} is not an available option for question ` + (i+1)});
-            } else if (typeOptions.required && response == "") {
+            } else if (typeOptions.required && response === "") {
                 return res.status(400).json({msg: "question " + (i+1) + "is a required question that must be answered"});
             }
-        } else if (type == "MULTISELECT") {
+        } else if (type === "MULTISELECT") {
             if (!Array.isArray(response)) {
                 return res.status(400).json({msg: "Response to question " + (i+1) + " must be an array"});
             } else if (!isContained(response, typeOptions.options)) {
                 return res.status(400).json({msg: "Responses for question " + (i+1) + " must from its avaiable options"});
-            } else if (response.length == 0) {
+            } else if (response.length === 0) {
                 return res.status(400).json({msg: "question " + (i+1) + "is a required question that must be answered"});
+            } else if (response.length > typeOptions.maxAllowed) {
+                return res.status(400).json({msg: "Number of options selected for question " + (i+1) + " exceeds maximum options allowed"});
             }
-        } else if (type == "NUMBERLINE") {
+        } else if (type === "NUMBERLINE") {
             if (!Number.isFinite(response)) {
                 return res.status(400).json({msg: "Response to question " + (i+1) + " must be a number"});
             } else if (response < typeOptions.min || response > typeOptions.max) {
                 return res.status(400).json({msg: "Response to question " + (i+1) + " must be within its provided range"});
-            } else if (response % typeOptions.step != 0) {
+            } else if (response % typeOptions.step !== 0) {
                 return res.status(400).json({msg: "Response to question " + (i+1) + " must be a multiple of the step value"});
             }
-        } else if (type == "TIMETABLE") {
+        } else if (type === "TIMETABLE") {
             // check timetable response is formatted correctly
-            if (!Array.isArray(response) || response.length != 7) {
+            if (!Array.isArray(response) || response.length !== 7) {
                 return res.status(400).json({msg: "Response to question " + (i+1) + " must be a 7 x 24 array"});
             }
             for (let j = 0; j < response.length; j++) {
-                if (!Array.isArray(response[j]) || response[j].length != 24) {
+                if (!Array.isArray(response[j]) || response[j].length !== 24) {
                     return res.status(400).json({msg: "Response to question " + (i+1) + " must be a 7 x 24 array"});
                 }
             }

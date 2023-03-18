@@ -1,7 +1,7 @@
 // removes an element from the array and returns whether the element was successfully deleted
 export function removeElement(arr, elem) {
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == elem) {
+        if (arr[i] === elem) {
             arr.splice(i, 1);
             return true;
         }
@@ -43,4 +43,17 @@ export function isContained(arr1, arr2) {
         }
     }
     return true;
+}
+
+// returns an object in the arr with the given key value pair if it exists
+export function getObject(arr, key, value) {
+    try {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i][key] === value) {
+                return arr[i]
+            }
+        }
+    } catch (e) {
+        return false;
+    }
 }
