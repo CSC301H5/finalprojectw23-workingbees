@@ -20,6 +20,7 @@ export async function checkConfigOptions(req, res) {
     // check config options body is as desired
     let configOptions = req.body.configOptions;
     let groupSizeRange = configOptions.groupSizeRange;
+    let phaseChangeDates = configOptions.phaseChangeDates;
     let questions = configOptions.questions;
     if (!groupSizeRange || !questions) {
         return res.status(400).json({msg: "Malformed request."});
@@ -36,6 +37,26 @@ export async function checkConfigOptions(req, res) {
         return res.status(400).json({msg: "Error: groupSizeRange must contain numbers"});
     } else if (min < 1 || min > max) {
         return res.status(400).json({msg: "Error: Invalid minimum and maximum values for groupSizeRange"});
+    }
+
+    // check if phase change dates are valid
+    if (!phaseChangeDates) {
+        return res.status(400).json({msg: "Malformed request."});
+    } else if (!Array.isArray(phaseChangeDates) || phaseChangeDates.length !== 2) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    const dates = [];
+    for (let i = 0; i < phaseChangeDates.length; i++) {
+        let date = phaseChangeDates[i];
+        dates.push(Date.parse(date));
+        if (date !== null && !dates[i]) {
+            return res.status(400).json({msg: "Error: phaseChangeDates must contain valid dates or null"});
+        }
+    }
+
+    if (dates[0] !== null && dates[1] !== null && dates[0] > dates[1]) {
+        return res.status(400).json({msg: "Phase 0 deadline must occur before the Phase 1 deadline"});
     }
 
     // check that each question is formatted correctly
