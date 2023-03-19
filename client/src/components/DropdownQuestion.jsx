@@ -10,42 +10,42 @@ export default class DropdownQuestion extends Question {
 
 	constructor(props) {
 		super(props)
-		this.state.type = "DROPDOWN"
-		this.state.required = false
-		this.state.options = []
+		this.state.type = "DROPDOWN";
+		this.state.required = false;
+		this.state.options = [];
 
-		this.removeOption = this.removeOption.bind(this)
-		this.addOption = this.addOption.bind(this)
-		this.changeRequired = this.changeRequired.bind(this)
-		this.handleOptionChange = this.handleOptionChange.bind(this)
+		this.removeOption = this.removeOption.bind(this);
+		this.addOption = this.addOption.bind(this);
+		this.changeRequired = this.changeRequired.bind(this);
+		this.handleOptionChange = this.handleOptionChange.bind(this);
 	}
 
 	handleOptionChange(event) {
-		let i = event.target.id
-		let newOptions = this.state.options.map((x) => x)
-		newOptions[i] = event.target.value
-		this.setState({ options: newOptions })
+		let i = event.target.id;
+		let newOptions = this.state.options.map((x) => x);
+		newOptions[i] = event.target.value;
+		this.setState({ options: newOptions });
 	}
 
 	addOption() {
-		let newOptions = this.state.options.map((x) => x)
-		newOptions.push("")
-		this.setState({ options: newOptions })
+		let newOptions = this.state.options.map((x) => x);
+		newOptions.push("");
+		this.setState({ options: newOptions });
 	}
 
 	removeOption(index) {
-		let newOptions = this.state.options.map((x) => x)
+		let newOptions = this.state.options.map((x) => x);
 		this.setState({
 			options: newOptions.slice(0, index).concat(newOptions.slice(index + 1))
-		})
+		});
 	}
 
 	changeRequired(event) {
 		this.setState({
 			required: event.target.checked
-		})
+		});
 	}
-  
+
 	render() {
 		return (
 			<div className='border'>

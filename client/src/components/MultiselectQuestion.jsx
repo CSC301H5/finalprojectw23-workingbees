@@ -8,16 +8,16 @@ import DropdownQuestion from './DropdownQuestion'
 
 export default class MultiselectQuestion extends DropdownQuestion {
     constructor(props) {
-        super(props)
+        super(props);
 
-        this.state.type = "MULTISELECT"
-        this.state.maxAllowed = 0
+        this.state.type = "MULTISELECT";
+        this.state.maxAllowed = 0;
 
-        this.changeMaxAllowed = this.changeMaxAllowed.bind(this)
+        this.changeMaxAllowed = this.changeMaxAllowed.bind(this);
     }
 
     changeMaxAllowed(event) {
-        this.setState({ maxAllowed: event.target.value })
+        this.setState({ maxAllowed: event.target.value });
     }
 
     render() {

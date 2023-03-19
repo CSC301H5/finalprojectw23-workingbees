@@ -6,24 +6,24 @@ import Question from './Question'
 */
 export default class NumberlineQuestion extends Question {
 	constructor(props) {
-		super(props)
-		this.state.type = "NUMBERLINE"
-		this.state.min = 0
-		this.state.max = 100
-		this.state.step = 5
+		super(props);
+		this.state.type = "NUMBERLINE";
+		this.state.min = 0;
+		this.state.max = 100;
+		this.state.step = 5;
 
-		this.handleNumberChange = this.handleNumberChange.bind(this)
+		this.handleNumberChange = this.handleNumberChange.bind(this);
 	}
 
 	handleNumberChange(event) {
-		let t = event.target.name
+		let t = event.target.name;
 
 		if (t === "min") {
-			this.setState({ min: event.target.value })
+			this.setState({ min: event.target.value });
 		} else if (t === "max") {
-			this.setState({ max: event.target.value })
+			this.setState({ max: event.target.value });
 		} else if (t === "step") {
-			this.setState({ step: event.target.value })
+			this.setState({ step: event.target.value });
 		}
 	}
 

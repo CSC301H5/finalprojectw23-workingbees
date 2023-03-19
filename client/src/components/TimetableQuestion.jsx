@@ -7,15 +7,15 @@ import Question from './Question'
 
 export default class TimetableQuestion extends Question {
 	constructor(props) {
-		super(props)
-		this.state.type = "TIMETABLE"
-		this.state.maxAllowed = 6
+		super(props);
+		this.state.type = "TIMETABLE";
+		this.state.maxAllowed = 6;
 
-		this.handleNumberChange = this.handleNumberChange.bind(this)
+		this.handleNumberChange = this.handleNumberChange.bind(this);
 	}
 
 	handleNumberChange(event) {
-		this.setState({ maxAllowed: event.target.value })
+		this.setState({ maxAllowed: event.target.value });
 	}
 
 	render() {
