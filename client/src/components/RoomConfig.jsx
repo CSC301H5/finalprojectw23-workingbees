@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import QuestionList from "./QuestionList";
 import Navbar from "./Navbar";
@@ -7,6 +7,7 @@ import hives from "../Assets/hives.png";
 const ConfigRoom = () => {
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     return (
         <div class="grid">
@@ -22,6 +23,7 @@ const ConfigRoom = () => {
                         profilePicture={location.state.profilePicture}
                         hiveName={location.state.hiveName}
                         displayName={location.state.displayName}
+                        navigateFunction={navigate}
                         navigatePath={"/waiting1"}
                     />
                 </div>

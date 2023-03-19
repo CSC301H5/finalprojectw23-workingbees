@@ -29,7 +29,6 @@ function WaitingP1() {
     navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID, socket: socket } })
   }
 
-
   return (
     <div className="grid">
       <div class="left">
@@ -64,6 +63,5 @@ function WaitingP1() {
       </div>
     </div>
   );
-
 }
 export default WaitingP1

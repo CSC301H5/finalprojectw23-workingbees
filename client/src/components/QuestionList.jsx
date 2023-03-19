@@ -6,7 +6,7 @@ import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
 
-// assumes token, profilePicture, hiveName, displayName, navigatePath are given
+// assumes token, profilePicture, hiveName, displayName, navigateFunction, navigatePath are given
 export default class QuestionList extends Component {
 	constructor(props) {
 		super(props);
@@ -79,7 +79,6 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
-		console.log(this.props.navigatePath);
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,
@@ -142,7 +141,7 @@ export default class QuestionList extends Component {
 			}
 		}).then(res => {
 			if (res.status === 200) {
-				// TODO: navigate to this.props.navigatePath with state { code: res.data.code, token: this.props.token, hiveID: res.data.hiveID }
+				this.props.navigateFunction(this.props.navigatePath, { state: { code: res.data.code, token: this.props.token, hiveID: res.data.hiveID } });
 			}
 		})
 	}
