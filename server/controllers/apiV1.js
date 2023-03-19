@@ -1288,7 +1288,7 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1337,7 +1337,7 @@ export const getMatchingGroupsDonePhaseOne = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1389,7 +1389,7 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
