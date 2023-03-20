@@ -18,6 +18,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
 
     changeMaxAllowed(event) {
         this.setState({ maxAllowed: event.target.value });
+        this.updateParentState();
     }
 
     render() {

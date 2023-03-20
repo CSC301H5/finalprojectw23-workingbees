@@ -25,12 +25,14 @@ export default class DropdownQuestion extends Question {
 		let newOptions = this.state.options.map((x) => x);
 		newOptions[i] = event.target.value;
 		this.setState({ options: newOptions });
+		this.updateParentState();
 	}
 
 	addOption() {
 		let newOptions = this.state.options.map((x) => x);
 		newOptions.push("");
 		this.setState({ options: newOptions });
+		this.updateParentState();
 	}
 
 	removeOption(index) {
@@ -38,12 +40,14 @@ export default class DropdownQuestion extends Question {
 		this.setState({
 			options: newOptions.slice(0, index).concat(newOptions.slice(index + 1))
 		});
+		this.updateParentState();
 	}
 
 	changeRequired(event) {
 		this.setState({
 			required: event.target.checked
 		});
+		this.updateParentState();
 	}
 
 	render() {

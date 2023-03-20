@@ -25,6 +25,7 @@ export default class NumberlineQuestion extends Question {
 		} else if (t === "step") {
 			this.setState({ step: event.target.value });
 		}
+		this.updateParentState();
 	}
 
 	render() {

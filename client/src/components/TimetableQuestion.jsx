@@ -16,6 +16,7 @@ export default class TimetableQuestion extends Question {
 
 	handleNumberChange(event) {
 		this.setState({ maxAllowed: event.target.value });
+		this.updateParentState();
 	}
 
 	render() {

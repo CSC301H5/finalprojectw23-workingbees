@@ -12,6 +12,7 @@ export default class QuestionList extends Component {
 		super(props);
 		this.state = {
 			questions: [],
+			questionData: [],
 			selectedType: "DROPDOWN",
 			nextKey: 0
 		}
@@ -25,6 +26,7 @@ export default class QuestionList extends Component {
 	addQuestion(event) {
 		// need to make a copy to prevent concurrency issues
 		let copyquestions = this.state.questions.map(x => x);
+		let copyquestionsdata = this.state.questions.map(x => x);
 		let k = this.state.nextKey;
 		this.setState({ nextKey: k + 1 });
 		let newQuestion;
@@ -34,28 +36,33 @@ export default class QuestionList extends Component {
 				id={k}
 				key={k}
 				removeQuestion={this.removeQuestion}
+				parent={this}
 			/>
 		} else if (this.state.selectedType === "MULTISELECT") {
 			newQuestion = <MultiselectQuestion
 				id={k}
 				key={k}
 				removeQuestion={this.removeQuestion}
+				parent={this}
 			/>
 		} else if (this.state.selectedType === "NUMBERLINE") {
 			newQuestion = <NumberlineQuestion
 				id={k}
 				key={k}
 				removeQuestion={this.removeQuestion}
+				parent={this}
 			/>
 		} else if (this.state.selectedType === "TIMETABLE") {
 			newQuestion = <TimetableQuestion
 				id={k}
 				key={k}
 				removeQuestion={this.removeQuestion}
+				parent={this}
 			/>
 		}
 
 		copyquestions.push(newQuestion);
+		copyquestionsdata.push({});
 		this.setState({ questions: copyquestions });
 	}
 
@@ -87,43 +94,7 @@ export default class QuestionList extends Component {
 				configOptions: {
 					groupSizeRange: [1, 4],
 					phaseChangeDates: [null, null],
-					questions: [
-						{
-							type: "DROPDOWN",
-							title: "Meow",
-							explanation: "There is no explanation, only banana",
-							matchMode: "SIMILAR",
-							priority: 4,
-							typeOptions: {
-								options: ["apple", "potato"],
-								required: false
-							}
-						},
-						{
-							type: "MULTISELECT",
-							title: "Multi-Meow",
-							explanation: "There is no explanation, only banana",
-							matchMode: "SIMILAR",
-							priority: 3,
-							typeOptions: {
-								options: ["apple", "potato", "dinosaur"],
-								maxAllowed: 2,
-								required: false
-							}
-						},
-						{
-							type: "NUMBERLINE",
-							title: "Number-Meow",
-							explanation: "There is no explanation, only banana",
-							matchMode: "SIMILAR",
-							priority: 2,
-							typeOptions: {
-								min: 0,
-								max: 100,
-								step: 0.5
-							}
-						}
-					]
+					questions: this.state.questionData
 				}
 
 				/*
