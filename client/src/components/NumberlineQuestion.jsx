@@ -6,25 +6,30 @@ import Question from './Question'
 */
 export default class NumberlineQuestion extends Question {
 	constructor(props) {
-		super(props)
-		this.state.type = "NUMBERLINE"
-		this.state.min = 0
-		this.state.max = 100
-		this.state.step = 5
+		super(props);
+		this.state.type = "NUMBERLINE";
+		this.state.typeOptions = { min: 0, max: 100, step: 5 };
 
-		this.handleNumberChange = this.handleNumberChange.bind(this)
+		this.handleNumberChange = this.handleNumberChange.bind(this);
 	}
 
 	handleNumberChange(event) {
-		let t = event.target.name
+		let t = event.target.name;
 
-		if (t === "min") {
-			this.setState({ min: event.target.value })
-		} else if (t === "max") {
-			this.setState({ max: event.target.value })
-		} else if (t === "step") {
-			this.setState({ step: event.target.value })
-		}
+		this.setState(function (state) {
+			let min = state.typeOptions.min;
+			let max = state.typeOptions.max;
+			let step = state.typeOptions.step;
+			if (t === "min") {
+				return { typeOptions: { min: parseInt(event.target.value), max: max, step: step } };
+			} else if (t === "max") {
+				return { typeOptions: { min: min, max: parseInt(event.target.value), step: step } };
+			} else if (t === "step") {
+				return { typeOptions: { min: min, max: max, step: parseInt(event.target.value) } };
+			}
+		})
+
+		this.updateParentState();
 	}
 
 	render() {
@@ -47,7 +52,7 @@ export default class NumberlineQuestion extends Question {
 						type="number"
 						className="tinyInputBox"
 						name={"min"}
-						value={this.state.min}
+						value={this.state.typeOptions.min}
 						onChange={this.handleNumberChange}
 						required /> <br />
 					<label className="text">Stop: </label>
@@ -55,7 +60,7 @@ export default class NumberlineQuestion extends Question {
 						type="number"
 						className="tinyInputBox"
 						name={"max"}
-						value={this.state.max}
+						value={this.state.typeOptions.max}
 						onChange={this.handleNumberChange}
 						required /> <br />
 					<label className="text">Increment: </label>
@@ -63,7 +68,7 @@ export default class NumberlineQuestion extends Question {
 						type="number"
 						className="tinyInputBox"
 						name={"step"}
-						value={this.state.step}
+						value={this.state.typeOptions.step}
 						onChange={this.handleNumberChange}
 						required />
 				</div>

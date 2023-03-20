@@ -37,7 +37,7 @@ const GroupCreation = () => {
     };
 
     const handleNavigation = () => {
-        navigate("/teamProfile", { state: { token: token, code: code } })
+        navigate("/teamProfile", { state: { token: token, code: code } });
     };
 
     return (
@@ -65,12 +65,9 @@ const GroupCreation = () => {
                     </div>
                     <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '699px' }}>Continue</button>
                 </div>
-
             </div>
         </>
     );
-
 };
-
 
 export default GroupCreation;
