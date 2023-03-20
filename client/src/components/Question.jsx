@@ -13,7 +13,7 @@ export default class Question extends Component {
 			title: "",
 			explanation: "",
 			matchMode: "SIMILAR",
-			priority: "1"
+			priority: 3
 		}
 
 		this.handleTextChange = this.handleTextChange.bind(this);
@@ -23,10 +23,14 @@ export default class Question extends Component {
 	}
 
 	updateParentState() {
-		const parent = this.props.parent;
-		const questionDataCopy = parent.state.questionData.map(x => x);
-		questionDataCopy[this.state.id] = this.state;
-		parent.setState({ questionData: questionDataCopy });
+		this.setState(function (questionState) {
+			this.props.parent.setState(function (parentState) {
+				const questionDataCopy = parentState.questionData.map(x => x);
+				questionDataCopy[questionState.id] = questionState;
+				return { questionData: questionDataCopy };
+			})
+			return questionState;
+		})
 	}
 
 	handleSelectChange(event) {
@@ -44,7 +48,7 @@ export default class Question extends Component {
 	}
 
 	changePriority(event) {
-		this.setState({ priority: event.target.value });
+		this.setState({ priority: parseInt(event.target.value) });
 		this.updateParentState();
 	}
 

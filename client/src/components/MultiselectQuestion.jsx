@@ -11,13 +11,68 @@ export default class MultiselectQuestion extends DropdownQuestion {
         super(props);
 
         this.state.type = "MULTISELECT";
-        this.state.maxAllowed = 0;
+        this.state.typeOptions.maxAllowed = 0;
 
         this.changeMaxAllowed = this.changeMaxAllowed.bind(this);
     }
 
+    handleOptionChange(event) {
+        let i = event.target.id;
+        this.setState(function (state) {
+            let newOptions = state.typeOptions.options.map((x) => x);
+            newOptions[i] = event.target.value;
+            return {
+                typeOptions: {
+                    required: state.typeOptions.required,
+                    options: newOptions,
+                    maxAllowed: state.typeOptions.maxAllowed
+                }
+            }
+        })
+        this.updateParentState();
+    }
+
+    addOption() {
+        this.setState((state) => ({
+            typeOptions: {
+                required: state.typeOptions.required,
+                options: [...state.typeOptions.options, ""],
+                maxAllowed: state.typeOptions.maxAllowed
+            }
+        }));
+        this.updateParentState();
+    }
+
+    removeOption(index) {
+        this.setState((state) => ({
+            typeOptions: {
+                required: state.typeOptions.required,
+                options: state.typeOptions.options.slice(0, index).concat(state.typeOptions.options.slice(index + 1)),
+                maxAllowed: state.typeOptions.maxAllowed
+            }
+        }));
+        this.updateParentState();
+    }
+
+    changeRequired(event) {
+        this.setState((state) => ({
+            typeOptions: {
+                required: event.target.checked,
+                options: state.typeOptions.options,
+                maxAllowed: state.typeOptions.maxAllowed
+            }
+        }));
+        this.updateParentState();
+    }
+
     changeMaxAllowed(event) {
-        this.setState({ maxAllowed: event.target.value });
+        this.setState((state) => ({
+            typeOptions: {
+                required: state.typeOptions.required,
+                options: state.typeOptions.options,
+                maxAllowed: parseInt(event.target.value)
+            }
+        }));
         this.updateParentState();
     }
 
@@ -36,7 +91,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
                     changePriority={this.changePriority}
                 />
                 <OptionTexts
-                    options={this.state.options}
+                    options={this.state.typeOptions.options}
                     handleOptionChange={this.handleOptionChange}
                     removeOption={this.removeOption}
                 />
@@ -49,7 +104,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
                 <label className="text">Required</label>
                 <input
                     type="checkbox"
-                    checked={this.state.required}
+                    checked={this.state.typeOptions.required}
                     onChange={this.changeRequired}
                 /> <br />
 
@@ -57,7 +112,7 @@ export default class MultiselectQuestion extends DropdownQuestion {
                 <input
                     type="number"
                     className="tinyInputBox"
-                    value={this.state.maxAllowed}
+                    value={this.state.typeOptions.maxAllowed}
                     onChange={this.changeMaxAllowed}
                     required />
 
