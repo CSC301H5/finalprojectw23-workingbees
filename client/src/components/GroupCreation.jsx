@@ -31,13 +31,12 @@ const GroupCreation = () => {
             }
         }).then(res => {
             if (res.status === 200) {
-                console.log(res.status);
             }
         })
     };
 
     const handleNavigation = () => {
-        navigate("/teamProfile", { state: { token: token, code: code } });
+        navigate("/teamProfile", { state: { token: token, code: code, hiveID: hiveID } });
     };
 
     return (

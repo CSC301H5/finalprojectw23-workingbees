@@ -11,12 +11,17 @@ export default function MemberList({ hiveID, token, socket }) {
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.event === "INVITE_ACCEPTED") {
+            getMembers()
+            /*
             setMembers((prevList) => [...prevList, data.username]);
             setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
+            */
         } else if (data.event === "INVITE_REJECTED") {
-            setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
+            getMembers()
+            //setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
         } else if (data.event === "INVITE_SENT") {
-            setInvitedUsers((prevList) => [...prevList, data.username]);
+            getMembers()
+            //setInvitedUsers((prevList) => [...prevList, data.username]);
         }
     });
 
