@@ -6,6 +6,7 @@ import hives from '../Assets/hives.png'
 import Navbar from "./Navbar";
 import MemberList from './MemberList';
 import PendingInvitesList from "./PendingInviteList"
+import PhaseTimer from './PhaseTimer';
 
 const GroupCreation = () => {
     const navigate = useNavigate();
@@ -47,7 +48,9 @@ const GroupCreation = () => {
                     <img src={hives} alt="" />
                 </div>
                 <div class="right" >
-                    < Navbar roomCode={code} token={token} />
+                    < Navbar roomCode={code} token={token} >
+                        <PhaseTimer token={token} hiveID={hiveID} />
+                    </Navbar>
                     <div className="entryBox">
                         <MemberList hiveID={hiveID} token={token} socket={socket} />
                         <input class="textBox" value={username}

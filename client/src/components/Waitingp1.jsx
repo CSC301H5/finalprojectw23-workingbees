@@ -40,9 +40,13 @@ function WaitingP1() {
       }
     }).then(res => {
       if (res.status === 200) {
-        navigate('/waiting2', { state: { code: code, token: token, hiveID: hiveID, socket: socket } });
+        handleNavigation();
       }
     })
+  }
+
+  const handleNavigation = () => {
+    navigate('/waiting2', { state: { code: code, token: token, hiveID: hiveID, socket: socket } });
   }
 
   const handleSubmit = e => {
@@ -57,7 +61,7 @@ function WaitingP1() {
       </ div>
       <div class="right">
         <Navbar roomCode={location.state.code} token={location.state.token}>
-          <PhaseTimer token={token} hiveID={hiveID} event={beginPhaseOne} />
+          <PhaseTimer token={token} hiveID={hiveID} event={handleNavigation} />
         </Navbar>
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>

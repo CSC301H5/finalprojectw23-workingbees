@@ -16,7 +16,7 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     axios.post('/api/v1/joinHive', {
       code: parseInt(code),
       profilePicture: preview,
