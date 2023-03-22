@@ -12,6 +12,7 @@ const Profile = () => {
   const token = location.state.token;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
 
@@ -37,17 +38,13 @@ const Profile = () => {
     });
   };
 
-  const [src, setSrc] = useState(null);
-  const [preview, setPreview] = useState(null);
-
   const onClose = () => {
     setPreview(null);
   }
+
   const onCrop = view => {
     setPreview(view);
   }
-  useEffect(() => {
-  })
 
   return (
     <div class='grid'>
@@ -62,7 +59,7 @@ const Profile = () => {
               height={200}
               onCrop={onCrop}
               onClose={onClose}
-              src={src}
+              src={null}
             />
           </div>
         </form>

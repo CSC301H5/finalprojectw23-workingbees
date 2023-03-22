@@ -456,7 +456,8 @@ export const getHiveTimer = async (req, res) => {
             return res.status(401).json({ msg: "Permission denied." });
         }
 
-        const data = {"phaseCompletionDate": null}; // TODO: implement in later sprint when timers are added.
+        const configOptions = JSON.parse(hive.configOptions);
+        const data = {"phaseCompletionDate": configOptions.phaseChangeDates[hive.phase]};
 
         return res.status(200).json(data);
 

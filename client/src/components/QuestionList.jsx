@@ -5,6 +5,7 @@ import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
+import { futureDate } from '../utils/time';
 
 // assumes token, profilePicture, hiveName, displayName, navigateFunction, navigatePath are given
 export default class QuestionList extends Component {
@@ -86,6 +87,9 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
+		const startDate = futureDate(0, 2, 0).toISOString();
+		const endDate = futureDate(0, 4, 0).toISOString();
+
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,
@@ -93,7 +97,7 @@ export default class QuestionList extends Component {
 				displayName: this.props.displayName,
 				configOptions: {
 					groupSizeRange: [1, 4],
-					phaseChangeDates: [null, null],
+					phaseChangeDates: [startDate, endDate],
 					questions: this.state.questionData
 				}
 
