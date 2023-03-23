@@ -1020,16 +1020,16 @@ export const rejectInvite = async (req, res) => {
 
 export const getRoomConfigOptions = async(req, res) => {
 
-    let code = req.query.code;
+    let hiveID = req.query.hiveID;
 
     // verify request
-    if (!code) {
+    if (!hiveID) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
     try {
         // try and find hive
-        const hive = await getHiveFromDB({"code": code});
+        const hive = await getHiveFromDBByID(req.body.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
