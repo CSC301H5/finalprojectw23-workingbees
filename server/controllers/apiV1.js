@@ -487,16 +487,18 @@ export const getHiveInfo = async (req, res) => {
             return res.status(404).json({msg: "Error: Hive not found."});
         }
 
+        const configOptions = JSON.parse(hive.configOptions);
+
         const data = {
             "hiveName": hive.name,
             "phase": hive.phase,
-            "phaseCompletionDate": null // TODO: implement in later sprint when timers are added.
-            };
+            "phaseCompletionDate": configOptions.phaseChangeDates[hive.phase]
+        };
 
         return res.status(200).json(data);
 
     } catch (e) {
-        console.error("Error on getHiveTimer controller!");
+        console.error("Error on getHiveInfo controller!");
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
