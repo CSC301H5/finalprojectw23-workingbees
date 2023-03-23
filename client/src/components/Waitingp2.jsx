@@ -5,15 +5,24 @@ import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 import StaticAttendeeList from "./StaticAttendeeList";
 import SwipedNumbers from "./SwipedNumbers";
+import PhaseTimer from "./PhaseTimer";
 
-
-function WaitingP1() {
+function WaitingP2() {
   const [attendeeList, setAttendeeList] = useState([])
   const [numBees, setNumBees] = useState("0")
   const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
   const [profileNums, setProfileNums] = useState(0)
+
+  const code = location.state.code;
+  const token = location.state.token;
+  const hiveID = location.state.hiveID;
+
+  const socket = new WebSocket('ws://localhost:3030/initializeWS');
+  socket.addEventListener('open', (event) => {
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
+  });
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -25,21 +34,23 @@ function WaitingP1() {
         <img src={hives} alt="" />
       </ div>
       <div class="right">
-        <Navbar roomCode={location.state.code} token={location.state.token} />
+        <Navbar roomCode={code} token={token} >
+          <PhaseTimer token={token} hiveID={hiveID} />
+        </Navbar>
         <h2 className="roomCode">Phase 1 </h2>
         <form onSubmit={handleSubmit}>
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
           <label className="numsDescription" style={{ left: '1000px' }}>users done swiping</label>
-          <SwipedNumbers socket={location.state.socket} profileNums={profileNums} setProfileNums={setProfileNums} />
+          <SwipedNumbers socket={socket} profileNums={profileNums} setProfileNums={setProfileNums} />
           <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
           <p className="nums" style={{ left: '820px' }}>{numBees}</p>
           <label className="attendees">Attendee list</label>
-          <StaticAttendeeList hiveID={location.state.hiveID} token={location.state.token} />
+          <StaticAttendeeList hiveID={hiveID} token={token} />
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 2</button>
         </form>
       </div>
     </div>
   );
-
 }
-export default WaitingP1
+
+export default WaitingP2

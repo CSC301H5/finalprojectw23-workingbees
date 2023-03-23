@@ -86,6 +86,7 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
+
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,
@@ -93,19 +94,9 @@ export default class QuestionList extends Component {
 				displayName: this.props.displayName,
 				configOptions: {
 					groupSizeRange: [1, 4],
-					phaseChangeDates: [null, null],
+					phaseChangeDates: this.props.phaseChangeDates,
 					questions: this.state.questionData
 				}
-
-				/*
-				UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
-				joinDate: this.state.joinDate,
-				joinTime: this.state.joinTime,
-				profileDate: this.state.profileDate,
-				profileTime: this.state.profileTime,
-				classDate: this.state.classDate,
-				classTime: this.state.classTime
-				*/
 			}, {
 			headers: {
 				'x-auth-token': this.props.token
