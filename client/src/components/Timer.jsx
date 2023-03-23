@@ -5,9 +5,8 @@ import { Component } from "react";
 export default class Timer extends Component {
     constructor(props) {
         super(props);
-        let startTimeInSeconds = Math.floor(Date.now() / 1000);
-        let endTimeInSeconds = Math.floor(Date.parse(this.props.endDate) / 1000);
-        this.state = { timeLeft: Math.max(endTimeInSeconds - startTimeInSeconds, 0) };
+        let endTime = Date.parse(this.props.endDate);
+        this.state = { timeLeft: Math.max(Math.floor((endTime - Date.now()) / 1000), 0) };
     }
 
     componentDidMount() {
@@ -48,9 +47,7 @@ export default class Timer extends Component {
 
     render() {
         return (
-            <div>
-                <h2>{this.timeFormat()}</h2>
-            </div>
+            this.timeFormat()
         )
     }
 }

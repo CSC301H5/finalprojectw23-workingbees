@@ -18,7 +18,11 @@ function WaitingP2() {
   const code = location.state.code;
   const token = location.state.token;
   const hiveID = location.state.hiveID;
-  const socket = location.state.socket;
+
+  const socket = new WebSocket('ws://localhost:3030/initializeWS');
+  socket.addEventListener('open', (event) => {
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
+  });
 
   const handleSubmit = e => {
     e.preventDefault();

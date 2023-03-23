@@ -5,7 +5,6 @@ import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
-import { futureDate } from '../utils/time';
 
 // assumes token, profilePicture, hiveName, displayName, navigateFunction, navigatePath are given
 export default class QuestionList extends Component {
@@ -87,8 +86,6 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
-		const startDate = futureDate(0, 2, 0).toISOString();
-		const endDate = futureDate(0, 4, 0).toISOString();
 
 		axios.post("/api/v1/createHive",
 			{
@@ -97,19 +94,9 @@ export default class QuestionList extends Component {
 				displayName: this.props.displayName,
 				configOptions: {
 					groupSizeRange: [1, 4],
-					phaseChangeDates: [startDate, endDate],
+					phaseChangeDates: this.props.phaseChangeDates,
 					questions: this.state.questionData
 				}
-
-				/*
-				UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
-				joinDate: this.state.joinDate,
-				joinTime: this.state.joinTime,
-				profileDate: this.state.profileDate,
-				profileTime: this.state.profileTime,
-				classDate: this.state.classDate,
-				classTime: this.state.classTime
-				*/
 			}, {
 			headers: {
 				'x-auth-token': this.props.token

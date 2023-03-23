@@ -46,7 +46,7 @@ function WaitingP1() {
   }
 
   const handleNavigation = () => {
-    navigate('/waiting2', { state: { code: code, token: token, hiveID: hiveID, socket: socket } });
+    navigate('/waiting2', { state: { code: code, token: token, hiveID: hiveID } });
   }
 
   const handleSubmit = e => {
