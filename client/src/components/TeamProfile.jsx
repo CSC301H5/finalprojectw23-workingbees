@@ -43,7 +43,7 @@ function TeamProfile() {
         axios.get("/api/v1/getRoomConfigOptions",
             {
                 params: {
-                    code: location.state.code
+                    hiveID: location.state.hiveID
                 },
                 headers: {
                     'x-auth-token': location.state.token

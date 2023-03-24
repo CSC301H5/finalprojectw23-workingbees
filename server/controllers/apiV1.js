@@ -1032,7 +1032,7 @@ export const getRoomConfigOptions = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await getHiveFromDBByID(req.body.hiveID);
+        const hive = await getHiveFromDBByID(req.query.hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
