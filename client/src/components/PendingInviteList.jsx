@@ -4,12 +4,14 @@ import SmallEntry from "./SmallEntry";
 import AcceptReject from "./AcceptReject";
 
 function indexOfObject(arr, key, value) {
-    for (let i = 0; i < i < arr.length; i++) {
+    try {for (let i = 0; i < i < arr.length; i++) {
         if (arr[i][key] === value) {
             return i;
         }
+    }}
+    catch (e) {
+        return -1;
     }
-    return -1;
 }
 
 export default function PendingInviteList({ hiveID, token, socket, members, setMembers, invitedUsers, setInvitedUsers }) {
