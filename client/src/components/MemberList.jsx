@@ -2,28 +2,47 @@ import { useState, useEffect } from "react"
 import axios from 'axios';
 import SmallEntry from "./SmallEntry";
 
-export default function MemberList({ hiveID, token, socket }) {
+export default function MemberList({ hiveID, token, socket, leader, setLeader, members, setMembers, invitedUsers, setInvitedUsers }) {
 
+/*
     const [leader, setLeader] = useState('');
     const [members, setMembers] = useState([]);
     const [invitedUsers, setInvitedUsers] = useState([]);
+*/
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         if (data.event === "INVITE_ACCEPTED") {
-            getMembers()
-            /*
-            setMembers((prevList) => [...prevList, data.username]);
-            setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
-            */
-        } else if (data.event === "INVITE_REJECTED") {
-            getMembers()
+            //setMembers((prevList) => [...prevList, data.username]);
             //setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
+            addMember(data.username)
+            removeInvitedMember(invitedUsers.indexOf(data.username))
+        } else if (data.event === "INVITE_REJECTED") {
+            //setInvitedUsers((prevList) => prevList.slice(0, prevList.indexOf(data.username)).concat(prevList.slice(prevList.indexOf(data.username) + 1)));
+            removeInvitedMember(invitedUsers.indexOf(data.username))
+            //removePeople(data.username)
         } else if (data.event === "INVITE_SENT") {
-            getMembers()
             //setInvitedUsers((prevList) => [...prevList, data.username]);
+            addInvitedMember(data.username)
         }
+
     });
+
+    const removeInvitedMember = (index) => {
+        const temp = [...invitedUsers]
+        temp.splice(index, 1)
+        setInvitedUsers(temp)
+    }
+
+    const addInvitedMember = (user) => {
+        const temp = [...invitedUsers, user]
+        setInvitedUsers(temp)
+    }
+
+    const addMember = (user) => {
+        const temp = [...members, user]
+        setMembers(temp)
+    }
 
     async function getMembers() {
         axios.get("/api/v1/getMatchingGroup", {
