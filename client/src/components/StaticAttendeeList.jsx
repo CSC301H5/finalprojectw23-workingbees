@@ -37,6 +37,6 @@ function StaticAttendeeList(props) {
       <h1>{attendeeList.length}</h1>
     </div>
   )
+}
 
-
-} export default StaticAttendeeList
+export default StaticAttendeeList

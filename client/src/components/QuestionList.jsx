@@ -136,5 +136,4 @@ export default class QuestionList extends Component {
 			</form>
 		)
 	}
-
 }

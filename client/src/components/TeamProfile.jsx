@@ -118,4 +118,5 @@ function TeamProfile() {
     )
 
 }
+
 export default TeamProfile

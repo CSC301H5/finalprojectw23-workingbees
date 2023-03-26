@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { getCookie } from '../utils/getAuthToken';
-import "./Style.css" 
+import "./Style.css"
 function sendMatchingResponse(hiveID, matchingID, response, next) {
 	const token = getCookie('x-auth-token')
 	axios.post("/api/v1/respondToMatchingGroupRecommendation", {
@@ -36,34 +36,35 @@ function sendMatchingResponse(hiveID, matchingID, response, next) {
 export default function ResponseButtons(props) {
 	return (
 		<div>
-			 
-			<input 
-			className='small_button'
+			<input
+				className='small_button'
 				type="button"
 				value="Reject"
-				onClick={() => {sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next) 
-				console.log("click click click")
-			       props.Setcurrent_profile_index(props.current_profile_index + 1) }}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next)
+					console.log("click click click")
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 			<input
-			className='small_button'
+				className='small_button'
 				type="button"
 				value="Maybe"
-				onClick={() =>{ sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next)
-				
-				props.Setcurrent_profile_index(props.current_profile_index + 1)
-			}}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next)
+
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 			<input
-			className="small_button"
+				className="small_button"
 				type="button"
 				value="Accept"
-				onClick={() =>{ sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next)
-				console.log("click click click")
-				props.Setcurrent_profile_index(props.current_profile_index + 1) 
-				
-			
-			}}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next)
+					console.log("click click click")
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 		</div>
 	)

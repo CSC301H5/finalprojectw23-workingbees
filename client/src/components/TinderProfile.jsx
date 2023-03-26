@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import hives from '../Assets/hives.png'
-import axios from 'axios';
 import "./Style.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from './Navbar';
@@ -19,18 +17,16 @@ const TinderProfile = () => {
   const [token, setToken] = useState('')
   const navigate = useNavigate();
 
- 
+
   return (
     <>
-    <div overflow='auto' >
-        < Navbar/>
-        < DisplayMultiselect array={["option1", "option3","ere"]}/>
-        < DisplayDropDown array={["D"]}/>
-    
-       </div>
+      <div overflow='auto' >
+        < Navbar />
+        < DisplayMultiselect array={["option1", "option3", "ere"]} />
+        < DisplayDropDown array={["D"]} />
+      </div>
     </>
   );
-
 };
 
 export default TinderProfile;
