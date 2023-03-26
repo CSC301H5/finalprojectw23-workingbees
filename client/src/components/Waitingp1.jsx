@@ -5,6 +5,8 @@ import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 import AttendeeList from "./AttendeeList";
 import ProfileNumbers from "./ProfileNumbers";
+import PhaseTimer from "./PhaseTimer";
+import axios from 'axios';
 import ProfileHeader from "./Header"
 
 /*
@@ -16,18 +18,41 @@ expects the following props
 function WaitingP1() {
   const [attendeeList, setAttendeeList] = useState([])
   const [numBees, setNumBees] = useState("0")
+  const [profileNums, setProfileNums] = useState(0)
   const location = useLocation();
   const navigate = useNavigate();
-  const [profileNums, setProfileNums] = useState(0)
+
+  const code = location.state.code;
+  const token = location.state.token;
+  const hiveID = location.state.hiveID;
 
   const socket = new WebSocket('ws://localhost:3030/initializeWS')
   socket.addEventListener('open', (event) => {
-    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(location.state.hiveID), token: location.state.token }));
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
   });
+
+  const beginPhaseOne = () => {
+    axios.post('/api/v1/beginPhaseOne',
+      {
+        hiveID: hiveID,
+      }, {
+      headers: {
+        'x-auth-token': token
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        handleNavigation();
+      }
+    })
+  }
+
+  const handleNavigation = () => {
+    navigate('/waiting2', { state: { code: code, token: token, hiveID: hiveID } });
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
-    navigate('/waiting2', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID, socket: socket } })
+    beginPhaseOne();
   }
 
   return (
@@ -36,8 +61,9 @@ function WaitingP1() {
         <img src={hives} alt="" />
       </ div>
       <div class="right">
-
-        <Navbar roomCode={location.state.code} token={location.state.token} />
+        <Navbar roomCode={location.state.code} token={location.state.token}>
+          <PhaseTimer token={token} hiveID={hiveID} event={handleNavigation} />
+        </Navbar>
         <h2 className="roomCode">Code: </h2>
         <p className="roomCode" style={{ left: '1000px', top: '35px' }}>{location.state.code}</p>
         <form onSubmit={handleSubmit}>
@@ -68,4 +94,5 @@ function WaitingP1() {
     
   );
 }
+
 export default WaitingP1

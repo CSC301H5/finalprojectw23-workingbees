@@ -4,15 +4,17 @@ import SmallEntry from "./SmallEntry";
 import AcceptReject from "./AcceptReject";
 
 function indexOfObject(arr, key, value) {
-    for (let i = 0; i < i < arr.length; i++) {
+    try {for (let i = 0; i < i < arr.length; i++) {
         if (arr[i][key] === value) {
             return i;
         }
+    }}
+    catch (e) {
+        return -1;
     }
-    return -1;
 }
 
-export default function PendingInviteList({ hiveID, token, socket }) {
+export default function PendingInviteList({ hiveID, token, socket, members, setMembers, invitedUsers, setInvitedUsers }) {
 
     const [invites, setInvites] = useState([]);
 
@@ -37,7 +39,10 @@ export default function PendingInviteList({ hiveID, token, socket }) {
             if (res.status === 200) {
                 const rows = [];
                 for (let leaderName in res.data) {
-                    rows.push({ name: leaderName, component: <AcceptReject hiveID={hiveID} matchingGroupID={res.data[leaderName]} token={token} /> })
+                    rows.push({ name: leaderName, component: <AcceptReject hiveID={hiveID} matchingGroupID={res.data[leaderName]} token={token} 
+                        members={members} setMembers={setMembers}
+                        invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers} leaderName={leaderName} invites={invites} setInvites={setInvites}
+                    /> })
                 }
                 setInvites(rows);
             }
