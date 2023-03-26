@@ -58,7 +58,7 @@ const GroupCreation = () => {
                                 top: '390px'
                             }} />
                     </div>
-                    <button onClick={handleInvite} style={{ position: 'absolute ', left: '1010px', top: '380px' }}>Invite</button>
+                    <button onClick={handleInvite} style={{ position: 'absolute ', left: '1020px', top: '380px' }}>Invite</button>
                     <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites</label>
                     <div className="entryBox" style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
                         <PendingInvitesList hiveID={hiveID} token={token} socket={socket} />

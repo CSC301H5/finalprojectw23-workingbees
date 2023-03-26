@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import hives from '../Assets/hives.png'
 import AttendeeList from "./AttendeeList";
 import ProfileNumbers from "./ProfileNumbers";
+import ProfileHeader from "./Header"
 
 /*
 expects the following props
@@ -61,7 +62,10 @@ function WaitingP1() {
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
         </form>
       </div>
+      <ProfileHeader/>
+
     </div>
+    
   );
 }
 export default WaitingP1

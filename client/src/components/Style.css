@@ -720,7 +720,6 @@ font-family:'Montserrat';
   flex-direction: row;
   align-items: center;
   padding-bottom: 20px;
-  overflow: scroll;
 }
 
 .circle {
