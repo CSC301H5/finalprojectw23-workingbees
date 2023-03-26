@@ -5,8 +5,30 @@ import { removeElement } from '../utils/arrayUtils.js';
 // linearly transforms x in [0, b] to T(x) in [0, p]
 const transform = (b, p, x) => (p/b) * x;
 
+function getResponseValue(response) {
+    if (response === "YES") {
+        return 1;
+    } else if (response === "NO") {
+        return -2;
+    } else {
+        return 0;
+    }
+}
+
 // defines a comparison function for ranking matchingGroups
-const rank = (obj1, obj2) => obj2.score - obj1.score;
+function rank(obj1, obj2) {
+    let responseValue = getResponseValue(obj1.response);
+    let responseScore1 = getResponseValue(obj1.theirResponse) + responseValue;
+    let responseScore2 = getResponseValue(obj2.theirResponse) + responseValue;
+
+    if (responseScore1 > responseScore2) {
+        return -1;
+    } else if (responseScore1 < responseScore2) {
+        return 1;
+    } else {
+        return obj2.score - obj1.score;
+    }
+}
 
 // returns the number of hours selected in the timetable
 function timeValue(timetable) {
@@ -47,7 +69,7 @@ async function getAttendeeData(hiveID, userID) {
 
 export async function getPendingRecommendations(hive, userMatchingGroup) {
     // check if calculation has to be made
-    if (userMatchingGroup.recommendedPending.length === 0 && userMatchingGroup.recommendedResponses.length === 0) {
+    if (userMatchingGroup.recommended.length === 0) {
         // perform calculation
         const configOptions = JSON.parse(hive.configOptions);
         const userResponses = userMatchingGroup.hiveConfigResponses;
@@ -123,8 +145,8 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
                 users: ranking[i].users,
                 configOptionsResponses: ranking[i].configOptionsResponses
             }
-            recommendations.push(data)
-            userMatchingGroup.recommendedPending.push({matchingGroupID: ranking[i].matchingGroupID, score: Number.parseFloat(ranking[i].score.toFixed(2))});
+            recommendations.push(data);
+            userMatchingGroup.recommended.push({matchingGroupID: ranking[i].matchingGroupID, score: Number.parseFloat(ranking[i].score.toFixed(2))});
         }
         await userMatchingGroup.save();
 
@@ -133,23 +155,25 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
     } else {
 
         const recommendations = [];
-        const recommendedPending = userMatchingGroup.recommendedPending;
-        for (let i = 0; i < recommendedPending.length; i++) {
-            let matchingGroup = await MatchingGroupModel.findById(recommendedPending[i].matchingGroupID);
-            let users = [];
-            let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
-            users.push(leaderData);
-            for (var memberID in matchingGroup.memberIDs) {
-                let memberData = await getAttendeeData(hive.hiveID, memberID);
-                users.push(memberData);
-            }
+        const recommended = userMatchingGroup.recommended;
+        for (let i = 0; i < recommended.length; i++) {
+            if (!recommended[i].response) {
+                let matchingGroup = await MatchingGroupModel.findById(recommended[i].matchingGroupID);
+                let users = [];
+                let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
+                users.push(leaderData);
+                for (var memberID in matchingGroup.memberIDs) {
+                    let memberData = await getAttendeeData(hive.hiveID, memberID);
+                    users.push(memberData);
+                }
 
-            let data = {
-                matchingGroupID: recommendedPending[i].matchingGroupID,
-                users: users,
-                configOptionsResponses: matchingGroup.hiveConfigResponses
+                let data = {
+                    matchingGroupID: recommended[i].matchingGroupID,
+                    users: users,
+                    configOptionsResponses: matchingGroup.hiveConfigResponses
+                }
+                recommendations.push(data)
             }
-            recommendations.push(data)
         }
 
         return recommendations;
