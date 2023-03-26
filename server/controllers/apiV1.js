@@ -895,17 +895,22 @@ export const acceptInvite = async (req, res) => {
         if (!removeElement(originalMatchingGroup.memberIDs, user.userID)) {
             // Remove original matching group if user was the only member and promote a member to leader otherwise
             if (originalMatchingGroup.memberIDs.length == 0) {
-                originalMatchingGroup.leaderID = "";
                 removeElement(hive.groupIDs, originalMatchingGroup.groupID);
+                MatchingGroupModel.findByIdAndRemove(originalMatchingGroup.groupID, function (err) {
+                    if (err) console.log(err);
+                });
+                await hive.save();
             } else {
                 originalMatchingGroup.leaderID = originalMatchingGroup.memberIDs[0];
                 originalMatchingGroup.memberIDs.shift();
+                await originalMatchingGroup.save();
             }
         }
 
         // add user to their new matching group
         invitedAttendee.groupID = matchingGroupID;
         matchingGroup.memberIDs.push(user.userID);
+        await invitedAttendee.save();
 
         // remove all remaining invitations sent by the matching group if it is now full
         const configOptions = JSON.parse(hive.configOptions);
@@ -928,10 +933,7 @@ export const acceptInvite = async (req, res) => {
             }
         }
 
-        await originalMatchingGroup.save();
         await matchingGroup.save();
-        await invitedAttendee.save();
-        await hive.save();
 
         return res.status(200).json();
 
