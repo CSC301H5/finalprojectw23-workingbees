@@ -16,12 +16,8 @@ const matchingGroupModel = mongoose.Schema({
         type: Array, // of responses (strings, numbers, and arrays)
         default: []
     },
-    recommendedPending: {
-        type: Array, // of objects, which store: matchingGroupID, score
-        default: []
-    },
-    recommendedResponses: {
-        type: Array, // of objects, which store: matchingGroupID, score, response
+    recommended: {
+        type: Array, // of JSON objects which store: matchingGroupID, score, response, theirResponse
         default: []
     }
 });

@@ -6,7 +6,7 @@ import MatchingGroupModel from '../models/matchingGroupModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
-import { removeElement, getObject } from '../utils/arrayUtils.js';
+import { removeElement, getObjectIndex } from '../utils/arrayUtils.js';
 import { getPendingRecommendations } from '../utils/algorithm.js';
 
 
@@ -895,17 +895,22 @@ export const acceptInvite = async (req, res) => {
         if (!removeElement(originalMatchingGroup.memberIDs, user.userID)) {
             // Remove original matching group if user was the only member and promote a member to leader otherwise
             if (originalMatchingGroup.memberIDs.length == 0) {
-                originalMatchingGroup.leaderID = "";
                 removeElement(hive.groupIDs, originalMatchingGroup.groupID);
+                MatchingGroupModel.findByIdAndRemove(originalMatchingGroup.groupID, function (err) {
+                    if (err) console.log(err);
+                });
+                await hive.save();
             } else {
                 originalMatchingGroup.leaderID = originalMatchingGroup.memberIDs[0];
                 originalMatchingGroup.memberIDs.shift();
+                await originalMatchingGroup.save();
             }
         }
 
         // add user to their new matching group
         invitedAttendee.groupID = matchingGroupID;
         matchingGroup.memberIDs.push(user.userID);
+        await invitedAttendee.save();
 
         // remove all remaining invitations sent by the matching group if it is now full
         const configOptions = JSON.parse(hive.configOptions);
@@ -928,10 +933,7 @@ export const acceptInvite = async (req, res) => {
             }
         }
 
-        await originalMatchingGroup.save();
         await matchingGroup.save();
-        await invitedAttendee.save();
-        await hive.save();
 
         return res.status(200).json();
 
@@ -1361,7 +1363,13 @@ export const getMatchingGroupsDonePhaseOne = async(req, res) => {
         let completed = 0;
         for (let i = 0; i < hive.groupIDs.length; i++) {
             let matchingGroup = await MatchingGroupModel.findById(hive.groupIDs[i]);
-            if (matchingGroup.recommendedPending.length === 0 && matchingGroup.recommendedResponses.length > 0) {
+            let numPending = 0;
+            for (let j = 0; j < matchingGroup.recommended.length; j++) {
+                if (!matchingGroup.recommended[j].response) {
+                    numPending++;
+                }
+            }
+            if (numPending === 0) {
                 completed++;
             }
         }
@@ -1411,7 +1419,7 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
             return res.status(401).json({msg: "User must be an attendee of this hive"});
         }
 
-        let userMatchingGroup = await MatchingGroupModel.findById(attendee.groupID);
+        const userMatchingGroup = await MatchingGroupModel.findById(attendee.groupID);
         if (!userMatchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
             return res.status(500).json({msg: "Server Error."});
         }
@@ -1432,25 +1440,33 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
         }
 
         // check if the matchingGroup is pending and not yet responded
-        const recommendation = getObject(userMatchingGroup.recommendedPending, "matchingGroupID", matchingGroupID);
-        if (getObject(userMatchingGroup.recommendedResponses, "matchingGroupID", matchingGroupID)) {
-            if (!recommendation) {
-                return res.status(409).json({msg: "Response has already been recorded"});
-            } else { // recommendation exists in both pending and recommended, which should never happen
-                return res.status(500).json({msg: "Server Error"});
-            }
-        } else if (!recommendation) {
+        const index = getObjectIndex(userMatchingGroup.recommended, "matchingGroupID", matchingGroupID);
+        if (index === -1) {
             return res.status(404).json({msg: "Could not find matching group in pending recommendations"});
+        } else if (userMatchingGroup.recommended[index].response) {
+            return res.status(409).json({msg: "Response has already been recorded"});
         }
-        
+
         // mark recommendation as responded
-        removeElement(userMatchingGroup.recommendedPending, recommendation);
-        recommendation["response"] = response;
-        userMatchingGroup.recommendedResponses.push(recommendation)
+        userMatchingGroup.recommended[index].response = response;
+        userMatchingGroup.recommended[index] = Object.assign({}, userMatchingGroup.recommended[index]);
         await userMatchingGroup.save();
 
+        const matchingGroup = await MatchingGroupModel.findById(matchingGroupID);
+        const otherIndex = getObjectIndex(matchingGroup.recommended, "matchingGroupID", userMatchingGroup.groupID);
+        matchingGroup.recommended[otherIndex].theirResponse = response;
+        matchingGroup.recommended[otherIndex] = Object.assign({}, matchingGroup.recommended[otherIndex]);
+        await matchingGroup.save();
+
         // notify host if matching group has finished responding to recommendations
-        if (userMatchingGroup.recommendedPending.length === 0) {
+        let numPending = 0;
+        for (let i = 0; i < userMatchingGroup.recommended.length; i++) {
+            if (!userMatchingGroup.recommended[i].response) {
+                numPending++;
+            }
+        }
+
+        if (numPending === 0) {
             let hostSocket = getSocketOfUser(hive.hostID);
             if (hostSocket) {
                 hostSocket.send('{"event": "GROUP_DONE_RESPONDING"}');
