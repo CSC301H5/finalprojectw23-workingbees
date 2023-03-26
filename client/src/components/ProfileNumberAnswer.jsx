@@ -9,7 +9,7 @@ export default function ProfileNumberAnswer (props) {
 	return (
 		<div>	
 			<label>{props.question}</label><br />
-			<label{props.answer}></label>
+			<label>{props.answer}</label>
 		</div>
 	)
 }

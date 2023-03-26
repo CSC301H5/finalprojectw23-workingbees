@@ -5,7 +5,6 @@ import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
-
 // assumes token, profilePicture, hiveName, displayName, navigateFunction, navigatePath are given
 export default class QuestionList extends Component {
 	constructor(props) {
@@ -111,7 +110,7 @@ export default class QuestionList extends Component {
 	render() {
 		return (
 			<form onSubmit={this.publish}
-				style={{ width: '550px', }}>
+				style={{ width: '550px' }}>
 				<select value={this.state.selectedType}
 					onChange={this.handleSelectChange}
 					className="smallInputBox">

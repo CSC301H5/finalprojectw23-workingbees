@@ -1023,11 +1023,13 @@ export const rejectInvite = async (req, res) => {
 
 export const getRoomConfigOptions = async(req, res) => {
 
+
     let hiveID = req.query.hiveID;
 
     // verify request
     if (!hiveID) {
         return res.status(400).json({msg: "Malformed request."});
+
     }
 
     try {
@@ -1304,6 +1306,7 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
 
         // only phase 1 allows recommendations
         if (hive.phase !== 1) {
+            console.log("hive.phase:", hive.phase)
             return res.status(409).json({msg: "Error: Recommendations only exist in phase 1."});
         }
 
