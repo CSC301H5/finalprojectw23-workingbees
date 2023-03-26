@@ -7,15 +7,16 @@ import Question from './Question'
 
 export default class TimetableQuestion extends Question {
 	constructor(props) {
-		super(props)
-		this.state.type = "TIMETABLE"
-		this.state.maxAllowed = 6
+		super(props);
+		this.state.type = "TIMETABLE";
+		this.state.typeOptions = { maxAllowed: 6 };
 
-		this.handleNumberChange = this.handleNumberChange.bind(this)
+		this.handleNumberChange = this.handleNumberChange.bind(this);
 	}
 
 	handleNumberChange(event) {
-		this.setState({ maxAllowed: event.target.value })
+		this.setState({ typeOptions: { maxAllowed: parseInt(event.target.value) } });
+		this.updateParentState();
 	}
 
 	render() {
@@ -39,7 +40,7 @@ export default class TimetableQuestion extends Question {
 					<input
 						type="number"
 						className="tinyInputBox"
-						value={this.state.maxAllowed}
+						value={this.state.typeOptions.maxAllowed}
 						onChange={this.handleNumberChange}
 						required /> <br />
 				</div>

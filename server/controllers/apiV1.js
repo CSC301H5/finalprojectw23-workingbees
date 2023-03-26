@@ -1021,10 +1021,10 @@ export const rejectInvite = async (req, res) => {
 export const getRoomConfigOptions = async(req, res) => {
 
     let code = req.query.code;
-
+    console.log(code, "code ")
     // verify request
     if (!code) {
-        return res.status(400).json({msg: "Malformed request."});
+        return res.status(400).json({msg: "Malformed request.sss"});
     }
 
     try {
@@ -1288,7 +1288,7 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1301,6 +1301,7 @@ export const getPendingMatchingGroupRecommendations = async(req, res) => {
 
         // only phase 1 allows recommendations
         if (hive.phase !== 1) {
+            console.log("hive.phase:", hive.phase)
             return res.status(409).json({msg: "Error: Recommendations only exist in phase 1."});
         }
 
@@ -1337,7 +1338,7 @@ export const getMatchingGroupsDonePhaseOne = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -1389,7 +1390,7 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
 
     try {
         // try and find hive
-        const hive = await HiveModel.findById(hiveID);
+        const hive = await getHiveFromDBByID(hiveID);
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
