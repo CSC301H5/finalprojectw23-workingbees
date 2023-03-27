@@ -30,7 +30,7 @@ function LoginHomePage() {
       </div>
       <div class='right'>
         < Navbar />
-        <div
+        <div className='config'
           style={{
 
             height: '500px',

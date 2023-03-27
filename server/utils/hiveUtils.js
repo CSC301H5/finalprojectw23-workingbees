@@ -46,17 +46,28 @@ export async function checkConfigOptions(req, res) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
-    const dates = [];
+    const timeValues = [];
     for (let i = 0; i < phaseChangeDates.length; i++) {
         let date = phaseChangeDates[i];
-        dates.push(Date.parse(date));
-        if (date !== null && !dates[i]) {
+        let timeValue = Date.parse(date);
+        if (date !== null && !timeValue) {
             return res.status(400).json({msg: "Error: phaseChangeDates must contain valid dates or null"});
         }
+        timeValues.push(timeValue);
     }
 
-    if (dates[0] !== null && dates[1] !== null && dates[0] > dates[1]) {
-        return res.status(400).json({msg: "Phase 0 deadline must occur before the Phase 1 deadline"});
+    const now = Date.now();
+
+    if (timeValues[0] && timeValues[0] < now) {
+        return res.status(400).json({msg: "Error: Phase 0 must start some time after now"});
+    }
+
+    if (timeValues[1] && timeValues[1] < now) {
+        return res.status(400).json({msg: "Error: Phase 1 must start some time after now"});
+    }
+
+    if (timeValues[0] && timeValues[1] && timeValues[0] > timeValues[1]) {
+        return res.status(400).json({msg: "Error: Phase 0 deadline must occur before the Phase 1 deadline"});
     }
 
     // check that each question is formatted correctly

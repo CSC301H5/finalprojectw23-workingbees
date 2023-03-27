@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Avatr from "react-avatar-edit"
@@ -12,10 +12,11 @@ const Profile = () => {
   const token = location.state.token;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     axios.post('/api/v1/joinHive', {
       code: parseInt(code),
       profilePicture: preview,
@@ -37,17 +38,13 @@ const Profile = () => {
     });
   };
 
-  const [src, setSrc] = useState(null);
-  const [preview, setPreview] = useState(null);
-
   const onClose = () => {
     setPreview(null);
   }
+
   const onCrop = view => {
     setPreview(view);
   }
-  useEffect(() => {
-  })
 
   return (
     <div class='grid'>
@@ -62,7 +59,7 @@ const Profile = () => {
               height={200}
               onCrop={onCrop}
               onClose={onClose}
-              src={src}
+              src={null}
             />
           </div>
         </form>

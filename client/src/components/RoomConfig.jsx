@@ -23,6 +23,7 @@ const ConfigRoom = () => {
                         profilePicture={location.state.profilePicture}
                         hiveName={location.state.hiveName}
                         displayName={location.state.displayName}
+                        phaseChangeDates={location.state.phaseChangeDates}
                         navigateFunction={navigate}
                         navigatePath={"/waiting1"}
                     />

@@ -31,5 +31,4 @@ export default class TestComponent extends Component {
             </div>
         )
     }
-
 }

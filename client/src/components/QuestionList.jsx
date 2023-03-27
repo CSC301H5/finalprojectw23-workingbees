@@ -5,7 +5,6 @@ import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'
 import TimetableQuestion from './TimetableQuestion'
-
 // assumes token, profilePicture, hiveName, displayName, navigateFunction, navigatePath are given
 export default class QuestionList extends Component {
 	constructor(props) {
@@ -86,6 +85,7 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
+
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,
@@ -93,19 +93,9 @@ export default class QuestionList extends Component {
 				displayName: this.props.displayName,
 				configOptions: {
 					groupSizeRange: [1, 4],
-					phaseChangeDates: [null, null],
+					phaseChangeDates: this.props.phaseChangeDates,
 					questions: this.state.questionData
 				}
-
-				/*
-				UNCOMMENT FOR FUTURE SPRINTS (ROOM CONFIG)
-				joinDate: this.state.joinDate,
-				joinTime: this.state.joinTime,
-				profileDate: this.state.profileDate,
-				profileTime: this.state.profileTime,
-				classDate: this.state.classDate,
-				classTime: this.state.classTime
-				*/
 			}, {
 			headers: {
 				'x-auth-token': this.props.token
@@ -120,7 +110,7 @@ export default class QuestionList extends Component {
 	render() {
 		return (
 			<form onSubmit={this.publish}
-				style={{ width: '550px', }}>
+				style={{ width: '550px' }}>
 				<select value={this.state.selectedType}
 					onChange={this.handleSelectChange}
 					className="smallInputBox">
@@ -146,5 +136,4 @@ export default class QuestionList extends Component {
 			</form>
 		)
 	}
-
 }
