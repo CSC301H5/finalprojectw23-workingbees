@@ -1551,3 +1551,53 @@ export const getSwarmInfo = async (req, res) => {
         res.status(500).json({msg: "Server Error."})
     }
 }
+
+export const getAllSwarms = async (req, res) => {
+
+    try {
+
+        let hiveID = req.query.hiveID;
+
+        if (!hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const hive = await getHiveFromDBByID(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        if (hive.phase !== 2) {
+            return res.status(409).json({msg: "Error: Swarms only exist in phase 2."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!host) {
+            return res.status(409).json({msg: "Not the host of the specified hive."})
+        }
+
+        const data = {};
+
+        for (let i = 0; i < hive.swarmIDs.length; i++) {
+            let swarm = await SwarmModel.findById(hive.swarmIDs[i]);
+            data[swarm.swarmID] = swarm.memberIDs.length;
+        }
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getAllSwarms controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
