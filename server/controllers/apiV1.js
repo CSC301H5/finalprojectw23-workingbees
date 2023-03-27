@@ -3,6 +3,7 @@ import HiveModel from '../models/hiveModel.js';
 import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
+import SwarmModel from '../models/swarmModel.js';
 import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
@@ -1485,5 +1486,68 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
         console.error(e.message);
         console.error(e.stack);
         res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getSwarmInfo = async (req, res) => {
+
+    try {
+
+        let hiveID = req.query.hiveID;
+
+        if (!hiveID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const hive = await getHiveFromDBByID(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        if (hive.phase !== 2) {
+            return res.status(409).json({msg: "Error: Swarms only exist in phase 2."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        const swarm = await SwarmModel.findById(attendee.swarmID);
+        if (!swarm) { // failed to find swarm
+            return res.status(404).json({ msg:"Error: Swarm not found" });
+        }
+
+        const data = {
+            "swarmID": attendee.swarmID,
+            "members": []
+        };
+
+        for (let i = 0; i < swarm.memberIDs.length; i++) {
+            let member = await await AttendeeModel.findOne({"hiveID": hiveID, "userID": swarm.memberIDs[i]});
+            data.members.push({
+                "name": member.name, 
+                "biography": member.biography, 
+                "profilePicture": member.profilePicture
+            });
+        }
+
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getSwarmInfo controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
     }
 }
