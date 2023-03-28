@@ -1,7 +1,7 @@
 import AttendeeModel from '../models/attendeeModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import SwarmModel from '../models/swarmModel.js';
-import { removeElement, getObject, getObjectIndex } from '../utils/arrayUtils.js';
+import { removeElement, removeObject, getObject, getObjectIndex } from '../utils/arrayUtils.js';
 
 // linearly transforms x in [0, b] to T(x) in [0, p]
 const transform = (b, p, x) => (p/b) * x;
@@ -215,8 +215,8 @@ function mergeGroups(hive, matchingGroups, matchingGroup1, matchingGroup2) {
 
     // average compatibility score and responses
     const matchingGroupsCopy = matchingGroups.map(x => x);
-    removeElement(matchingGroupsCopy, matchingGroup1);
-    removeElement(matchingGroupsCopy, matchingGroup2);
+    removeObject(matchingGroupsCopy, "groupID", matchingGroup1.groupID);
+    removeObject(matchingGroupsCopy, "groupID", matchingGroup2.groupID);
     for (let i = 0; i < matchingGroupsCopy.length; i++) {
         let obj1 = getObject(matchingGroupsCopy[i].recommended, "matchingGroupID", matchingGroup1.groupID);
         let obj2 = getObject(matchingGroupsCopy[i].recommended, "matchingGroupID", matchingGroup2.groupID);
@@ -226,9 +226,9 @@ function mergeGroups(hive, matchingGroups, matchingGroup1, matchingGroup2) {
     }
 
     // remove from recommended
-    removeElement(matchingGroups, matchingGroup2);
+    removeObject(matchingGroups, "groupID", matchingGroup2.groupID);
     for (let i = 0; i < matchingGroups.length; i++) {
-        removeElement(matchingGroups[i].recommended, matchingGroup2)    
+        removeObject(matchingGroups[i].recommended, "matchingGroupID", matchingGroup2.groupID);    
     }
 
     // delete matchingGroup2
@@ -254,8 +254,10 @@ export async function createSwarms(hive) {
             }
         }
 
+        // minimize number of swarms that are undersized
         while (undersized.length > 0 && hive.groupIDs.length > 1) {
 
+            // for a given undersized matching group, find their preferred choice
             let matchingGroup = undersized.pop();
             matchingGroup.recommended.sort(rank);
             let optimalChoice = null;
@@ -268,20 +270,45 @@ export async function createSwarms(hive) {
                 i++;
             }
 
-            // add to the most preferred group if size allows
+            // merge the two groups if size allows
             if (optimalChoice) {
                 mergeGroups(hive, matchingGroups, optimalChoice, matchingGroup);
             }
-            
-            // otherwise add to the smallest group
+
+            // otherwise add matching group to the current smallest group
             else {
                 let smallest = matchingGroups[0];
-                for (let i = 0; i < matchingGroups.length; i++) {
+                for (let i = 1; i < matchingGroups.length; i++) {
                     if (matchingGroups[i].memberIDs.length < smallest.memberIDs.length) {
                         smallest = matchingGroups[i];
                     }
                 }
                 mergeGroups(hive, matchingGroups, smallest, matchingGroup);
+            }
+        }
+
+        // merge groups that want to be together if size allows
+        let k = 0;
+        while (k < matchingGroups.length) {
+            let matchingGroup = matchingGroups[k];
+            matchingGroup.recommended.sort(rank);
+            let optimalChoice = null;
+            let i = 0;
+            while (!optimalChoice && i < matchingGroup.recommended.length) {
+                let responseScore = getResponseValue(matchingGroup.recommended[i].response) + getResponseValue(matchingGroup.recommended[i].theirResponse);
+                if (responseScore > 0) {
+                    let otherMatchingGroup = getObject(matchingGroups, "groupID", matchingGroup.recommended[i].matchingGroupID);
+                    if (matchingGroup.memberIDs.length + otherMatchingGroup.memberIDs.length + 2 <= configOptions.groupSizeRange[1]) {
+                        optimalChoice = otherMatchingGroup;
+                    }
+                }
+                i++;
+            }
+
+            if (optimalChoice) {
+                mergeGroups(hive, matchingGroups, matchingGroup, optimalChoice);
+            } else {
+                k++;
             }
         }
 

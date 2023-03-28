@@ -9,6 +9,16 @@ export function removeElement(arr, elem) {
     return false;
 }
 
+export function removeObject(arr, key, value) {
+    for (let i = 0; i < arr.length; i++) {
+        if (isObject(arr[i]) && arr[i][key] === value) {
+            arr.splice(i, 1);
+            return true;
+        }
+    }
+    return false;
+}
+
 // checks whether each entry of the array is a string 
 export function isArrayOfStrings(arr) {
     if (!Array.isArray(arr)) {
