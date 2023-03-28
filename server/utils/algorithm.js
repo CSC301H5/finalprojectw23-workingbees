@@ -1,6 +1,7 @@
 import AttendeeModel from '../models/attendeeModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
-import { removeElement } from '../utils/arrayUtils.js';
+import SwarmModel from '../models/swarmModel.js';
+import { removeElement, getObject, getObjectIndex } from '../utils/arrayUtils.js';
 
 // linearly transforms x in [0, b] to T(x) in [0, p]
 const transform = (b, p, x) => (p/b) * x;
@@ -177,5 +178,141 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
         }
 
         return recommendations;
+    }
+}
+
+function updateScore(matchingGroup1, matchingGroup2, score) {
+    let index1 = getObjectIndex(matchingGroup1.recommended, "matchingGroupID", matchingGroup2.groupID);
+    let index2 = getObjectIndex(matchingGroup2.recommended, "matchingGroupID", matchingGroup1.groupID);
+    matchingGroup1.recommended[index1].score = score;
+    matchingGroup2.recommended[index2].score = score;
+}
+
+function updateResponse(matchingGroup1, matchingGroup2, response) {
+    let index1 = getObjectIndex(matchingGroup1.recommended, "matchingGroupID", matchingGroup2.groupID);
+    let index2 = getObjectIndex(matchingGroup2.recommended, "matchingGroupID", matchingGroup1.groupID);
+    matchingGroup1.recommended[index1].response = response;
+    matchingGroup2.recommended[index2].theirResponse = response;
+}
+
+function averageResponse(response1, response2) {
+    if (response1 === response2) {
+        return response1;
+    } else if (response1 === "YES" && response2 === "NO" || response1 === "NO" && response2 === "YES") {
+        return "MAYBE";
+    } else if (response1 === "YES" || response2 === "YES") {
+        return "YES";
+    } else if (response1 === "NO" || response2 === "NO") {
+        return "NO";
+    }
+}
+
+function mergeGroups(hive, matchingGroups, matchingGroup1, matchingGroup2) {
+
+    // merge matchingGroup2 -> matchingGroup1
+    matchingGroup1.memberIDs = matchingGroup1.memberIDs.concat(matchingGroup2.memberIDs);
+    matchingGroup1.memberIDs.push(matchingGroup2.leaderID);
+
+    // average compatibility score and responses
+    const matchingGroupsCopy = matchingGroups.map(x => x);
+    removeElement(matchingGroupsCopy, matchingGroup1);
+    removeElement(matchingGroupsCopy, matchingGroup2);
+    for (let i = 0; i < matchingGroupsCopy.length; i++) {
+        let obj1 = getObject(matchingGroupsCopy[i].recommended, "matchingGroupID", matchingGroup1.groupID);
+        let obj2 = getObject(matchingGroupsCopy[i].recommended, "matchingGroupID", matchingGroup2.groupID);
+        updateScore(matchingGroup1, matchingGroupsCopy[i], (obj1.score + obj2.score) / 2);
+        updateResponse(matchingGroup1, matchingGroupsCopy[i], averageResponse(obj1.theirResponse, obj2.theirResponse));
+        updateResponse(matchingGroupsCopy[i], matchingGroup1, averageResponse(obj1.response, obj2.response));
+    }
+
+    // remove from recommended
+    removeElement(matchingGroups, matchingGroup2);
+    for (let i = 0; i < matchingGroups.length; i++) {
+        removeElement(matchingGroups[i].recommended, matchingGroup2)    
+    }
+
+    // delete matchingGroup2
+    removeElement(hive.groupIDs, matchingGroup2.groupID);
+    MatchingGroupModel.findByIdAndRemove(matchingGroup2.groupID, function (err) {
+        if (err) console.log(err);
+    });
+}
+
+export async function createSwarms(hive) {
+
+    if (hive.swarmIDs.length === 0) {
+
+        // get undersized groups
+        const matchingGroups = [];
+        const undersized = [];
+        const configOptions = JSON.parse(hive.configOptions);
+        for (let i = 0; i < hive.groupIDs.length; i++) {
+            let matchingGroup = await MatchingGroupModel.findById(hive.groupIDs[i]);
+            matchingGroups.push(matchingGroup);
+            if (matchingGroup.memberIDs.length + 1 < configOptions.groupSizeRange[0]) {
+                undersized.push(matchingGroup);
+            }
+        }
+
+        while (undersized.length > 0 && hive.groupIDs.length > 1) {
+
+            let matchingGroup = undersized.pop();
+            matchingGroup.recommended.sort(rank);
+            let optimalChoice = null;
+            let i = 0;
+            while (!optimalChoice && i < matchingGroup.recommended.length) {
+                let otherMatchingGroup = getObject(matchingGroups, "groupID", matchingGroup.recommended[i].matchingGroupID);
+                if (matchingGroup.memberIDs.length + otherMatchingGroup.memberIDs.length + 2 <= configOptions.groupSizeRange[1]) {
+                    optimalChoice = otherMatchingGroup;
+                }
+                i++;
+            }
+
+            // add to the most preferred group if size allows
+            if (optimalChoice) {
+                mergeGroups(hive, matchingGroups, optimalChoice, matchingGroup);
+            }
+            
+            // otherwise add to the smallest group
+            else {
+                let smallest = matchingGroups[0];
+                for (let i = 0; i < matchingGroups.length; i++) {
+                    if (matchingGroups[i].memberIDs.length < smallest.memberIDs.length) {
+                        smallest = matchingGroups[i];
+                    }
+                }
+                mergeGroups(hive, matchingGroups, smallest, matchingGroup);
+            }
+        }
+
+        // convert matchingGroups to swarms
+        for (let i = 0; i < matchingGroups.length; i++) {
+            // create swarm
+            let swarm = new SwarmModel({
+                hiveID: hive.hiveID,
+                messages: []
+            })
+            swarm.memberIDs = matchingGroups[i].memberIDs.map(x => x);
+            swarm.memberIDs.push(matchingGroups[i].leaderID);
+            swarm.swarmID = swarm._id.toString();
+            hive.swarmIDs.push(swarm.swarmID);
+            await swarm.save();
+
+            // update attendees within the swarm
+            for (let j = 0; j < swarm.memberIDs.length; j++) {
+                let attendee = await AttendeeModel.findOne({"hiveID": hive.hiveID, "userID": swarm.memberIDs[j]});
+                attendee.groupID = "";
+                attendee.swarmID = swarm.swarmID;
+                await attendee.save();
+            }
+
+            // delete matchingGroup
+            removeElement(hive.groupIDs, matchingGroups[i].groupID);
+            MatchingGroupModel.findByIdAndRemove(matchingGroups[i].groupID, function (err) {
+                if (err) console.log(err);
+            });
+        }
+
+        await hive.save();
     }
 }
