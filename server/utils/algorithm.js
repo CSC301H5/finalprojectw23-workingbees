@@ -2,6 +2,7 @@ import AttendeeModel from '../models/attendeeModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import SwarmModel from '../models/swarmModel.js';
 import { removeElement, removeObject, getObject, getObjectIndex } from '../utils/arrayUtils.js';
+import { getSocketsInHive } from '../utils/wsutils.js';
 
 // linearly transforms x in [0, b] to T(x) in [0, p]
 const transform = (b, p, x) => (p/b) * x;
@@ -341,5 +342,11 @@ export async function createSwarms(hive) {
         }
 
         await hive.save();
+
+        // notify all clients of change
+        let clients = getSocketsInHive(hive.hiveID);
+        for (var key in clients) {
+            clients[key].send('{"event": "SWARMS_CREATED"}');
+        }
     }
 }
