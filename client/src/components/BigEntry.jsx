@@ -3,6 +3,7 @@ import arrow from "../Assets/arrow.png"
 const BigEntry = ({ name = null, detail, pictureUrl = null, destination = "dogoland" }) => {
   const handleClick = () => {
     console.log("going to the room: ", { destination })
+
   };
 
   return (

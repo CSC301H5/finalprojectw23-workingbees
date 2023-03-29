@@ -88,8 +88,6 @@ function WaitingP1() {
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 1</button>
         </form>
       </div>
-      <ProfileHeader/>
-
     </div>
     
   );
