@@ -1637,9 +1637,9 @@ export const beginPhaseTwo = async (req, res) => {
         }
 
         // update hive
-        await createSwarms(hive);
         hive.phase = 2;
         await hive.save();
+        await createSwarms(hive);
 
         // notify all clients of change
         let clients = getSocketsInHive(hive.hiveID);

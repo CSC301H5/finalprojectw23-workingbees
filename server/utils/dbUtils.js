@@ -33,9 +33,9 @@ export async function getHiveFromDB(searchParams) {
             // if (phase1 expiry - now) <= 0: // expired. update phase
             let phase1Expiry = Date.parse(configOptions.phaseChangeDates[1]);
             if (phase1Expiry - now <= 0) {
-                await createSwarms(hive);
                 hive.phase = 2;
                 await hive.save();
+                await createSwarms(hive);
             }
         } 
     } catch (e) {
@@ -75,9 +75,9 @@ export async function getHiveFromDBByID(hiveID) {
             // if (phase1 expiry - now) <= 0: // expired. update phase
             let phase1Expiry = Date.parse(configOptions.phaseChangeDates[1]);
             if (phase1Expiry - now <= 0) {
-                await createSwarms(hive);
                 hive.phase = 2;
                 await hive.save();
+                await createSwarms(hive);
             }
         } 
     } catch (e) {
