@@ -46,7 +46,7 @@ export default class Timer extends Component {
     }
 
     render() {
-        return (
+        return ( 
             this.timeFormat()
         )
     }
