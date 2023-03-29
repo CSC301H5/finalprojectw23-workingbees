@@ -1,4 +1,5 @@
 import HiveModel from '../models/hiveModel.js';
+import { createSwarms } from './algorithm.js';
 
 // wrappers for getting hive from DB
 // ensure that the hive phase is updated prior to returning, based on the hive's timers.
@@ -12,7 +13,7 @@ export async function getHiveFromDB(searchParams) {
     try {
         // check timer.
         const configOptions = JSON.parse(hive.configOptions);
-        
+
         if (!configOptions || !configOptions.phaseChangeDates) { // undefined configOptions, don't check.
             return hive;
         }
@@ -25,15 +26,16 @@ export async function getHiveFromDB(searchParams) {
             let phase0Expiry = Date.parse(configOptions.phaseChangeDates[0]);
             if (phase0Expiry - now <= 0) {
                 hive.phase = 1;
-                hive.save();
+                await hive.save();
             }
 
         } else if (hive.phase === 1 && configOptions.phaseChangeDates[1] !== null) {  // if in phase 1 and phase1 expiry defined
             // if (phase1 expiry - now) <= 0: // expired. update phase
             let phase1Expiry = Date.parse(configOptions.phaseChangeDates[1]);
             if (phase1Expiry - now <= 0) {
+                await createSwarms(hive);
                 hive.phase = 2;
-                hive.save();
+                await hive.save();
             }
         } 
     } catch (e) {
@@ -42,7 +44,6 @@ export async function getHiveFromDB(searchParams) {
     }
 
     return hive;
-
 }
 
 export async function getHiveFromDBByID(hiveID) {
@@ -67,15 +68,16 @@ export async function getHiveFromDBByID(hiveID) {
             let phase0Expiry = Date.parse(configOptions.phaseChangeDates[0]);
             if (phase0Expiry - now <= 0) {
                 hive.phase = 1;
-                hive.save();
+                await hive.save();
             }
 
         } else if (hive.phase === 1 && configOptions.phaseChangeDates[1] !== null) {  // if in phase 1 and phase1 expiry defined
             // if (phase1 expiry - now) <= 0: // expired. update phase
             let phase1Expiry = Date.parse(configOptions.phaseChangeDates[1]);
             if (phase1Expiry - now <= 0) {
+                await createSwarms(hive);
                 hive.phase = 2;
-                hive.save();
+                await hive.save();
             }
         } 
     } catch (e) {
