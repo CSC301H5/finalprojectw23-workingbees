@@ -3,7 +3,7 @@ import arrow from "../Assets/arrow.png"
 import { useNavigate,useLocation } from "react-router-dom";
 
 
-const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = hiveID }) => {
+const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
