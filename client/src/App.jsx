@@ -13,6 +13,7 @@ import LoginHomePage from './components/LoginHomePage';
 import GroupCreation from './components/GroupCreation';
 import WaitingP2 from './components/Waitingp2';
 import Tinder from './components/Tinder';
+import WaitingP3 from './components/Waitingp3';
 function App() {
 
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
         <Route path="/groupcreation" element={< GroupCreation />} />
         <Route path="/tinder" element={< Tinder />} />
+        <Route path="/waiting3" element={<WaitingP3 />} />
         <Route path="*" element={< ErrorPage />} />
       </Routes>
     </Router>
