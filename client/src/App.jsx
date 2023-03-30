@@ -17,6 +17,8 @@ import TeamintroPage from './components/TeamintroPage';
 import TeamViewing from './components/TeamViewing';
 import WaitingP1Attendee from './components/WaitingP1Attendee';
 import WaitingP2Attendee from './components/WaitingP2Attendee';
+import WaitingP3 from './components/Waitingp3';
+
 function App() {
 
   return (
@@ -40,7 +42,7 @@ function App() {
         <Route path="/TeamViewing" element={< TeamViewing />} />
         <Route path="/tinder" element={< Tinder />} />
         <Route path="/Teamintro" element={< TeamintroPage />} />
-
+        <Route path="/waiting3" element={<WaitingP3 />} />
         <Route path="*" element={< ErrorPage />} />
       </Routes>
     </Router>
