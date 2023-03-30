@@ -71,7 +71,7 @@ function TeamProfile() {
         }
         ).then(res => {
             if (res.status === 200) {
-                // redirect
+                //redirect
             }
         })
     }
@@ -84,19 +84,19 @@ function TeamProfile() {
     for (let i = 0; i < (configOptions.length); i++) {
         // calendar
         if (configOptions[i].type === "TIMETABLE") {
-            rows.push(<ClientCalendar maxAllowed={configOptions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} />);
+            rows.push(<ClientCalendar maxAllowed={configOptions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} explanation={configOptions[i].explanation} question={configOptions[i].title}/>);
             userResponses.push(arr);
         }
         if (configOptions[i].type === "DROPDOWN") {
-            rows.push(<ClientDropdown options={configOptions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions[i].explanation} />);
+            rows.push(<ClientDropdown options={configOptions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions[i].explanation} question={configOptions[i].title}/>);
             userResponses.push(response);
         }
         if (configOptions[i].type === "MULTISELECT") {
-            rows.push(<ClientMultiselect options={configOptions[i].typeOptions.options} selected={selected} setSelected={setSelected} explanation={configOptions[i].explanation} maxAllowed={configOptions[i].typeOptions.maxAllowed} />);
+            rows.push(<ClientMultiselect options={configOptions[i].typeOptions.options} selected={selected} setSelected={setSelected} explanation={configOptions[i].explanation} maxAllowed={configOptions[i].typeOptions.maxAllowed} question={configOptions[i].title}/>);
             userResponses.push(selected);
         }
         if (configOptions[i].type === "NUMBERLINE") {
-            rows.push(<ClientSlider min={configOptions[i].typeOptions.min} max={configOptions[i].typeOptions.max} step={configOptions[i].typeOptions.step} num={num} setNum={setNum} explanation={configOptions[i].explanation} />);
+            rows.push(<ClientSlider min={configOptions[i].typeOptions.min} max={configOptions[i].typeOptions.max} step={configOptions[i].typeOptions.step} num={num} setNum={setNum} explanation={configOptions[i].explanation} question={configOptions[i].title}/>);
             userResponses.push(num);
         }
     }

@@ -7,10 +7,11 @@ import axios from 'axios'
 expects the following props
     - hiveID
     - token
+    - attendeeList
+    - setAttendeeList
 */
 
 function StaticAttendeeList(props) {
-  const [attendeeList, setAttendeeList] = useState([])
 
   async function getAttendeeList() {
     axios.get("/api/v1/getHiveAttendeeNames",
@@ -23,7 +24,7 @@ function StaticAttendeeList(props) {
         }
       }).then(res => {
         if (res.status == 200) {
-          setAttendeeList(res.data.attendeeNames)
+          props.setAttendeeList(res.data.attendeeNames)
         }
       })
   }
@@ -33,8 +34,6 @@ function StaticAttendeeList(props) {
 
   return (
     <div>
-      <h1>{attendeeList}</h1>
-      <h1>{attendeeList.length}</h1>
     </div>
   )
 }
