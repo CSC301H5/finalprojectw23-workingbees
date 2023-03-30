@@ -7,45 +7,61 @@ import MyMessage from './MyMessage'
 	token
 	hiveID
 	swarmID
+	userName
+	setMessages
 	Messsages*/
-	
 
-export default function OutgoingMessage (props) {
+
+export default function OutgoingMessage(props) {
 	const [message, setMessage] = useState('')
-	
-	function changeMessage(event){
+
+	function changeMessage(event) {
 		setMessage(event.target.value)
 	}
 
-	async function sendMessage(e){
-		axios.post("/api/v1/sendSwarmChatMessage",
+	function getChatHistory() {
+        axios.get("/api/v1/getSwarmChatHistory",
             {
                 params: {
                     hiveID: props.hiveID,
-					swarmID: props.swarmID,
-					message: message
+                    swarmID: props.swarmID
                 },
                 headers: {
                     'x-auth-token': props.token
                 }
             }).then(res => {
-                if (res.status === 200) {
-					//TODO make this line match with whatever youre sending 
-					//props.Messages.push(<MyMessage message={message}>)
-                    setMessage('')
+                if (res.status == 200) {
+                    props.setMessages(res.data.messages)
                 }
             })
-		setMessage('')
+    }
+
+	async function sendMessage(e) {
+		axios.post("/api/v1/sendSwarmChatMessage",
+			{
+				params: {
+					hiveID: props.hiveID,
+					swarmID: props.swarmID,
+					message: message
+				},
+				headers: {
+					'x-auth-token': props.token
+				}
+			}).then(res => {
+				if (res.status === 200) {
+					getChatHistory();
+				}
+			})
 	}
 	return <form onSubmit={sendMessage}>
-			<input className="inputBox"
-				type="text"
-				placeholder="Send a message"
-				value={message}
-				onChange={changeMessage}
-				required />
-			<input className="small_button" 
-				type="submit" 
-				value="Send" />
-		</form>
+		<input className="inputBox"
+			type="text"
+			placeholder="Send a message"
+			value={message}
+			onChange={changeMessage}
+			required />
+		<input className="small_button"
+			type="submit"
+			value="Send" />
+	</form>
 }
