@@ -13,6 +13,10 @@ import LoginHomePage from './components/LoginHomePage';
 import GroupCreation from './components/GroupCreation';
 import WaitingP2 from './components/Waitingp2';
 import Tinder from './components/Tinder';
+import TeamViewing from './components/TeamViewing';
+import WaitingP1Attendee from './components/WaitingP1Attendee';
+import WaitingP2Attendee from './components/WaitingP2Attendee';
+
 function App() {
 
   return (
@@ -29,6 +33,11 @@ function App() {
         <Route path="/teamProfile" element={<TeamProfile />} />
         <Route path="/LoginHomePage" element={< LoginHomePage />} />
         <Route path="/groupcreation" element={< GroupCreation />} />
+  
+
+        <Route path="/waitingP1Attendee" element={< WaitingP1Attendee />} />
+        <Route path="/WaitingP2Attendee" element={< WaitingP2Attendee />} />
+        <Route path="/TeamViewing" element={< TeamViewing />} />
         <Route path="/tinder" element={< Tinder />} />
         <Route path="*" element={< ErrorPage />} />
       </Routes>

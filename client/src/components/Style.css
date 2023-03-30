@@ -758,6 +758,7 @@ font-family:'Montserrat';
   background-color: F6F6F6;
   margin-left: 10px;
 }
+
 .config::-webkit-scrollbar {
   width: 10px;
 }
@@ -791,4 +792,41 @@ font-family:'Montserrat';
 
 .questionList::-webkit-scrollbar-thumb:hover {
   background-color: #FFAF40;
+}
+
+
+.placeTimer {
+  position: absolute;
+  left: 700px;
+  top: 382px;
+  text-align: center;
+  
+}
+
+.bigTimer {
+  position: center;
+  color: #FFAF40;
+  font-size:  76px;
+  font-weight: 900;
+  font-family: 'Montserrat';
+}
+
+.yellowSubtitle {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+  color: #FFAF40;
+}
+
+.centeredSubtitle {
+  margin-left: 150px;
+  position: center;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+  text-align: center;
 }

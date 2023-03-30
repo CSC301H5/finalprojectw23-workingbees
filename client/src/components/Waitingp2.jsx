@@ -26,6 +26,7 @@ function WaitingP2() {
 
   const handleSubmit = e => {
     e.preventDefault();
+    navigate("/TeamViewing", { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } })
   }
 
   return (
