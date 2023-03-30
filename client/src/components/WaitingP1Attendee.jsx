@@ -15,6 +15,7 @@ function WaitingP1Attendee() {
   const token = location.state.token;
   const hiveID = location.state.hiveID;
   const ws = new WebSocket('ws://localhost:3030/initializeWS')
+  console.log("code :", code);
   ws.addEventListener('open', (event) => {
 	ws.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
 	});
@@ -28,7 +29,8 @@ function WaitingP1Attendee() {
 		
   const handleNavigation = () => {
 	// idk where im sending yet
-    navigate('/tinder',  {state: { token: location.state.token , hiveID: location.state.hiveID} });
+	
+    navigate('/tinder',  {state: { token: location.state.token , hiveID: location.state.hiveID, code: code} });
   }	
 	
   return (

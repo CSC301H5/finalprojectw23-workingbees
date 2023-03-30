@@ -22,11 +22,12 @@ const Tinder = (props) => {
   const [matchingGroupIDArray, SetmatchingGroupIDArray] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  //const token = getCookie("x-auth-token");
+  var setup_index = 0;
+  const token2 = getCookie("x-auth-token");
   const token  = location.state.token;
   const hiveID = location.state.hiveID;
   const code = location.state.code;
-  console.log( "code:",code)
+  console.log( "hiveID code token :", token)
   let ex1  = null;
   // const ex1 = {
   //   recommendations: [
@@ -124,15 +125,16 @@ const Tinder = (props) => {
             configOptionsResponses = recommendation.configOptionsResponses;
             let number = 0;
             console.log("questions_array real value,", a)
+            profile.push( <FakeProfileHeader list={users_array} />)
             for (let index in a) {
-              console.log('users_array[index].name   : ',  users_array[index].name);
+             // console.log('users_array[index].name   : ',  users_array[index].name);
               index = parseInt(index)
               title = a[index].title;
               explanation = a[index].explanation;
               question_type = a[index].type;
               i = index;
               //profile.push(< ProfileHeader  list={users_array}/>);
-              profile.push( <FakeProfileHeader list={users_array} />)
+              
   
               console.log("questions_array[index]:", a[index])
               console.log("configOptions", configOptionsResponses)
@@ -177,14 +179,19 @@ const Tinder = (props) => {
           }
              
            );
-           SetmatchingGroupIDArray(matchingGroupIDArray2); 
+           SetmatchingGroupIDArray(matchingGroupIDArray2);
+          
+           setup_index =1;
+           console.log("setup_index: ",setup_index);
         }
       });
   }
 
   useEffect(() => {
     get_result();
-    get_options();
+   // get_options();
+   
+   console.log("setup_index2: ",setup_index);
   }, [])
   
   useEffect(() => {
@@ -192,11 +199,15 @@ const Tinder = (props) => {
   }, [current_profile_index])
 
   useEffect(() => {
-    if (current_profile_index +1  > displayComponents.length ){
-      console.log("navagate time ")
-      navigate("/WaitingP2Attendee", {state: { token: token,
+    console.log("setup_index check ",setup_index, displayComponents);
+    if ((current_profile_index +1  > displayComponents.length)&&(displayComponents.length >= 1)){
+
+
+      console.log("navagate time ", displayComponents)
+      
+       navigate("/WaitingP2Attendee", {state: { token: token,
        hiveID:  hiveID,
-    code: code} })
+     code: code} })
     }
   }, [current_profile_index])
   console.log("matchingGroupIDArray[current_profile_index]", matchingGroupIDArray[current_profile_index])

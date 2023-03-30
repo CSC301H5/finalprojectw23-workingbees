@@ -3,27 +3,39 @@ import axios from 'axios';
 import { getCookie } from '../utils/getAuthToken';
 import "./Style.css"
 function sendMatchingResponse(hiveID, matchingID, response, next, token) {
+
+	console.log( "pass in inputs hiveID",  hiveID);
+	console.log( "pass in inputs  matchingID ", matchingID);
+	console.log( "pass in inputs response", response);
+	console.log( "pass in inputs  token ", token);
+
+        axios.post("/api/v1/respondToMatchingGroupRecommendation",
+            {
+                hiveID: hiveID,
+				matchingGroupID: matchingID,
+                response: response
+            }, {
+            headers: {
+                'x-auth-token': token
+            }
+        }
+        ).then(res => {
+			console.log("x2 : ", token);
+			if (res.status == 200) {
+				console.log("30000");
+				console.log("x2 ", token);
+				next()
+			}
+			console.log(res.data);
+			
+		}).catch(err => {
+			console.error(err.response);
+		});
+    
+
 	
-	axios.post("/api/v1/respondToMatchingGroupRecommendation", {
-		params: {
-			"hiveID": hiveID,
-			"matchingGroupID": matchingID,
-			"response": response
-		},
-		headers: {
-			"x-auth-token": token
-		}
-	}).then(res => {
-		console.log("x2 : ", token);
-		if (res.status == 200) {
-			console.log("30000");
-			console.log("x2 ", token);
-			next()
-		}
-		console.log(res.data);
-	}).catch(err => {
-		console.error(err.response.data);
-	});
+	console.log("toekm", token);
+ 
 }
 
 
@@ -41,9 +53,9 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Reject"
 				onClick={() => {
-					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, porps.hiveID)
-					console.log("click click click -1")
-					props.Setcurrent_profile_index(props.current_profile_index -  1)
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.token)
+					console.log("click click click -1",props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.hiveID)
+					props.Setcurrent_profile_index(props.current_profile_index +  1)
 				}}
 			/>
 			<input
@@ -51,7 +63,7 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Maybe"
 				onClick={() => {
-					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next,  porps.hiveID)
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next,  props.token)
 					console.log("click  +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
@@ -61,7 +73,7 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Accept"
 				onClick={() => {
-					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next , porps.hiveID)
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next , props.token)
 					console.log("click click +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}

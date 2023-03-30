@@ -1398,6 +1398,9 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
 
     // verify request
     if (!hiveID || !matchingGroupID || !response) {
+        console.log("hiveID ", hiveID);
+        console.log("matchingGroupID ", matchingGroupID);
+        console.log("response ", response);
         return res.status(400).json({msg: "Malformed request."});
     }
 
