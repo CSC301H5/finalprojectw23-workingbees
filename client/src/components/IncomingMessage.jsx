@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import MyMessage from "./MyMessage";
+import NewMessage from "./NewMessage";
 import OtherMessage from "./OtherMessage";
 
 /*
@@ -99,6 +100,7 @@ function IncomingMessage(props) {
 
     return (
         <div className="incomingMsg" style={{ overflow: "auto", maxHeight: "70vh" }}>
+            <NewMessage hiveID={props.hiveID} token={props.token} messages={messages} setMessages={setMessages}/>
             <div>
                 <tbody>{rows}</tbody>
             </div>
