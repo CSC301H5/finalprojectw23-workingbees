@@ -100,7 +100,7 @@ function IncomingMessage(props) {
 
     return (
         <div className="incomingMsg" style={{ overflow: "auto", maxHeight: "70vh" }}>
-            <NewMessage hiveID={props.hiveID} token={props.token} messages={messages} />
+            <NewMessage hiveID={props.hiveID} token={props.token} messages={messages} setMessages={setMessages}/>
             <div>
                 <tbody>{rows}</tbody>
             </div>
