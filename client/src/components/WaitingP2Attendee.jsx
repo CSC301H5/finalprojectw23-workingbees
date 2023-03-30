@@ -29,7 +29,7 @@ function WaitingP2Attendee() {
   const handleNavigation = () => {
 	// idk where im sending yet
 	
-    navigate('/error', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } });
+    navigate('/Teamintro', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } });
   }	
 	
   return (
@@ -48,6 +48,8 @@ function WaitingP2Attendee() {
 				token={token}
 				hiveID={hiveID}
 				event={handleNavigation} />
+
+				<button onClick={handleNavigation}>  CLick me for next page </button>
 		  </ div>
 		  <label class="yellowSubtitle">
 			Until groups are created !

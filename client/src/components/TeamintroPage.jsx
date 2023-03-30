@@ -6,7 +6,7 @@ import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
 import { getCookie } from '../utils/getAuthToken';
-import Teamintro from './Teamintro';
+
 import BigEntry from './BigEntry'
 const  TeamintroPage=() =>{
   const [room, setRoom] = useState('');
@@ -28,7 +28,7 @@ const  TeamintroPage=() =>{
         }
     }).then(res => {
         if (res.status === 200) {
-            for ( member in res.members){
+            for ( let member in res.members){
                row.push(<BigEntry name={member['name']} detail={member['biography']}/>)
             }
 
@@ -59,7 +59,7 @@ const  TeamintroPage=() =>{
           type="text"
           name="username"
           placeholder="Room PIN"
-          onChange={handleInputChange}
+          //onChange={handleInputChange}
           value={room}
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         />
