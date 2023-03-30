@@ -1,9 +1,14 @@
 import React from 'react';
 import arrow from "../Assets/arrow.png"
-const BigEntry = ({ name = null, detail, pictureUrl = null, destination = "dogoland" }) => {
+import { useNavigate,useLocation } from "react-router-dom";
+
+
+const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
     console.log("going to the room: ", { destination })
-
+    navigate(destination, hiveID)
   };
 
   return (
