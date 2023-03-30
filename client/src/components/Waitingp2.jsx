@@ -6,6 +6,8 @@ import hives from '../Assets/hives.png'
 import StaticAttendeeList from "./StaticAttendeeList";
 import SwipedNumbers from "./SwipedNumbers";
 import PhaseTimer from "./PhaseTimer";
+import axios from 'axios'
+import MiniEntry from "./MiniEntry";
 
 function WaitingP2() {
   const [attendeeList, setAttendeeList] = useState([])
@@ -24,8 +26,28 @@ function WaitingP2() {
     socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
   });
 
+  const beginPhaseTwo = () => {
+    axios.post('/api/v1/beginPhaseTwo',
+      {
+        hiveID: hiveID,
+      }, {
+      headers: {
+        'x-auth-token': token
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        handleNavigation();
+      }
+    })
+  }
+
+  const handleNavigation = () => {
+    navigate('/waiting3', { state: { code: code, token: token, hiveID: hiveID } });
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
+    beginPhaseTwo();
   }
 
   return (
@@ -37,15 +59,32 @@ function WaitingP2() {
         <Navbar roomCode={code} token={token} >
           <PhaseTimer token={token} hiveID={hiveID} />
         </Navbar>
-        <h2 className="roomCode">Phase 1 </h2>
+        <h2 className="roomCode" style={{left: '800px'}}>Phase 1</h2>
         <form onSubmit={handleSubmit}>
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
           <label className="numsDescription" style={{ left: '1000px' }}>users done swiping</label>
           <SwipedNumbers socket={socket} profileNums={profileNums} setProfileNums={setProfileNums} />
-          <p className="nums" style={{ left: '1070px' }}>{profilesCompleted}</p>
-          <p className="nums" style={{ left: '820px' }}>{numBees}</p>
+          <p className="nums" style={{ left: '1070px' }}>{profileNums}</p>
+          <p className="nums" style={{ left: '820px' }}>{attendeeList.length}</p>
           <label className="attendees">Attendee list</label>
-          <StaticAttendeeList hiveID={hiveID} token={token} />
+          <StaticAttendeeList hiveID={hiveID} token={token} attendeeList={attendeeList} setAttendeeList={setAttendeeList} />
+          <div
+            className="entryBox"
+            style={{
+              position: "absolute",
+              left: "720px",
+              top: "420px",
+              width: "570px",
+              height: "200px",
+              display: "inline-block",
+              overflowY: "scroll",
+
+            }}
+          >
+            {attendeeList.map((name) => (
+              <MiniEntry key={name} name={name} style={{}} />
+            ))}
+          </div>
           <button type="submit" className="button" style={{ position: 'absolute', left: '1017px', top: '667px' }}>Skip to phase 2</button>
         </form>
       </div>
