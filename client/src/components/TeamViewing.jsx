@@ -9,7 +9,11 @@ import HiveList2 from './HiveList2';
 
 //Need hiveID
 function TeamViewing(props) {
-const location = useLocation();
+  const location = useLocation();
+  const code = location.state.code;
+  const token = location.state.token;
+  const hiveID = location.state.hiveID;
+
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
   const navigate = useNavigate();
@@ -39,7 +43,7 @@ const location = useLocation();
             overflow: 'auto',
           }}
         >
-          <HiveList2  hiveID={"64191d45656d50208c6072c8"}/>
+          <HiveList2  hiveID={hiveID}/>
         </div>
       
         <button onClick={handlBackToHomePage} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Back to home page</button>

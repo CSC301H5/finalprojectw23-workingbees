@@ -78,7 +78,9 @@ function TeamProfile() {
              profilePicture: location.state.profilePicture,
              hiveName: location.state.hiveName, 
              displayName: location.state.displayName, 
-             phaseChangeDates: location.state.phaseChangeDates } })
+             phaseChangeDates: location.state.phaseChangeDates,
+            hiveID: location.state.hiveID ,
+         code: location.state.code} })
                 
             }
         })

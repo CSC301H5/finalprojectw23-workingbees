@@ -2,8 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { getCookie } from '../utils/getAuthToken';
 import "./Style.css"
-function sendMatchingResponse(hiveID, matchingID, response, next) {
-	const token = getCookie('x-auth-token')
+function sendMatchingResponse(hiveID, matchingID, response, next, token) {
+	
 	axios.post("/api/v1/respondToMatchingGroupRecommendation", {
 		params: {
 			"hiveID": hiveID,
@@ -41,9 +41,9 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Reject"
 				onClick={() => {
-					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next)
-					console.log("click click click")
-					props.Setcurrent_profile_index(props.current_profile_index + 1)
+					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, porps.hiveID)
+					console.log("click click click -1")
+					props.Setcurrent_profile_index(props.current_profile_index -  1)
 				}}
 			/>
 			<input
@@ -51,8 +51,8 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Maybe"
 				onClick={() => {
-					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next)
-
+					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next,  porps.hiveID)
+					console.log("click  +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
 			/>
@@ -61,8 +61,8 @@ export default function ResponseButtons(props) {
 				type="button"
 				value="Accept"
 				onClick={() => {
-					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next)
-					console.log("click click click")
+					//sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next , porps.hiveID)
+					console.log("click click +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
 			/>
