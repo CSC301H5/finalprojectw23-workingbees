@@ -87,7 +87,7 @@ function IncomingMessage(props) {
 
     const rows = [];
     for (let i = 0; i < (messages.length); i++) {
-        if (messages[i].sender == userName) {
+        if (messages[i].sender === userName) {
             // my message
             rows.push(<MyMessage message={messages[i].message} />);
 
