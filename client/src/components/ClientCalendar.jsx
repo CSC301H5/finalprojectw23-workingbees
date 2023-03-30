@@ -2,7 +2,7 @@ import "./Style.css"
 import ScheduleSelector from 'react-schedule-selector';
 import { useEffect, useState } from "react";
 
-// takes in maxAllowed
+// takes in maxAllowed, question, and explanation
 function ClientCalendar(props) {
     const maxAllowed = props.maxAllowed
     const setArr = props.setArr
@@ -41,7 +41,8 @@ function ClientCalendar(props) {
 
     return (
         <div className="schedule">
-            <h1 className="text">What is your availability?</h1>
+            <label className="text">{props.question}</label> <br />
+            <label className="text">{props.explanation}</label>
             <ScheduleSelector
                 selection={schedule}
                 onChange={handleChange}
