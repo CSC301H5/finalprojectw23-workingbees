@@ -63,7 +63,7 @@ function Chat(props) {
                     'x-auth-token': location.state.token
                 }
             }).then(res => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data.name)
                     setUserName(res.data.name)
                 }

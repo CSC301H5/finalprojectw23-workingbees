@@ -30,7 +30,7 @@ export default function OutgoingMessage(props) {
 					'x-auth-token': props.token
 				}
 			}).then(res => {
-				if (res.status == 200) {
+				if (res.status === 200) {
 					console.log(res.data.messages)
 					props.setMessages(res.data.messages)
 				}
@@ -64,8 +64,8 @@ export default function OutgoingMessage(props) {
 			placeholder="Send a message"
 			value={message}
 			onChange={changeMessage}
-			required 
-			/>
+			required
+		/>
 		<input className="small_button"
 			type="button"
 			value="Send"
