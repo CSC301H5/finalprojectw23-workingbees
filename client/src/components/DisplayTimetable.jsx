@@ -45,7 +45,7 @@ function DisplayTimetable(props) {
     }
 
     return (
-        <div className="schedule">
+        <div className="schedule" style={{paddingLeft:"50px"}}>
             <h1 className="text">Availability: </h1>
             <ScheduleSelector
                 selection={schedule}
