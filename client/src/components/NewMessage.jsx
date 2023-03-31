@@ -34,6 +34,7 @@ function NewMessage(props) {
     socket.addEventListener('message', (event) => {
         let data = JSON.parse(event.data);
         if (data.event === "NEW_CHAT_MESSAGE") {
+            console.log("msg received")
             getChatHistory()
         }
     });

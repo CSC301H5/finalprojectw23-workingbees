@@ -20,6 +20,8 @@ function Chat(props) {
     const [userName, setUserName] = useState('')
     const location = useLocation();
 
+    console.log(location.state.code)
+
     // for testing
     /*
     const [messages, setMessages] = useState([
@@ -52,17 +54,18 @@ function Chat(props) {
 
     // get userName
     async function getUserName() {
-        axios.get("/api/v1/getMatchingGroup",
+        axios.get("/api/v1/getUserDisplayName",
             {
                 params: {
-                    hiveID: props.hiveID,
+                    hiveID: location.state.hiveID,
                 },
                 headers: {
-                    'x-auth-token': props.token
+                    'x-auth-token': location.state.token
                 }
             }).then(res => {
                 if (res.status == 200) {
-                    setUserName(res.data.userName)
+                    console.log(res.data.name)
+                    setUserName(res.data.name)
                 }
             })
     }
@@ -79,10 +82,10 @@ function Chat(props) {
                 <Navbar roomCode={location.state.code} token={location.state.token}>
                 </Navbar>
 
-                <IncomingMessage hiveID={props.hiveID} token={location.state.token} code={location.state.code}
-                    swarmID={props.swarmID} messages={messages} setMessages={setMessages} userName={userName}
+                <IncomingMessage hiveID={location.state.hiveID} token={location.state.token} code={location.state.code}
+                    swarmID={location.state.swarmID} messages={messages} setMessages={setMessages} userName={userName}
                 />
-                <OutgoingMessage token={location.state.token} hiveID={props.hiveID} swarmID={props.swarmID}
+                <OutgoingMessage token={location.state.token} hiveID={location.state.hiveID} swarmID={location.state.swarmID}
                     setMessages={setMessages} username={userName}
                 />
             </div>
