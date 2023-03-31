@@ -130,8 +130,8 @@ export async function getPendingRecommendations(hive, userMatchingGroup) {
             let users = [];
             let leaderData = await getAttendeeData(hive.hiveID, matchingGroup.leaderID);
             users.push(leaderData);
-            for (var memberID in matchingGroup.memberIDs) {
-                let memberData = await getAttendeeData(hive.hiveID, memberID);
+            for (let k = 0; k < matchingGroup.memberIDs.length; k++) {
+                let memberData = await getAttendeeData(hive.hiveID, matchingGroup.memberIDs[k]);
                 users.push(memberData);
             }
 
