@@ -1659,3 +1659,144 @@ export const beginPhaseTwo = async (req, res) => {
         res.status(500).json({msg: "Server Error."})
     }
 }
+
+export const sendSwarmChatMessage = async (req, res) => {
+
+    try {
+
+        let hiveID = req.body.hiveID;
+        let swarmID = req.body.swarmID;
+        let message = req.body.message;
+
+        if (!hiveID || !swarmID || !message) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        const hive = await getHiveFromDBByID(req.body.hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive does not exist"});
+        }
+
+        if (hive.phase !== 2) {
+            return res.status(409).json({msg: "Error: Swarms only exist in phase 2."});
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // attendee can only check their own swarm. host can check any.
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (attendee && attendee.swarmID !== swarmID) { // attendee exists but is not in this swarm
+            console.log(attendee.swarmID, swarmID);
+            console.log(user.userID);
+            return res.status(401).json({msg: "You are not permitted to access that swarmID."});
+        } 
+
+        // get sender name for the message
+        let sendername;
+        if (attendee) {
+            sendername = attendee.name;
+        } else {
+            sendername = host.name;
+        }
+
+        const swarm = await SwarmModel.findById(swarmID);
+        if (!swarm) { // failed to find swarm
+            return res.status(404).json({ msg:"Error: Swarm not found." });
+        }
+        
+        let data = {
+            "sender": sendername,
+            "message": message,
+            "timestamp": Date().toString()
+        }
+
+        // update swarm
+        swarm.messages.push(data)
+        await swarm.save();
+
+        data["event"] = "NEW_CHAT_MESSAGE";
+
+        // notify all clients in swarm of new message
+        let sockets = getSocketsInHive(hiveID);
+        for (var key in sockets) {
+            if (swarm.memberIDs.includes(key) || key == hive.hostID) {
+                sockets[key].send(JSON.stringify(data));
+            }
+        }
+
+        res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on sendSwarmChatMessage controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getSwarmChatHistory = async (req, res) => {
+
+    try {
+
+        let hiveID = req.query.hiveID;
+        let swarmID = req.query.swarmID
+
+        if (!hiveID || !swarmID) {
+            return res.status(400).json({msg: "Malformed request."});
+        }
+
+        const hive = await getHiveFromDBByID(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        const user = await UserModel.findById(req.userID);
+        if (!user) { // failed to find user
+            return res.status(401).json({ msg:"Invalid user. Action forbidden." });
+        }
+
+        // if user does not have permission to use the hive.
+        if (hive.hostID !== user.userID && !hive.attendeeIDs.includes(user.userID)) {
+            return res.status(401).json({ msg:"Permission denied." });
+        }
+
+        // attendee can only check their own swarm. host can check any.
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (attendee && attendee.swarmID !== swarmID) {
+            return res.status(401).json({msg: "You are not permitted to access that swarmID."});
+        }
+
+        const swarm = await SwarmModel.findById(swarmID);
+        if (!swarm) { // failed to find swarm
+            return res.status(404).json({ msg:"Error: Swarm not found." });
+        }
+
+        const data = {"messages": []};
+
+        for (let i = 0; i < swarm.messages.length; i++) {
+            let curr = swarm.messages[i];
+            data.messages.push({
+                "sender": curr.sender,
+                "message": curr.message,
+                "timestamp": curr.timestamp
+            });
+        }
+
+        return res.status(200).json(data);
+
+    } catch (e) {
+        console.error("Error on getSwarmChatHistory controller!");
+        console.error(e.message);
+        console.error(e.stack)
+        res.status(500).json({msg: "Server Error."})
+    }
+}
