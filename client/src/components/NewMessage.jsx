@@ -9,8 +9,13 @@ expects the following props:
 function NewMessage(props) {
 
     const socket = new WebSocket('ws://localhost:3030/initializeWS')
+    socket.addEventListener('open', (event) => {
+        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(props.hiveID), token: props.token }));
+    });
 
     function getChatHistory() {
+        console.log(props.hiveID)
+        console.log(props.swarmID)
         axios.get("/api/v1/getSwarmChatHistory",
             {
                 params: {
@@ -26,10 +31,6 @@ function NewMessage(props) {
                 }
             })
     }
-
-    socket.addEventListener('open', (event) => {
-        socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(props.hiveID), token: props.token }));
-    });
 
     socket.addEventListener('message', (event) => {
         let data = JSON.parse(event.data);

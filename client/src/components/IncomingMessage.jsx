@@ -55,7 +55,7 @@ function IncomingMessage(props) {
     return (
         <div className="config" style={{   border: "1px solid #FFAF40",
         borderRadius: "8px",overflow: "auto", height: "500px", width: "436px", backgroundColor: "whitesmoke" }}>
-            <NewMessage hiveID={props.hiveID} token={props.token} messages={props.messages} setMessages={props.setMessages}/>
+            <NewMessage hiveID={props.hiveID} token={props.token} messages={props.messages} setMessages={props.setMessages} swarmID={props.swarmID}/>
             <div>
                 <tbody>{rows}</tbody>
             </div>
