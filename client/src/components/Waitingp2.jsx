@@ -42,8 +42,7 @@ function WaitingP2() {
   }
 
   const handleNavigation = () => {
-    //navigate('/waiting3', { state: { code: code, token: token, hiveID: hiveID } });
-     navigate('/TeamViewing', { state: { code: code, token: token, hiveID: hiveID } });
+     navigate('/waiting3', { state: { code: code, token: token, hiveID: hiveID } });
   }
 
   const handleSubmit = e => {

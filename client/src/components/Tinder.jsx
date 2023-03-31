@@ -158,8 +158,9 @@ const Tinder = (props) => {
               }
               else if (question_type == "TIMETABLE") {
                 console.log("configOptionsResponses[dropdownIndex]:", configOptionsResponses[i]) // loop through  configOptionsResponses = [[ "rorrrrrrrrr", "eeeeeeeeee"], 800000,"545454545"] 
+                console.log(configOptionsResponses[i])
 
-                newDisplayComponents = <DisplayTimetable array={configOptionsResponses[i]} question={"Q" + (index)} />;
+                newDisplayComponents = <DisplayTimetable arr={configOptionsResponses[i]} question={"Q" + (index)} />;
               }
 
               profile.push(newDisplayComponents);
