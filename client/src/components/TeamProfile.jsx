@@ -37,7 +37,7 @@ function TeamProfile() {
 
     const location = useLocation();
     const navigate = useNavigate();
-
+   console.log( "location.state.code : ", location.state.code ,  "location.state.token:", location.state.token, "location.state.hiveID,",location.state.hiveID);
     // get configOptions
     async function getConfigOptions() {
         axios.get("/api/v1/getRoomConfigOptions",
@@ -71,7 +71,17 @@ function TeamProfile() {
         }
         ).then(res => {
             if (res.status === 200) {
-                //redirect
+
+                
+        navigate('/waitingP1Attendee', 
+        {state: { token: location.state.token ,
+             profilePicture: location.state.profilePicture,
+             hiveName: location.state.hiveName, 
+             displayName: location.state.displayName, 
+             phaseChangeDates: location.state.phaseChangeDates,
+            hiveID: location.state.hiveID ,
+         code: location.state.code} })
+                
             }
         })
     }

@@ -5,11 +5,13 @@ import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-
+import { getCookie } from '../utils/getAuthToken';
 const Profile = () => {
   const location = useLocation();
   const code = location.state.code;
-  const token = location.state.token;
+  //const token = location.state.token;
+  const token = getCookie("x-auth-token");
+  console.log( token)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [preview, setPreview] = useState(null);

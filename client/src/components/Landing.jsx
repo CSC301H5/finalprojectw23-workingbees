@@ -3,11 +3,12 @@ import hives from '../Assets/hives.png'
 import axios from 'axios';
 import "./Style.css";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from '../utils/getAuthToken';
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const [token, setToken] = useState('')
   const navigate = useNavigate();
-
+ 
   const handleJoinRoomCode = () => {
 
     axios.post("/api/v1/guestRegister").then(res => {
@@ -24,6 +25,7 @@ const Landing = () => {
             console.error('Room code is not a number!');
             return;
           }
+          console.log("BeforegetHiveInfo", token);
           axios.get("/api/v1/getHiveInfo", {
             params: {
               code: roomCode
@@ -33,6 +35,7 @@ const Landing = () => {
             }
           }).then(res => {
             if (res.status === 200) {
+              console.log("AFTERgetHiveInfo", token);
               navigate("/Profile", { state: { code: roomCode, token: token } })
             }
             console.log(res.data);

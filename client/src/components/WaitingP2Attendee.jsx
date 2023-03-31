@@ -11,6 +11,9 @@ function WaitingP2Attendee() {
   const profilesCompleted = useState()
   const location = useLocation();
   const navigate = useNavigate();
+  const code = location.state.code;
+  const token = location.state.token;
+  const hiveID = location.state.hiveID;
   
   const ws = new WebSocket('ws://localhost:3030/initializeWS')
 	ws.addEventListener('open', (event) => {
@@ -25,7 +28,8 @@ function WaitingP2Attendee() {
 		
   const handleNavigation = () => {
 	// idk where im sending yet
-    navigate('/error', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } });
+	
+    navigate('/Teamintro', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } });
   }	
 	
   return (
@@ -44,9 +48,11 @@ function WaitingP2Attendee() {
 				token={token}
 				hiveID={hiveID}
 				event={handleNavigation} />
+
+				<button onClick={handleNavigation}>  CLick me for next page </button>
 		  </ div>
 		  <label class="yellowSubtitle">
-			until groups are created
+			Until groups are created !
 		  </label>
 		</div>		
       </div>

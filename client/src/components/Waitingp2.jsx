@@ -47,6 +47,8 @@ function WaitingP2() {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+
     beginPhaseTwo();
   }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import leftContinue from '../Assets/leftContinue.png'
 import rightContinue from '../Assets/rightContinue.png'
 
-const ProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePicture": null }, { "name": "Bee2", "biography": "hi", "profilePicture": null }]
+const FakeProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePicture": null }, { "name": "Bee2", "biography": "hi", "profilePicture": null }]
   , hiveID }) => {
   console.log("list ",list)
   const [currentUserIndex, setCurrentUserIndex] = useState(0);
@@ -36,7 +36,7 @@ const ProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePi
   return (
     <div className="entryWrapper">
       {/* {profilePicture ? (
-       <img src={`data:image/jpeg;base64,${atob(list[currentUserIndex].profilePicture)}`}
+       <img src={`data:image/jpeg;base64,${atob(profilePicture)}`}
           alt={displayName}
           style={{ width: '76px', height: '76px', borderRadius: '50%', marginRight: '10px', marginLeft: '10px', cursor: 'pointer' }}
         />
@@ -63,4 +63,4 @@ const ProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePi
   );
 }
 
-export default ProfileHeader
+export default FakeProfileHeader
