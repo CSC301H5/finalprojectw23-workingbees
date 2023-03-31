@@ -3,7 +3,7 @@ import axios from 'axios';
 import BigEntry from './BigEntry';
 import { getCookie } from '../utils/getAuthToken';
 
-export default function HiveList() {
+export default function HiveList(props) {
 
     const [hiveData, setHiveData] = useState([]);
     const token = getCookie("x-auth-token");
@@ -35,10 +35,15 @@ export default function HiveList() {
     return (
         <div>
             {hiveData.map(hiveDatum => (
-                <BigEntry
-                    name={hiveDatum.name}
-                    detail={hiveDatum.description}
-                />
+                 <BigEntry
+                 name={hiveDatum.name}
+                 detail={hiveDatum.description}
+                 destination={hiveDatum.destination}
+                // hiveID={props.hiveID}
+                 token={token}
+                // code={props.code}
+         
+             />
             ))}
         </div>
     );

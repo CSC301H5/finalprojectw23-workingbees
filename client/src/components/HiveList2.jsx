@@ -24,13 +24,14 @@ export default function HiveList2(props) {
                 console.log(res.data);
                 //const jsonObject = JSON.parse(res.data);
 
-                for (let hiveID in res.data) {
-                   console.log(res.data[hiveID]);
+                for (let swarmID  in res.data) {
+                   console.log(res.data[swarmID ]);
 
                    rows.push({ name: "Swarm" +  roomCode, 
-                     description: "Group of " + res.data[hiveID],
+                     description: "Group of " + res.data[swarmID],
                     destination :  "/chat", 
-                    hiveID :  hiveID})
+                    swarmID  :  swarmID 
+                     })
                    roomCode += 1;
                   
                 }
@@ -53,6 +54,7 @@ export default function HiveList2(props) {
                     hiveID={props.hiveID}
                     token={token}
                     code={props.code}
+                    swarmID ={hiveDatum.swarmID}
             
                 />
             ))}

@@ -3,12 +3,12 @@ import arrow from "../Assets/arrow.png"
 import { useNavigate,useLocation } from "react-router-dom";
 
 
-const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token=null, code=null}) => {
+const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token=null, code=null, swarmID=null}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log("going to the room: ", { destination, hiveID, token, code})
-    navigate(destination,{ state: { code: code, token: token, hiveID: hiveID } })
+    console.log("going to the room: ", { destination, hiveID, token, code, swarmID})
+    navigate(destination,{ state: { code: code, token: token, hiveID: hiveID , swarmID:swarmID} })
   };
 
   const displayName = name && name.length > 30 ? `${name.substring(0, 30)}...` : name;
