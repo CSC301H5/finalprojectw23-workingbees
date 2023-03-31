@@ -12,6 +12,8 @@ function CreateRoom() {
     const [phaseZeroTime, setPhaseZeroTime] = useState('')
     const [phaseOneDate, setPhaseOneDate] = useState('')
     const [phaseOneTime, setPhaseOneTime] = useState('')
+    const [groupMax, setMax] = useState(0)
+    const [groupMin, setMin] = useState(0)
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -23,6 +25,8 @@ function CreateRoom() {
     const handlePhaseZeroTime = (e) => { setPhaseZeroTime(e.target.value) }
     const handlePhaseOneDate = (e) => { setPhaseOneDate(e.target.value) }
     const handlePhaseOneTime = (e) => { setPhaseOneTime(e.target.value) }
+    const handleMax = (e) => { setMax(e.target.value) }
+    const handleMin = (e) => { setMin(e.target.value) }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,8 +39,9 @@ function CreateRoom() {
             const timeData = phaseOneTime.split(":");
             phaseChangeDates[1] = futureDate(Date.parse(phaseOneDate), parseInt(timeData[0]) + 4, parseInt(timeData[1]), 0).toISOString();
         }
-
-        navigate('/RoomConfig', { state: { token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+        console.log( groupMax, groupMin); 
+ 
+       navigate('/RoomConfig', { state: { token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
     }
 
     return (
@@ -61,30 +66,42 @@ function CreateRoom() {
                         required
                         onChange={handleDisplayName}
                     />
-                    <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '370px' }}>Phase 0 deadline (Optional)</label>
+                    <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '370px' }}>Group size </label>
                     <input
-                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '395px' }}
+                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '395px' }}  placeholder="MAX" required
+                        type="text"
+                        onChange={handleMax}
+                    />
+                    <input
+                        className="SmalltextBox" style={{ width: '197.5px', left: '953px', top: '395px' }}  placeholder="Min" required
+                        ype="text"
+                        onChange={handleMin}
+                    />
+                    <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '455px' }}>Phase 0 deadline (Optional)</label>
+                    <input
+                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '485px' }}
                         type="date"
                         onChange={handlePhaseZeroDate}
                     />
                     <input
-                        className="SmalltextBox" style={{ width: '197.5px', left: '953px', top: '395px' }}
+                        className="SmalltextBox" style={{ width: '197.5px', left: '953px', top: '485px' }}
                         type="time"
                         onChange={handlePhaseZeroTime}
                     />
 
-                    <label className="display" style={{ width: '400px', height: '20px', left: '753px', top: '455px' }}>Phase 1 deadline (Optional)</label>
+                    <label className="display" style={{ width: '400px', height: '20px', left: '753px', top: '555px' }}>Phase 1 deadline (Optional)</label>
                     <input
-                        className="textBox" style={{ top: '480px', left: '753px', width: '197.5px', height: '50px' }}
+                        className="textBox" style={{ top: '580px', left: '753px', width: '197.5px', height: '50px' }}
                         type="date"
                         onChange={handlePhaseOneDate}
                     />
                     <input
-                        className="SmalltextBox" style={{ top: '480px', left: '953px', width: '197.5px' }}
+                        className="SmalltextBox" style={{ top: '580px', left: '953px', width: '197.5px' }}
                         type="time"
                         onChange={handlePhaseOneTime}
-                    />
 
+                    />
+           
                     <button type="submit" className="continue" style={{ cursor: 'pointer' }}>Continue</button>
                 </form>
             </div>

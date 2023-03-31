@@ -24,6 +24,8 @@ const ConfigRoom = () => {
                         hiveName={location.state.hiveName}
                         displayName={location.state.displayName}
                         phaseChangeDates={location.state.phaseChangeDates}
+                        Max={location.state.Max}
+                        Min={location.state.Min}
                         navigateFunction={navigate}
                         navigatePath={"/waiting1"}
                     />
