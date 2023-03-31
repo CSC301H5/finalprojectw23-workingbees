@@ -19,7 +19,7 @@ const smallEntry = ({ name, status = null, pictureUrl = null, children }) => {
           <img
             src={crown}
             alt={name}
-            style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px", marginLeft: "150px",  }}
+            style={{ width: "30px", height: "30px", borderRadius: "50%", marginLeft: "180px",  }}
           />) : (<p style={{ color: "#FFAF40", textAlign: "left", paddingRight: "40px", fontFamily: "Montserrat", marginLeft: "150px" }}>{status}</p>
 
         )}</div>)}
