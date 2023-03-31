@@ -14,10 +14,12 @@ const FakeProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profi
   const handleClickLeft = e => {
     console.log('leftclicked')
     if (currentUserIndex !== 0) {
+      console.log(currentUserIndex)
       setCurrentUserIndex((currentUserIndex - 1));
-      getUserDisplayName(list[currentUserIndex].name);
-      getUserBiography(list[currentUserIndex].biography);
-      getUserProfilePicture(list[currentUserIndex].profilePicture .split(',')[1]);
+
+      getUserProfilePicture(list[currentUserIndex-1].profilePicture .split(',')[1]);
+      console.log("updated:",currentUserIndex)
+
     }
   };
 
@@ -25,10 +27,14 @@ const FakeProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profi
     console.log('rightclicked')
 
     if (currentUserIndex !== list.length - 1) {
+      console.log(list.length)
+      console.log("currentUserIndex",currentUserIndex)
+
       setCurrentUserIndex((currentUserIndex + 1));
-      getUserDisplayName(list[currentUserIndex].name);
-      getUserBiography(list[currentUserIndex].biography);
-      getUserProfilePicture(list[currentUserIndex].profilePicture.split(',')[1]);
+    
+      getUserProfilePicture(list[currentUserIndex+1].profilePicture.split(',')[1]);
+      console.log("updated currentUserIndex",currentUserIndex)
+
     }
   };
 
