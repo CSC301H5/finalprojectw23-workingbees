@@ -6,7 +6,7 @@ function MyMessage(props) {
 
 
     return (
-        <div>
+        <div className="my-message">
             <p className="sender">You</p>
             <p className="message">{props.message}</p>
         </div>
