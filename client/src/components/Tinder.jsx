@@ -158,8 +158,9 @@ const Tinder = (props) => {
               }
               else if (question_type == "TIMETABLE") {
                 console.log("configOptionsResponses[dropdownIndex]:", configOptionsResponses[i]) // loop through  configOptionsResponses = [[ "rorrrrrrrrr", "eeeeeeeeee"], 800000,"545454545"] 
+                console.log(configOptionsResponses[i])
 
-                newDisplayComponents = <DisplayTimetable array={configOptionsResponses[i]} question={"Q" + (index)} />;
+                newDisplayComponents = <DisplayTimetable arr={configOptionsResponses[i]} question={"Q" + (index)} />;
               }
 
               profile.push(newDisplayComponents);
@@ -220,8 +221,9 @@ const Tinder = (props) => {
         </div>
         <div className="right"  >
           <Navbar token={token} />
-          <div className="config" style={{ overflow: "auto", padding: "50px", height: "300px", width: "436px", backgroundColor: "whitesmoke" }}>
-            <div >{displayComponents[current_profile_index]}</div>
+          <div className="config" style={{   border: "1px solid #FFAF40",
+            borderRadius: "8px",overflow: "auto", height: "300px", width: "436px", backgroundColor: "whitesmoke" }}>
+            <div  >{displayComponents[current_profile_index]}</div>
             <div >
             "div current profile index"              { current_profile_index}</div>
           </div>

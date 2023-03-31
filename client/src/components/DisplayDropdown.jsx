@@ -18,7 +18,7 @@ function DisplayDropDown(props) {
     }
 
     return (
-        <div >
+        <div style={{paddingLeft:'50px'}}>
             <h1 className="text" style={{ fontSize: '22px' }}>  {props.title}</h1>
             <div >
                 <Display item={props.array} />
