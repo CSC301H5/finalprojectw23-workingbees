@@ -1584,16 +1584,14 @@ export const getAllSwarms = async (req, res) => {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
-        if (!host) {
-            return res.status(409).json({msg: "Not the host of the specified hive."})
-        }
+        
 
         const data = {};
 
         for (let i = 0; i < hive.swarmIDs.length; i++) {
             let swarm = await SwarmModel.findById(hive.swarmIDs[i]);
             data[swarm.swarmID] = swarm.memberIDs.length;
+            console.log(data)
         }
         return res.status(200).json(data);
 
