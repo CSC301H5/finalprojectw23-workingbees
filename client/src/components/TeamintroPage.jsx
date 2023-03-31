@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
@@ -12,14 +12,17 @@ const  TeamintroPage=() =>{
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
   const navigate = useNavigate();
+  const location = useLocation();
   const row = [] 
-  const token = getCookie("x-auth-token");
-
+ 
+  const code = location.state.code;
+  const token = location.state.token;
+  const hiveID = location.state.hiveID;
   async function getSwamIntro() {
-    axios.get("/api/v1/getSwarmInfo ", {
+    axios.get("/api/v1/getSwarmInfo", {
 
         params: {
-            "hiveID": "6412583724b643fca54d0bec"
+            hiveID: x_auth_token
 
 
         },
@@ -37,7 +40,10 @@ const  TeamintroPage=() =>{
 }
 
 useEffect(() => {
-  console.log("getSwamIntro");
+  console.log("token",token);
+  console.log("hiveID", hiveID);
+  console.log("code",code);
+  console.log("x_auth_token",x_auth_token);
   getSwamIntro();
 }, [])
 
