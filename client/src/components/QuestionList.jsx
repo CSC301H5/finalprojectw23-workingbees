@@ -85,14 +85,14 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
-
+		console.log(this.props.Max,  parseInt(this.props.Max)) ;
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,
 				hiveName: this.props.hiveName,
 				displayName: this.props.displayName,
 				configOptions: {
-					groupSizeRange: [1, 4],
+					groupSizeRange: [ parseInt(this.props.Min),  parseInt(this.props.Max)],
 					phaseChangeDates: this.props.phaseChangeDates,
 					questions: this.state.questionData
 				}
