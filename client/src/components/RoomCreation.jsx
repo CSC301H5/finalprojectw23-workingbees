@@ -41,7 +41,7 @@ function CreateRoom() {
         }
         console.log( groupMax, groupMin); 
  
-       navigate('/RoomConfig', { state: { token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+       navigate('/RoomConfig', { state: {Max: groupMax, Min: groupMin, token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
     }
 
     return (

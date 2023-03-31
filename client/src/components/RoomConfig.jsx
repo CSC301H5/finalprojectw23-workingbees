@@ -8,7 +8,9 @@ const ConfigRoom = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    
 
+   
     return (
         <div class="grid">
             <div class="left">
