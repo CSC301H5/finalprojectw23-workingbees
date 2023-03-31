@@ -49,7 +49,6 @@ function WaitingP2Attendee() {
 				hiveID={hiveID}
 				event={handleNavigation} />
 
-				<button onClick={handleNavigation}>  CLick me for next page </button>
 		  </ div>
 		  <label class="yellowSubtitle">
 			Until groups are created !

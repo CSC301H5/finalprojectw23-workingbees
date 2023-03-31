@@ -36,7 +36,7 @@ const  TeamintroPage=() =>{
           console.log(swarmID); 
             for ( let member in res.data.members){
               console.log("res.data.members[member]", res.data.members[member])
-               row.push(<BigEntry name={res.data.members[member].name} detail={res.data.members[member].biography}  pictureUrl={res.data.members[member].profilePicture}/>)
+               row.push(<BigEntry hiveId={hiveID} name={res.data.members[member].name} detail={res.data.members[member].biography}  pictureUrl={res.data.members[member].profilePicture}/>)
             }
             setDisplayComponents(row);
             
@@ -56,6 +56,8 @@ useEffect(() => {
 
 const handleNavigation = () => {
   console.log('swarmID', swarmID);
+  console.log('hiveID', hiveID);
+
   navigate("/chat", { state: { code: code  , token: x_auth_token, hiveID: hiveID, swarmID: swarmID} });
 }
   return (
