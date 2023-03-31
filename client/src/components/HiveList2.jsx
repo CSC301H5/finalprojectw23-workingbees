@@ -29,7 +29,7 @@ export default function HiveList2(props) {
 
                    rows.push({ name: "Swarm" +  roomCode, 
                      description: "Group of " + res.data[hiveID],
-                    destination :  "/TeamChat", 
+                    destination :  "/chat", 
                     hiveID :  hiveID})
                    roomCode += 1;
                   
@@ -50,6 +50,10 @@ export default function HiveList2(props) {
                     name={hiveDatum.name}
                     detail={hiveDatum.description}
                     destination={hiveDatum.destination}
+                    hiveID={props.hiveID}
+                    token={token}
+                    code={props.code}
+            
                 />
             ))}
         </div>

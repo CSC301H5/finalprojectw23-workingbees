@@ -43,7 +43,7 @@ function TeamViewing(props) {
             overflow: 'auto',
           }}
         >
-          <HiveList2  hiveID={hiveID}/>
+          <HiveList2  hiveID={hiveID} code={code}/>
         </div>
       
         <button onClick={handlBackToHomePage} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Back to home page</button>
