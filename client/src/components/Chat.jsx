@@ -11,10 +11,11 @@ expects the following props:
   -  hiveID
   - token
   - code
+  - swarmID
 */
 function Chat(props) {
 
-    const [swarmID, setSwarmID] = useState('')
+    //const [swarmID, setSwarmID] = useState('')
     const [messages, setMessages] = useState([])
     const [userName, setUserName] = useState('')
     const location = useLocation();
@@ -28,6 +29,7 @@ function Chat(props) {
     */
 
     // get swarmID
+    /*
     async function getSwarmID() {
         axios.get("/api/v1/getSwarmInfo",
             {
@@ -46,6 +48,7 @@ function Chat(props) {
     useEffect(() => {
         getSwarmID();
     }, [])
+    */
 
     // get userName
     async function getUserName() {
@@ -77,9 +80,9 @@ function Chat(props) {
                 </Navbar>
 
                 <IncomingMessage hiveID={props.hiveID} token={location.state.token} code={location.state.code}
-                    swarmID={swarmID} messages={messages} setMessages={setMessages} userName={userName}
+                    swarmID={props.swarmID} messages={messages} setMessages={setMessages} userName={userName}
                 />
-                <OutgoingMessage token={location.state.token} hiveID={props.hiveID} swarmID={swarmID}
+                <OutgoingMessage token={location.state.token} hiveID={props.hiveID} swarmID={props.swarmID}
                     setMessages={setMessages} username={userName}
                 />
             </div>
