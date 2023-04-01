@@ -1,7 +1,5 @@
-import { useState } from "react"
 import "./Style.css"
 import MiniEntry from "./MiniEntry";
-import VerticalGrid from "./Grid";
 
 function AttendeeList(props) {
   // Don't define props.attendeeList here, use the prop that is passed to the component instead

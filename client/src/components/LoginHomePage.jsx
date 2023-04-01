@@ -8,6 +8,7 @@ import HiveList from './HiveList';
 function LoginHomePage() {
   const [room, setRoom] = useState('');
   const x_auth_token = getCookie("x-auth-token");
+  console.log(x_auth_token);
   const navigate = useNavigate();
   const handleInputChange = (event) => {
     setRoom(event.target.value);

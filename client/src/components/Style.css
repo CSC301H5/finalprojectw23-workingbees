@@ -806,7 +806,6 @@ button:hover {
   font-style: normal;
   font-size: 16px;
   line-height: 18.5px;
-
   box-sizing: border-box;
   width: auto;
   background: #FFFFFF;
@@ -821,16 +820,14 @@ button:hover {
   font-style: normal;
   font-size: 12px;
   line-height: 18.5px;
+  text-align: right;
+
 }
 
 .incomingMsg {
   box-sizing: border-box;
 
   position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 0%;
-  bottom: 0%;
 
   background: #F6F6F6;
   border: 1px solid #FFAF40;
@@ -871,4 +868,11 @@ button:hover {
   font-size: 23px;
   line-height: 28px;
   text-align: center;
+}
+.my-message {
+  float: right;
+}
+
+.other-message {
+  float: left;
 }

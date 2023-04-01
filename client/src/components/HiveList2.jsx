@@ -12,7 +12,7 @@ export default function HiveList2(props) {
 
 
     async function getHiveData() {
-        axios.get("/api/v1/getAllSwarms ", {
+        axios.get("/api/v1/getAllSwarms", {
             params: {hiveID: props.hiveID},
             headers: {
                 "x-auth-token": token
@@ -21,15 +21,17 @@ export default function HiveList2(props) {
             if (res.status === 200) {
                 const rows = [];
                 var roomCode = 1 ;
-                const jsonObject = JSON.parse(res.data);
+                console.log(res.data);
+                //const jsonObject = JSON.parse(res.data);
 
-                for (let hiveID in jsonObject) {
-                   console.log(jsonObject[res.data[hiveID]]);
+                for (let swarmID  in res.data) {
+                   console.log(res.data[swarmID ]);
 
                    rows.push({ name: "Swarm" +  roomCode, 
-                     description: "Group of " + jsonObject[res.data[hiveID]],
-                    destination :  "/TeamChat", 
-                    hiveID :  hiveID})
+                     description: "Group of " + res.data[swarmID],
+                    destination :  "/chat", 
+                    swarmID  :  swarmID 
+                     })
                    roomCode += 1;
                   
                 }
@@ -49,6 +51,11 @@ export default function HiveList2(props) {
                     name={hiveDatum.name}
                     detail={hiveDatum.description}
                     destination={hiveDatum.destination}
+                    hiveID={props.hiveID}
+                    token={token}
+                    code={props.code}
+                    swarmID ={hiveDatum.swarmID}
+            
                 />
             ))}
         </div>

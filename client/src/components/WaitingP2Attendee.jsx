@@ -14,7 +14,7 @@ function WaitingP2Attendee() {
   const code = location.state.code;
   const token = location.state.token;
   const hiveID = location.state.hiveID;
-  
+  console.log(location.state.toke); 
   const ws = new WebSocket('ws://localhost:3030/initializeWS')
 	ws.addEventListener('open', (event) => {
 		ws.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
@@ -49,7 +49,6 @@ function WaitingP2Attendee() {
 				hiveID={hiveID}
 				event={handleNavigation} />
 
-				<button onClick={handleNavigation}>  CLick me for next page </button>
 		  </ div>
 		  <label class="yellowSubtitle">
 			Until groups are created !

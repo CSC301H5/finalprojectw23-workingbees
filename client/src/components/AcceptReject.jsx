@@ -56,7 +56,7 @@ function AcceptReject(props) {
     }
 
     return (
-        <div style={{paddingLeft: "100px"}}>
+        <div style={{ paddingLeft: "130px" }}>
             <img className="acceptreject"
                 onClick={handleAccept}
                 src={tick}

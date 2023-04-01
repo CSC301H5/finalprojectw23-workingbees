@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
@@ -22,10 +22,8 @@ function TeamViewing(props) {
     setRoom(event.target.value);
   }
 
-  
-
   // Handle create new hive button 
-  const handlBackToHomePage= () => {
+  const handlBackToHomePage = () => {
     navigate("/");
   }
 
@@ -43,11 +41,9 @@ function TeamViewing(props) {
             overflow: 'auto',
           }}
         >
-          <HiveList2  hiveID={hiveID}/>
+          <HiveList2 hiveID={hiveID} code={code} />
         </div>
-      
         <button onClick={handlBackToHomePage} type="submit" className="button" style={{ cursor: 'pointer', position: 'absolute', width: '492px', height: '50px', left: '650px', top: '718px' }}>Back to home page</button>
-
       </div>
     </div>
   );
