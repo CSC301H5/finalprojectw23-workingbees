@@ -3,12 +3,11 @@ import hives from '../Assets/hives.png'
 import axios from 'axios';
 import "./Style.css";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from '../utils/getAuthToken';
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const [token, setToken] = useState('')
   const navigate = useNavigate();
- 
+
   const handleJoinRoomCode = () => {
 
     axios.post("/api/v1/guestRegister").then(res => {

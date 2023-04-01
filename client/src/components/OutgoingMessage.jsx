@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import MyMessage from './MyMessage'
-
+import { useState } from "react";
 
 /*Necessary props
 	token
@@ -31,17 +29,12 @@ export default function OutgoingMessage(props) {
 				}
 			}).then(res => {
 				if (res.status === 200) {
-					console.log(res.data.messages)
 					props.setMessages(res.data.messages)
 				}
 			})
 	}
 
 	async function sendMessage(e) {
-		console.log(props.swarmID)
-		console.log(props.token)
-		console.log(props.hiveID)
-		console.log(message)
 		axios.post("/api/v1/sendSwarmChatMessage",
 			{
 				hiveID: props.hiveID,

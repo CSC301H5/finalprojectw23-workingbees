@@ -11,7 +11,6 @@ const Profile = () => {
   const code = location.state.code;
   //const token = location.state.token;
   const token = getCookie("x-auth-token");
-  console.log( token)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [preview, setPreview] = useState(null);

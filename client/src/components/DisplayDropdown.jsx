@@ -1,7 +1,6 @@
 import "./Style.css"
 
 // "BANANA!!!" take string as input  
-// [{er}]
 function DisplayDropDown(props) {
 
     function Display(props) {
@@ -18,7 +17,7 @@ function DisplayDropDown(props) {
     }
 
     return (
-        <div style={{paddingLeft:'50px'}}>
+        <div style={{ paddingLeft: '50px' }}>
             <h1 className="text" style={{ fontSize: '22px' }}>  {props.title}</h1>
             <div >
                 <Display item={props.array} />
