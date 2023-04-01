@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import "./Style.css";
 import axios from 'axios';
 
-export default function Navbar({ roomCode, timer, token }) {
+export default function Navbar({ roomCode, children, token }) {
 
   const [hiveName, setHiveName] = useState('')
 
-  //assumes room code is given
+  // assumes room code is given
   async function getHiveName() {
     axios.get("/api/v1/getHiveInfo",
       {
@@ -30,8 +30,8 @@ export default function Navbar({ roomCode, timer, token }) {
     <div class="grid">
       <div class="right">
         <nav class="nav">
-          <h1>{hiveName}</h1> {/* should be hiveName instead of roomCode */}
-          <h1 style={{ color: '#FFAF40' }}>{timer}</h1>
+          <h1>{hiveName}</h1>
+          <h1 style={{ color: '#FFAF40' }}>{children}</h1>
           <h1>HIVEMIND</h1>
         </nav>
       </div>

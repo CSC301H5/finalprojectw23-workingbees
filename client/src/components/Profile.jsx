@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Avatr from "react-avatar-edit"
 import hives from '../Assets/hives.png'
 import "./Style.css"
 import Navbar from "./Navbar";
-
+import { getCookie } from '../utils/getAuthToken';
 const Profile = () => {
   const location = useLocation();
   const code = location.state.code;
-  const token = location.state.token;
+  //const token = location.state.token;
+  const token = getCookie("x-auth-token");
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     axios.post('/api/v1/joinHive', {
       code: parseInt(code),
       profilePicture: preview,
@@ -37,32 +39,28 @@ const Profile = () => {
     });
   };
 
-  const [src, setSrc] = useState(null);
-  const [preview, setPreview] = useState(null);
-
   const onClose = () => {
     setPreview(null);
   }
+
   const onCrop = view => {
     setPreview(view);
   }
-  useEffect(() => {
-  })
 
   return (
     <div class='grid'>
       <div class='left'>
-        <img src={hives}></img>
+        <img src={hives} alt="" />
       </div>
       <div class='right'>
-        < Navbar roomCode={parseInt(code)} token={location.state.token}/>
+        < Navbar roomCode={parseInt(code)} token={location.state.token} />
         <form onSubmit={handleSubmit} >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', top: '150px', left: '750px', }}>
             <Avatr width={300}
               height={200}
               onCrop={onCrop}
               onClose={onClose}
-              src={src}
+              src={null}
             />
           </div>
         </form>

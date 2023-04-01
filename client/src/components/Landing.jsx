@@ -24,6 +24,7 @@ const Landing = () => {
             console.error('Room code is not a number!');
             return;
           }
+          console.log("BeforegetHiveInfo", token);
           axios.get("/api/v1/getHiveInfo", {
             params: {
               code: roomCode
@@ -33,6 +34,7 @@ const Landing = () => {
             }
           }).then(res => {
             if (res.status === 200) {
+              console.log("AFTERgetHiveInfo", token);
               navigate("/Profile", { state: { code: roomCode, token: token } })
             }
             console.log(res.data);
@@ -49,7 +51,7 @@ const Landing = () => {
     <>
       <div class="grid">
         <div class="left">
-          <img src={hives} />
+          <img src={hives} alt="" />
         </div>
         <div class="right">
           <div className='display' style={{ width: '507px', height: '115px', left: '740px', top: '261px', fontWeight: "500px", fontSize: "94px", lineHeight: "115px" }}> HIVEMIND </div>

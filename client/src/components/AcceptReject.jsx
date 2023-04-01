@@ -19,9 +19,23 @@ function AcceptReject(props) {
         }
         ).then(res => {
             if (res.status === 200) {
-                // do nothing
+                // update pending list
+                removeInvite(props.invites.indexOf(props.leaderName))
+                // update members list
+                addMember(props.leaderName)
             }
         })
+    }
+
+    const removeInvite = (index) => {
+        const temp = [...props.invites]
+        temp.splice(index, 1)
+        props.setInvites(temp)
+    }
+
+    const addMember = (user) => {
+        const temp = [...props.members, user]
+        props.setMembers(temp)
     }
 
     const handleReject = (e) => {
@@ -42,14 +56,16 @@ function AcceptReject(props) {
     }
 
     return (
-        <div>
+        <div style={{ paddingLeft: "130px" }}>
             <img className="acceptreject"
                 onClick={handleAccept}
                 src={tick}
+                alt="Accept invitation button"
             />
             <img className="acceptreject"
                 onClick={handleReject}
                 src={cross}
+                alt="Reject invitation button"
             />
         </div>
     )

@@ -1,8 +1,6 @@
-import { useState } from "react"
 import "./Style.css"
 
-
-// takes in max, min, step, num (target grade), setNum, and explanation
+// takes in max, min, step, num (target grade), setNum, question, and explanation
 function ClientSlider(props) {
     const min = props.min
     const max = props.max
@@ -15,7 +13,8 @@ function ClientSlider(props) {
 
     return (
         <div>
-            <label className="text">{explanation}     </label>
+            <label className="question">{props.question}</label>
+            <label className="text">{explanation}</label>
             <label className="text" style={{ color: "#FFAF40", fontSize: "24px", fontWeight: "light" }}>{num}%</label> <br />
             <label className="text" style={{ color: "#FFAF40", fontSize: "13px" }}>{min}%</label>
             <input

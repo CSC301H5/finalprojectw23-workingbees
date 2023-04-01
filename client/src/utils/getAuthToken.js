@@ -1,5 +1,3 @@
-import "./Style.css"
-
 function getAuthToken(name) {
   const cookies = document.cookie.split(';');
   for (let i = 0; i < cookies.length; i++) {
@@ -10,6 +8,7 @@ function getAuthToken(name) {
   }
   return null;
 }
+
 export function getCookie(name) {
   const cookies = document.cookie.split(';');
   for (let i = 0; i < cookies.length; i++) {

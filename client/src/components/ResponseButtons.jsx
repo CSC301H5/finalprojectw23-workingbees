@@ -1,31 +1,31 @@
 import React from 'react';
-import axios from 'axios'
-import getCookie from './getAuthToken'
+import axios from 'axios';
+import "./Style.css"
 
-sendMatchingResponse(hiveID, matchingID, response, next) {
-	token = getCookie('x-auth-token')
-	axios.post("/api/v1/respondToMatchingGroupRecommendation", {
-          params: {
-            "hiveID": hiveID,
-			"matchingGroupID": matchingID,
-			"response": response
-          },
-          headers: {
-            "x-auth-token": token
-          }
-        }).then(res => {
-          console.log("x2 : ",token);
-          if (res.status ==200) {
+function sendMatchingResponse(hiveID, matchingID, response, next, token) {
+	axios.post("/api/v1/respondToMatchingGroupRecommendation",
+		{
+			hiveID: hiveID,
+			matchingGroupID: matchingID,
+			response: response
+		}, {
+		headers: {
+			'x-auth-token': token
+		}
+	}
+	).then(res => {
+		console.log("x2 : ", token);
+		if (res.status == 200) {
 			console.log("30000");
 			console.log("x2 ", token);
-            next()
-          }
-          console.log(res.data);
-        }).catch(err => {
-          console.error(err.response.data);
-        });
-}
+			next()
+		}
+		console.log(res.data);
 
+	}).catch(err => {
+		console.error(err.response);
+	});
+}
 
 
 /*necessary props
@@ -34,23 +34,38 @@ sendMatchingResponse(hiveID, matchingID, response, next) {
 	next: some function to iterate through the list of profiles in parent component
 */
 
-export default function ResponseButtons (props) {
+export default function ResponseButtons(props) {
 	return (
 		<div>
 			<input
+				className='small_button'
 				type="button"
 				value="Reject"
-				onChange={() => sendMatchingResponse(props.hiveID, props.matchingID, "NO", props.next)}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.token)
+					console.log("click click click -1", props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.hiveID)
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 			<input
+				className='small_button'
 				type="button"
 				value="Maybe"
-				onChange={() => sendMatchingResponse(props.hiveID, props.matchingID, "MAYBE", props.next)}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next, props.token)
+					console.log("click  +1")
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 			<input
+				className="small_button"
 				type="button"
 				value="Accept"
-				onChange={() => sendMatchingResponse(props.hiveID, props.matchingID, "YES", props.next)}
+				onClick={() => {
+					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next, props.token)
+					console.log("click click +1")
+					props.Setcurrent_profile_index(props.current_profile_index + 1)
+				}}
 			/>
 		</div>
 	)

@@ -20,6 +20,7 @@ export async function checkConfigOptions(req, res) {
     // check config options body is as desired
     let configOptions = req.body.configOptions;
     let groupSizeRange = configOptions.groupSizeRange;
+    let phaseChangeDates = configOptions.phaseChangeDates;
     let questions = configOptions.questions;
     if (!groupSizeRange || !questions) {
         return res.status(400).json({msg: "Malformed request."});
@@ -36,6 +37,37 @@ export async function checkConfigOptions(req, res) {
         return res.status(400).json({msg: "Error: groupSizeRange must contain numbers"});
     } else if (min < 1 || min > max) {
         return res.status(400).json({msg: "Error: Invalid minimum and maximum values for groupSizeRange"});
+    }
+
+    // check if phase change dates are valid
+    if (!phaseChangeDates) {
+        return res.status(400).json({msg: "Malformed request."});
+    } else if (!Array.isArray(phaseChangeDates) || phaseChangeDates.length !== 2) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    const timeValues = [];
+    for (let i = 0; i < phaseChangeDates.length; i++) {
+        let date = phaseChangeDates[i];
+        let timeValue = Date.parse(date);
+        if (date !== null && !timeValue) {
+            return res.status(400).json({msg: "Error: phaseChangeDates must contain valid dates or null"});
+        }
+        timeValues.push(timeValue);
+    }
+
+    const now = Date.now();
+
+    if (timeValues[0] && timeValues[0] < now) {
+        return res.status(400).json({msg: "Error: Phase 0 must start some time after now"});
+    }
+
+    if (timeValues[1] && timeValues[1] < now) {
+        return res.status(400).json({msg: "Error: Phase 1 must start some time after now"});
+    }
+
+    if (timeValues[0] && timeValues[1] && timeValues[0] > timeValues[1]) {
+        return res.status(400).json({msg: "Error: Phase 0 deadline must occur before the Phase 1 deadline"});
     }
 
     // check that each question is formatted correctly

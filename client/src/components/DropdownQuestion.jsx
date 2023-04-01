@@ -9,43 +9,61 @@ import Question from './Question'
 export default class DropdownQuestion extends Question {
 
 	constructor(props) {
-		super(props)
-		this.state.type = "DROPDOWN"
-		this.state.required = false
-		this.state.options = []
+		super(props);
+		this.state.type = "DROPDOWN";
+		this.state.typeOptions = { required: false, options: [] };
 
-		this.removeOption = this.removeOption.bind(this)
-		this.addOption = this.addOption.bind(this)
-		this.changeRequired = this.changeRequired.bind(this)
-		this.handleOptionChange = this.handleOptionChange.bind(this)
+		this.removeOption = this.removeOption.bind(this);
+		this.addOption = this.addOption.bind(this);
+		this.changeRequired = this.changeRequired.bind(this);
+		this.handleOptionChange = this.handleOptionChange.bind(this);
 	}
 
 	handleOptionChange(event) {
-		let i = event.target.id
-		let newOptions = this.state.options.map((x) => x)
-		newOptions[i] = event.target.value
-		this.setState({ options: newOptions })
+		let i = event.target.id;
+		this.setState(function (state) {
+			let newOptions = state.typeOptions.options.map((x) => x);
+			newOptions[i] = event.target.value;
+			return {
+				typeOptions: {
+					required: state.typeOptions.required,
+					options: newOptions,
+				}
+			}
+		})
+		this.updateParentState();
 	}
 
 	addOption() {
-		let newOptions = this.state.options.map((x) => x)
-		newOptions.push("")
-		this.setState({ options: newOptions })
+		this.setState((state) => ({
+			typeOptions: {
+				required: state.typeOptions.required,
+				options: [...state.typeOptions.options, ""]
+			}
+		}));
+		this.updateParentState();
 	}
 
 	removeOption(index) {
-		let newOptions = this.state.options.map((x) => x)
-		this.setState({
-			options: newOptions.slice(0, index).concat(newOptions.slice(index + 1))
-		})
+		this.setState((state) => ({
+			typeOptions: {
+				required: state.typeOptions.required,
+				options: state.typeOptions.options.slice(0, index).concat(state.typeOptions.options.slice(index + 1))
+			}
+		}));
+		this.updateParentState();
 	}
 
 	changeRequired(event) {
-		this.setState({
-			required: event.target.checked
-		})
+		this.setState((state) => ({
+			typeOptions: {
+				required: event.target.checked,
+				options: state.typeOptions.options
+			}
+		}));
+		this.updateParentState();
 	}
-  
+
 	render() {
 		return (
 			<div className='border'>
@@ -61,7 +79,7 @@ export default class DropdownQuestion extends Question {
 					changePriority={this.changePriority}
 				/>
 				<OptionTexts
-					options={this.state.options}
+					options={this.state.typeOptions.options}
 					handleOptionChange={this.handleOptionChange}
 					removeOption={this.removeOption}
 				/>
@@ -74,7 +92,7 @@ export default class DropdownQuestion extends Question {
 				<label className="text">Required</label>
 				<input
 					type="checkbox"
-					checked={this.state.required}
+					checked={this.state.typeOptions.required}
 					onChange={this.changeRequired}
 				/>
 			</div>
