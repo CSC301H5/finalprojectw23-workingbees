@@ -5,6 +5,7 @@ expects the following props:
     - hiveID
     - token
     - messages, setMessages
+    - swarmID
 */
 function NewMessage(props) {
 
