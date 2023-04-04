@@ -20,22 +20,48 @@ function AcceptReject(props) {
         ).then(res => {
             if (res.status === 200) {
                 // update pending list
-                removeInvite(props.invites.indexOf(props.leaderName))
+                removeInvite(props.invites.indexOf(props.leaderName));
                 // update members list
-                addMember(props.leaderName)
+                updateMembers();
             }
         })
     }
 
     const removeInvite = (index) => {
-        const temp = [...props.invites]
-        temp.splice(index, 1)
-        props.setInvites(temp)
+        const temp = [...props.invites];
+        temp.splice(index, 1);
+        props.setInvites(temp);
     }
 
-    const addMember = (user) => {
-        const temp = [...props.members, user]
-        props.setMembers(temp)
+    const updateMembers = () => {
+        axios.get("/api/v1/getMatchingGroup", {
+            params: {
+                hiveID: props.hiveID
+            },
+            headers: {
+                "x-auth-token": props.token
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                // Set leader
+                if (res.data.leaderName === res.data.userName) {
+                    props.setLeader(`You (${res.data.leaderName})`);
+                } else {
+                    props.setLeader(res.data.leaderName);
+                }
+
+                // Set members
+                const currentMembers = [];
+                for (let i = 0; i < res.data.members.length; i++) {
+                    if (res.data.members[i] === res.data.userName) {
+                        currentMembers.push(`You (${res.data.userName})`);
+                    } else {
+                        currentMembers.push(res.data.members[i]);
+                    }
+                }
+                props.setMembers(currentMembers);
+            }
+        })
     }
 
     const handleReject = (e) => {
