@@ -56,9 +56,9 @@ const GroupCreation = () => {
                     </Navbar>
                     <div className="entryBox">
                         <MemberList hiveID={hiveID} token={token} socket={socket}
-                        leader={leader} setLeader={setLeader}
-                        members={members} setMembers={setMembers}
-                        invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers} 
+                            leader={leader} setLeader={setLeader}
+                            members={members} setMembers={setMembers}
+                            invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers}
                         />
                         <input class="textBox" value={username}
                             onChange={e => setName(e.target.value)} placeholder="Username" style={{
@@ -71,9 +71,9 @@ const GroupCreation = () => {
                     <button onClick={handleInvite} style={{ position: 'absolute ', left: '1020px', top: '380px' }}>Invite</button>
                     <label className="display" style={{ top: '460px', left: '600px', width: '300px', height: '20px' }}>Pending invites</label>
                     <div className="entryBox" style={{ position: 'absolute ', left: '600px', top: '480px', width: '615px', height: '200px' }}>
-                        <PendingInvitesList hiveID={hiveID} token={token} socket={socket} 
-                        members={members} setMembers={setMembers}
-                        invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers} 
+                        <PendingInvitesList hiveID={hiveID} token={token} socket={socket}
+                            members={members} setMembers={setMembers} setLeader={setLeader}
+                            invitedUsers={invitedUsers} setInvitedUsers={setInvitedUsers}
                         />
                     </div>
                     <button onClick={handleNavigation} style={{ position: 'absolute ', left: '1017px', top: '699px' }}>Continue</button>
