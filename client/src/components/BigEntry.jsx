@@ -3,7 +3,7 @@ import arrow from "../Assets/arrow.png"
 import { useNavigate,useLocation } from "react-router-dom";
 
 
-const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token=null, code=null, swarmID=null}) => {
+const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token=null, code=null, swarmID=null, img =arrow}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -30,15 +30,22 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, 
           </div>
           <div class="details">{detail}</div>
         </div>
+        {img ? (
         <div class="pointer">
+          
           <img
-            src={arrow}
+            src={img}
             alt=""
             style={{ cursor: "pointer", width: "30px", height: "100px", marginLeft: "150px" }}
             onClick={handleClick}
           />
         </div>
-      </div>
+     
+
+        ):(    <div></div>
+        )}
+
+    </div>
     </div>
   );
 }

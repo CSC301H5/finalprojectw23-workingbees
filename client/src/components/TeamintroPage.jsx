@@ -29,7 +29,8 @@ const TeamintroPage = () => {
       if (res.status === 200) {
         setSwarmID(res.data.swarmID);
         for (let member in res.data.members) {
-          row.push(<BigEntry hiveId={hiveID} name={res.data.members[member].name} detail={res.data.members[member].biography} pictureUrl={res.data.members[member].profilePicture} />);
+          row.push(<BigEntry hiveId={hiveID} name={res.data.members[member].name} detail={res.data.members[member].biography} pictureUrl={res.data.members[member].profilePicture} img={false
+          } />);
         }
         setDisplayComponents(row);
       }
