@@ -20,7 +20,7 @@ function Chat(props) {
     const [userName, setUserName] = useState('')
     const location = useLocation();
 
-    console.log(location.state.code)
+    console.log(location.state.token)
 
     // for testing
     /*
