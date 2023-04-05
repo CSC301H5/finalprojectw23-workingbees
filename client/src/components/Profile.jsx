@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Avatr from "react-avatar-edit"
@@ -14,10 +14,15 @@ const Profile = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [preview, setPreview] = useState(null);
+  let btnRef = useRef();
+
 
   const navigate = useNavigate();
 
   const handleSubmit = () => {
+    if(btnRef.current){
+      btnRef.current.setAttribute("disabled", "disabled");
+    }
     axios.post('/api/v1/joinHive', {
       code: parseInt(code),
       profilePicture: preview,
@@ -28,7 +33,9 @@ const Profile = () => {
         "x-auth-token": token
       }
     }).then(res => {
+     
       if (res.status === 201) {
+        
         const hiveID = res.data.hiveID;
         console.log("hiveID sent from Profile:", hiveID);
         navigate("/groupcreation", { state: { token, hiveID, code } });
@@ -94,7 +101,7 @@ const Profile = () => {
           onChange={e => setDescription(e.target.value)}
 
           placeholder="Type your message here..." />
-        <button onClick={handleSubmit} type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
+        <button ref={btnRef} onClick={handleSubmit } type="submit" style={{ position: 'absolute ', left: '1017px', top: '669px' }}>Continue</button>
 
       </div>
     </div>
