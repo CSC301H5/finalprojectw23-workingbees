@@ -58,7 +58,12 @@ const TeamintroPage = () => {
             overflow: 'auto',
           }}
         >
-          <div> {displayComponents}</div>
+          <div> 
+          <p style={{fontFamily: "Montserrat", fontWeight:"1000", fontSize:"large"}}> Meet Your Team!</p>
+
+            {displayComponents}
+            
+            </div>
         </div>
         <button
           className="button"
