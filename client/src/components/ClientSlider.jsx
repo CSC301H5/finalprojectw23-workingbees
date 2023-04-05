@@ -9,7 +9,7 @@ function ClientSlider(props) {
     const setNum = props.setNum
     const explanation = props.explanation
 
-    const handleChange = (e) => { setNum(e.target.value) }
+    const handleChange = (e) => { setNum(  parseInt(e.target.value)) }
 
     return (
         <div>
