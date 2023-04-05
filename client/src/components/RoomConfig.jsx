@@ -19,7 +19,7 @@ const ConfigRoom = () => {
             <div class="right">
                 <Navbar />
                 <div className="config">
-                    <h2>Room configuration</h2>
+                    <h2 style={{ fontFamily : "Montserrat"}}>Room configuration</h2>
                     <QuestionList
                         token={location.state.token}
                         profilePicture={location.state.profilePicture}

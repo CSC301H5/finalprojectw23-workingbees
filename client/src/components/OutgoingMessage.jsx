@@ -52,7 +52,7 @@ export default function OutgoingMessage(props) {
 		})
 	}
 	return <div>
-		<input className="inputBox"
+		<input className="inputBox" style={{ position  : 'relative', left : "-22px", margin: "20px",width : "436px"}}
 			type="text"
 			placeholder="Send a message"
 			value={message}

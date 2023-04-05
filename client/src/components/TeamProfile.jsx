@@ -122,7 +122,7 @@ function TeamProfile() {
             </div>
             <div class="right">
                 <Navbar roomCode={location.state.code} token={location.state.token} />
-                <div style={{ overflow: "auto", maxHeight: "70vh" }}>
+                <div className="config" style={{ overflow: "auto", maxHeight: "70vh" }}>
                     <tbody>{rows}</tbody>
                 </div>
                 <button type="submit" className="continue" style={{ cursor: 'pointer' }} onClick={handleSubmit}>Continue</button>

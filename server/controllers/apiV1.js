@@ -264,18 +264,21 @@ export const createHive = async (req, res) => {
     }
 
     try {
+        console.log(1);
         // try and find user
         const user = await UserModel.findById(req.userID);
         if (!user) {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
-
+        console.log(2);
         // check config options
+        console.log("configRes : ")
         let configRes = await checkConfigOptions(req, res);
+        console.log("configRes : ", configRes)
         if (configRes) {
             return;
         }
-
+        console.log(3);
         // create host
         let host = new HostModel({
             name: displayName,
@@ -283,6 +286,7 @@ export const createHive = async (req, res) => {
         });
 
         // create new hive
+        console.log(4);
         let hive = new HiveModel({
             name: hiveName,
             code: code,
@@ -292,7 +296,7 @@ export const createHive = async (req, res) => {
             phase: 0,
             configOptions: JSON.stringify(configOptions)
         });
-
+        console.log(5);
         // link host and hive through mutual access of ids
         host.userID = user.userID;
         hive.hiveID = hive._id.toString();
@@ -300,18 +304,19 @@ export const createHive = async (req, res) => {
         hive.hostID = host.userID;
         await host.save();
         await hive.save();
+        console.log(6);
 
         // update user's hives
         user.hiveIDs.push(hive.hiveID);
         await user.save();
-
+        console.log(7);
         return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {
         console.error("Error on createHive controller!");
         console.error(e.message);
         console.error(e.status);
-        res.status(500).json({msg: "Server Error."});
+        res.status(500).json({msg: "Server Error. asdfasdfasd"});
     }
 }
 
@@ -1098,7 +1103,7 @@ export const submitRoomConfigOptions = async(req, res) => {
         // get matching group of the user and ensure the user is the leader
         let matchingGroup = await MatchingGroupModel.findById(attendee.groupID);
         if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
-            return res.status(500).json({msg: "Server Error."});
+            return res.status(500).json({msg: "Server Error.1"});
         }
 
         if (user.userID !== matchingGroup.leaderID) {
@@ -1135,7 +1140,7 @@ export const submitRoomConfigOptions = async(req, res) => {
         console.error("Error on submitRoomConfigOptions controller!");
         console.error(e.message);
         console.error(e.stack);
-        res.status(500).json({msg: "Server Error."});
+        res.status(500).json({msg: "Server Error.2"});
     }
 }
 
