@@ -63,7 +63,7 @@ const Landing = () => {
           />
           <button class='small_button' onClick={handleJoinRoomCode} style={{ position: 'absolute', left: '1167px', top: '445px' }}>Join Hive</button>
           <button onClick={() => { navigate("/register") }} style={{ position: 'absolute', left: '1017px', top: '617px' }}>Register</button>
-          <div className='display' style={{ position: 'absolute', left: '850px', top: '580px' }} > Or login to host and save your work </div>
+          <div className='display' style={{ position: 'absolute', left: '850px', top: '580px', width: "400px" }} > Or login to host and save your work </div>
           <button onClick={() => { navigate("/Login") }} style={{ position: 'absolute', left: '750px', top: '617px' }}> Login</button>
         </div>
       </div>
