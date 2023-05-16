@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Login from './Login.jsx';
-import "./Style.css"
+import "../styles/Style.css"
 import hives from '../assets/hives.png'
 import Navbar from './Navbar.jsx';
 

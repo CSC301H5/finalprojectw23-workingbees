@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import "./Style.css"
+import "../styles/Style.css"
 
 function sendMatchingResponse(hiveID, matchingID, response, next, token) {
 	axios.post("/api/v1/respondToMatchingGroupRecommendation",

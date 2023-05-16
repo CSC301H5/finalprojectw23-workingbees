@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import Select from 'react-select'
 
 // takes in options, maxAllowed, required, explanation, selected, setSelected, question

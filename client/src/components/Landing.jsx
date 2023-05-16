@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import hives from '../assets/hives.png'
 import axios from 'axios';
-import "./Style.css";
+import "../styles/Style.css";
 import { useNavigate } from "react-router-dom";
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
-import "./Style.css"
+import "../styles/Style.css"
 import hives from '../assets/hives.png'
 import Navbar from "./Navbar";
 import MemberList from './MemberList';

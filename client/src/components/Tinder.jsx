@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import hives from '../assets/hives.png';
 import axios from 'axios';
-import "./Style.css";
+import "../styles/Style.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from './Navbar';
 import { getCookie } from '../utils/getAuthToken';

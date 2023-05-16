@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
 import hives from '../assets/hives.png'
-import "./Style.css"
+import "../styles/Style.css"
 import Navbar from "./Navbar";
 
 import BigEntry from './BigEntry'

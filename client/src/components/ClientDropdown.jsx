@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import Select from 'react-select'
 import { useState } from "react"
 

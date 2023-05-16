@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import "./Style.css"
+import "../styles/Style.css"
 import hives from '../assets/hives.png'
 import Navbar from './Navbar';
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Style.css"
+import "../styles/Style.css"
 import Navbar from "./Navbar";
 import hives from '../assets/hives.png'
 import StaticAttendeeList from "./StaticAttendeeList";

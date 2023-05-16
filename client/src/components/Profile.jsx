@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Avatr from "react-avatar-edit"
 import hives from '../assets/hives.png'
-import "./Style.css"
+import "../styles/Style.css"
 import Navbar from "./Navbar";
 import { getCookie } from '../utils/getAuthToken';
 const Profile = () => {

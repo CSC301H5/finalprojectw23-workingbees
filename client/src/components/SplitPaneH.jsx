@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Style.css"
+import "../styles/Style.css"
 
 // Assumes props.left and props.right are other components
 export default class SplitPaneH extends Component {

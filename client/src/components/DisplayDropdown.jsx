@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 // "BANANA!!!" take string as input  
 function DisplayDropDown(props) {

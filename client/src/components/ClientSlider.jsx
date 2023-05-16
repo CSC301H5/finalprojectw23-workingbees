@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 // takes in max, min, step, num (target grade), setNum, question, and explanation
 function ClientSlider(props) {

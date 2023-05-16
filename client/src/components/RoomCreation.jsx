@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Style.css"
+import "../styles/Style.css"
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import hives from '../assets/hives.png';

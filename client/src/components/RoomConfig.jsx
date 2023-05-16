@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Style.css"
+import "../styles/Style.css"
 import QuestionList from "./QuestionList";
 import Navbar from "./Navbar";
 import hives from "../assets/hives.png";

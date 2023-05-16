@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import "./Style.css"
+import "../styles/Style.css"
 import NumberlineQuestion from './NumberlineQuestion'
 import DropdownQuestion from './DropdownQuestion'
 import MultiselectQuestion from './MultiselectQuestion'

@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import axios from 'axios'
 import tick from "../assets/tick.jpg"
 import cross from "../assets/cross.jpg"

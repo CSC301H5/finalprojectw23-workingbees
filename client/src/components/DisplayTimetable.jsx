@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import ScheduleSelector from 'react-schedule-selector';
 import { useEffect, useState } from "react";
 

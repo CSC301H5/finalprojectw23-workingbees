@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import hives from '../assets/hives.png'
-import "./Style.css"
+import "../styles/Style.css"
 import Navbar from "./Navbar";
 import { getCookie } from '../utils/getAuthToken';
 import HiveList from './HiveList';

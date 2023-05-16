@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Style.css"
+import "../styles/Style.css"
 
 // Assumes props.top and props.bottom are other components
 export default class SplitPaneV extends Component {

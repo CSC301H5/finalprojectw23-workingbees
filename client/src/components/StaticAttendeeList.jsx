@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import "./Style.css"
+import "../styles/Style.css"
 import axios from 'axios'
 
 // This attendee list does not update in real time
