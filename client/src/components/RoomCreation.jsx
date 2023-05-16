@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Style.css"
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
-import hives from '../Assets/hives.png';
+import hives from '../assets/hives.png';
 import { futureDate } from "../utils/time";
 
 function CreateRoom() {

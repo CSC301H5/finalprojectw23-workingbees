@@ -1,4 +1,4 @@
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 import IncomingMessage from './IncomingMessage';
 import Navbar from "./Navbar";
 import OutgoingMessage from './OutgoingMessage';

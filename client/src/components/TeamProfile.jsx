@@ -6,7 +6,7 @@ import ClientSlider from "./ClientSlider"
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import Navbar from "./Navbar"
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 
 
 // expects code, token, and hiveID 

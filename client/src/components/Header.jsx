@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import leftContinue from '../Assets/leftContinue.png'
-import rightContinue from '../Assets/rightContinue.png'
+import leftContinue from '../assets/leftContinue.png'
+import rightContinue from '../assets/rightContinue.png'
 
 const ProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePicture": null }, { "name": "Bee2", "biography": "hi", "profilePicture": null }]
   , hiveID }) => {

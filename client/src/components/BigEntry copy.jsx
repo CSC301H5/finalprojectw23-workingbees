@@ -1,5 +1,5 @@
 import React from 'react';
-import arrow from "../Assets/arrow.png"
+import arrow from "../assets/arrow.png"
 import { useNavigate,useLocation } from "react-router-dom";
 
 

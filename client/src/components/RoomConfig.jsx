@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import QuestionList from "./QuestionList";
 import Navbar from "./Navbar";
-import hives from "../Assets/hives.png";
+import hives from "../assets/hives.png";
 
 const ConfigRoom = () => {
 

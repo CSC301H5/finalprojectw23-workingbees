@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "./Style.css"
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 import Navbar from './Navbar';
 
 export default class Login extends Component {

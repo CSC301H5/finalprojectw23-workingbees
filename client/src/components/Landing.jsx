@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 import axios from 'axios';
 import "./Style.css";
 import { useNavigate } from "react-router-dom";

@@ -1,7 +1,7 @@
 import "./Style.css"
 import axios from 'axios'
-import tick from "../Assets/tick.jpg"
-import cross from "../Assets/cross.jpg"
+import tick from "../assets/tick.jpg"
+import cross from "../assets/cross.jpg"
 
 // assumes token, hiveID, matchingGroupID are given
 function AcceptReject(props) {

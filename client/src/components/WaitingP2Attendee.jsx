@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Style.css"
 import Navbar from "./Navbar";
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 import PhaseTimer from './PhaseTimer'
 
 function WaitingP2Attendee() {

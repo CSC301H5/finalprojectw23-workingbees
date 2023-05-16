@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import leftContinue from '../Assets/leftContinue.png'
-import rightContinue from '../Assets/rightContinue.png'
-import crown from "../Assets/leader.png"
+import leftContinue from '../assets/leftContinue.png'
+import rightContinue from '../assets/rightContinue.png'
+import crown from "../assets/leader.png"
 const FakeProfileHeader = ({ list = [{ "name": "Bee1", "biography": "hi", "profilePicture": null }, { "name": "Bee2", "biography": "hi", "profilePicture": null }]
   , hiveID }) => {
   console.log("list ",list)
