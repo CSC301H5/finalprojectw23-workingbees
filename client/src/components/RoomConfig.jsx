@@ -4,12 +4,10 @@ import QuestionList from "./QuestionList";
 import Navbar from "./Navbar";
 import hives from "../assets/hives.png";
 
-const ConfigRoom = () => {
+const RoomConfig = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-
-
 
     return (
         <div class="grid">
@@ -37,4 +35,4 @@ const ConfigRoom = () => {
     );
 }
 
-export default ConfigRoom
+export default RoomConfig

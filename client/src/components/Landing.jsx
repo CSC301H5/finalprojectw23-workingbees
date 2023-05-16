@@ -3,6 +3,7 @@ import hives from '../assets/hives.png'
 import axios from 'axios';
 import "../styles/Style.css";
 import { useNavigate } from "react-router-dom";
+
 const Landing = () => {
   const [roomCode, setRoomCode] = useState('');
   const [token, setToken] = useState('')
@@ -13,7 +14,6 @@ const Landing = () => {
     axios.post("/api/v1/guestRegister").then(res => {
 
       if (res.status === 201) {
-
         setToken(res.data.token)
         document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
 
