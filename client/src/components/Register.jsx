@@ -28,7 +28,7 @@ export default class Register extends Login {
 				if (res.status === 201) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
-					window.location.replace("/LoginHomePage");
+					window.location.replace("/loginHomePage");
 				} else if (res.status === 401) {
 					this.setState({ errText: "Incorrect username or password" })
 				} else {

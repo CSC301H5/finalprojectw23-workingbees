@@ -129,7 +129,7 @@ const Tinder = (props) => {
 
   useEffect(() => {
     if ((current_profile_index + 1 > displayComponents.length) && (displayComponents.length >= 1)) {
-      navigate("/WaitingP2Attendee", {
+      navigate("/waitingP2Attendee", {
         state: {
           token: token,
           hiveID: hiveID,

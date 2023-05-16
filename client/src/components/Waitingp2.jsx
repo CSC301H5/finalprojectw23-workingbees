@@ -42,8 +42,8 @@ function WaitingP2() {
   }
 
   const handleNavigation = () => {
- 
-     navigate('/TeamViewing', { state: { code: code, token: token, hiveID: hiveID } });
+
+    navigate('/teamViewing', { state: { code: code, token: token, hiveID: hiveID } });
   }
 
   const handleSubmit = e => {
@@ -62,7 +62,7 @@ function WaitingP2() {
         <Navbar roomCode={code} token={token} >
           <PhaseTimer token={token} hiveID={hiveID} />
         </Navbar>
-        <h2 className="roomCode" style={{left: '800px', overflowY: 'hidden'}}>Phase 1</h2>
+        <h2 className="roomCode" style={{ left: '800px', overflowY: 'hidden' }}>Phase 1</h2>
         <form onSubmit={handleSubmit}>
           <label className="numsDescription" style={{ left: '762px' }}>bees in the hive</label>
           <label className="numsDescription" style={{ left: '1000px' }}>users done swiping</label>

@@ -16,7 +16,7 @@ function LoginHomePage() {
 
   // Handle Join Hive button 
   const handleJoinHive = () => {
-    navigate("/Profile", { state: { code: room, token: x_auth_token } });
+    navigate("/profile", { state: { code: room, token: x_auth_token } });
   }
 
   // Handle create new hive button 

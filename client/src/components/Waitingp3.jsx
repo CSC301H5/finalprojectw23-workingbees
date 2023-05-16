@@ -20,12 +20,12 @@ function WaitingP3() {
   socket.addEventListener('open', (event) => {
     socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
   });
-  
+
   socket.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if (data.event === "SWARMS_CREATED") {
       console.log(" SWARMS_CREATED ")
-      navigate('/TeamViewing', { state: { code: code, token: token, hiveID: hiveID } });
+      navigate('/teamViewing', { state: { code: code, token: token, hiveID: hiveID } });
     }
   });
 

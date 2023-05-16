@@ -35,7 +35,7 @@ const Landing = () => {
           }).then(res => {
             if (res.status === 200) {
               console.log("AFTERgetHiveInfo", token);
-              navigate("/Profile", { state: { code: roomCode, token: token } })
+              navigate("/profile", { state: { code: roomCode, token: token } })
             }
             console.log(res.data);
           }).catch(err => {
