@@ -7,7 +7,6 @@ import AttendeeList from "./AttendeeList";
 import ProfileNumbers from "./ProfileNumbers";
 import PhaseTimer from "./PhaseTimer";
 import axios from 'axios';
-import ProfileHeader from "./Header"
 
 /*
 expects the following props
@@ -25,7 +24,7 @@ function WaitingP1() {
   const code = location.state.code;
   const token = location.state.token;
   const hiveID = location.state.hiveID;
- console.log( token);
+  console.log(token);
   const socket = new WebSocket('ws://localhost:3030/initializeWS')
   socket.addEventListener('open', (event) => {
     socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
@@ -89,7 +88,6 @@ function WaitingP1() {
         </form>
       </div>
     </div>
-    
   );
 }
 

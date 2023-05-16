@@ -77,4 +77,6 @@ function IncomingMessage(props) {
         </div>
     )
 
-} export default IncomingMessage;
+}
+
+export default IncomingMessage;

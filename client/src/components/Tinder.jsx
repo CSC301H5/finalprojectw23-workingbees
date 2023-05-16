@@ -10,7 +10,6 @@ import DisplayDropDown from './DisplayDropdown';
 import DisplayTimetable from './DisplayTimetable';
 import ProfileNumberAnswer from './ProfileNumberAnswer';
 import ResponseButtons from './ResponseButtons';
-import ProfileHeader from "./Header"
 import FakeProfileHeader from './FakeHeader';
 // Need hiveID
 const Tinder = (props) => {
@@ -53,7 +52,6 @@ const Tinder = (props) => {
     let matchingGroupID = 0;
     let configOptionsResponses = [];
     let newDisplayComponents = "";
-    //"code": "694449"
     axios.get("/api/v1/getRoomConfigOptions",
       {
         params: {

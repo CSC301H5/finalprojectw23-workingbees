@@ -45,4 +45,6 @@ function NewMessage(props) {
         <div>
         </div>
     )
-} export default NewMessage;
+}
+
+export default NewMessage;

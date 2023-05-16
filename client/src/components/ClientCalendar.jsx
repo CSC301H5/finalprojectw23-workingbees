@@ -16,15 +16,15 @@ function ClientCalendar(props) {
     const setArray = (e) => {
         // loop through e and update arr
         let newArr = Array(7).fill(0).map(row => new Array(24).fill(0))
-        for (let i=0; i<e.length; i++) {
+        for (let i = 0; i < e.length; i++) {
             let date = String(e[i]).slice(0, 3)
             let time = String(e[i]).slice(16, 18)
-            if (time[0]==='0') {
-                time = time.slice(1,2)
+            if (time[0] === '0') {
+                time = time.slice(1, 2)
             }
             newArr[dates.indexOf(date)][times.indexOf(time)] = 1
         }
-        {props.setArr((prevArr) => newArr)}
+        { props.setArr((prevArr) => newArr) }
     }
 
     const handleChange = (e) => {

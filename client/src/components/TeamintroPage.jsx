@@ -58,19 +58,16 @@ const TeamintroPage = () => {
             overflow: 'auto',
           }}
         >
-          <div> 
-          <p style={{fontFamily: "Montserrat", fontWeight:"1000", fontSize:"large"}}> Meet Your Team!</p>
-
+          <div>
+            <p style={{ fontFamily: "Montserrat", fontWeight: "1000", fontSize: "large" }}> Meet Your Team!</p>
             {displayComponents}
-            
-            </div>
+          </div>
         </div>
         <button
           className="button"
           onClick={handleNavigation}
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         >  Open Chat </button>
-
       </div>
     </div>
   );

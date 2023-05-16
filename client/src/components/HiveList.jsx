@@ -24,8 +24,6 @@ export default function HiveList(props) {
                     } else {
                         rows.push({ name: res.data[hiveID].name, description: "Team of " + res.data[hiveID].teamSize });
                     }
-
-                    
                 }
                 setHiveData(rows);
             }
@@ -38,15 +36,13 @@ export default function HiveList(props) {
     return (
         <div>
             {hiveData.map(hiveDatum => (
-                 <BigEntry
-                 name={hiveDatum.name}
-                 detail={hiveDatum.description}
-                 destination={hiveDatum.destination}
-                // hiveID={props.hiveID}
-                 token={token}
-                // code={props.code}
-         
-             />
+                <BigEntry
+                    name={hiveDatum.name}
+                    detail={hiveDatum.description}
+                    destination={hiveDatum.destination}
+                    // hiveID={props.hiveID}
+                    token={token}
+                />
             ))}
         </div>
     );

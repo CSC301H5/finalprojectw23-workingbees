@@ -96,4 +96,5 @@ function AcceptReject(props) {
         </div>
     )
 }
+
 export default AcceptReject

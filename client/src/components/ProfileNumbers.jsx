@@ -18,6 +18,6 @@ function ProfileNumbers(props) {
         <div>
         </div>
     )
-
 }
+
 export default ProfileNumbers

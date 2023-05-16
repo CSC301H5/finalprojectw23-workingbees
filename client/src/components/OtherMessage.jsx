@@ -13,4 +13,6 @@ function OtherMessage(props) {
 
         </div>
     )
-} export default OtherMessage;
+}
+
+export default OtherMessage;

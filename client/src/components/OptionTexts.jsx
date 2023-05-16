@@ -7,8 +7,8 @@ import "../styles/Style.css"
 	handleTextChange:
 	removeOption:
 */
-function Option(props){
-	return ( 
+function Option(props) {
+	return (
 		<div>
 			<input
 				type="text"
@@ -25,7 +25,7 @@ function Option(props){
 				className="yellowText"
 				value="X"
 				onClick={() => props.removeOption(props.id)}
-				/>
+			/>
 		</div>
 	)
 }
@@ -35,21 +35,20 @@ function Option(props){
 	handleTextChange:
 	removeOptions:
 */
-export default function OptionTexts (props){
+export default function OptionTexts(props) {
 	let optionTexts = []
-	
-	for(let i=0; i < props.options.length; i++){
+
+	for (let i = 0; i < props.options.length; i++) {
 		optionTexts.push(
-		<Option
-			id={i}
-			key={i}
-			opt={props.options[i]} 
-			handleOptionChange={props.handleOptionChange}
-			removeOption={() => props.removeOption(i)}
+			<Option
+				id={i}
+				key={i}
+				opt={props.options[i]}
+				handleOptionChange={props.handleOptionChange}
+				removeOption={() => props.removeOption(i)}
 			/>
 		)
 	}
-	
-	return optionTexts
 
+	return optionTexts
 }

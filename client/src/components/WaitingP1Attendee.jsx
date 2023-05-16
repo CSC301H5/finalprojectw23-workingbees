@@ -1,8 +1,5 @@
-import { useState } from "react";
-import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Style.css"
-import Navbar from "./Navbar";
 import hives from '../assets/hives.png'
 import PhaseTimer from './PhaseTimer'
 

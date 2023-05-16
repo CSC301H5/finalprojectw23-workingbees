@@ -30,7 +30,7 @@ function DisplayTimetable(props) {
                 if (props.arr[i][j] === 1) {
                     let date = dates[i]
                     let time = String(j) + ":00"
-                    setSchedule((prevSchedule) => 
+                    setSchedule((prevSchedule) =>
                         [...prevSchedule, (date + time)]
                     )
                 }
@@ -42,11 +42,11 @@ function DisplayTimetable(props) {
     }, [])
 
     const handleChange = (e) => {
-        
+
     }
 
     return (
-        <div className="schedule" style={{paddingLeft:"50px"}}>
+        <div className="schedule" style={{ paddingLeft: "50px" }}>
             <h1 className="text">Availability: </h1>
             <ScheduleSelector
                 selection={schedule}
@@ -61,6 +61,6 @@ function DisplayTimetable(props) {
             />
         </div>
     )
-
 }
+
 export default DisplayTimetable

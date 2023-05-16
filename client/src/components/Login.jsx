@@ -24,8 +24,8 @@ export default class Login extends Component {
 
 	checkInputs = (username, password) => {
 		// checks username and password formatting
-		//emails have to follow tstandard email formatting
-		//passwords are 8-32 chars long, and alphanumeric  plus .,-_!@#%$ and spaces
+		// emails have to follow tstandard email formatting
+		// passwords are 8-32 chars long, and alphanumeric  plus .,-_!@#%$ and spaces
 		const emailexp = /^[\w.-_]+@\w+\.\w+$/
 		const pwexp = /^[\w.,-_!@#%$ ]{8,32}$/
 
@@ -33,7 +33,7 @@ export default class Login extends Component {
 		return (emailexp.test(username) && pwexp.test(password))
 	}
 
-	//this updates the object state if any changes happen
+	// this updates the object state if any changes happen
 	handleTextChange = (event) => {
 		if (event.target.name === "username") {
 			this.setState({ username: event.target.value });
@@ -45,8 +45,8 @@ export default class Login extends Component {
 	}
 
 	handleLogin = (event) => {
-		//checks inputs, then sends the request,
-		//on success saves the token as a cookie, then forwards to the logged in homepage
+		// checks inputs, then sends the request,
+		// on success saves the token as a cookie, then forwards to the logged in homepage
 		// failure at any point prints an error
 
 		event.preventDefault()

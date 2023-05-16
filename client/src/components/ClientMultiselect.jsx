@@ -50,4 +50,6 @@ function ClientMultiselect(props) {
     </div>
 
   )
-} export default ClientMultiselect
+}
+
+export default ClientMultiselect
