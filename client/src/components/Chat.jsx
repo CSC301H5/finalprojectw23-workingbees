@@ -19,8 +19,6 @@ function Chat(props) {
     const [userName, setUserName] = useState("");
     const location = useLocation();
 
-    console.log(location.state.token);
-
     // get userName
     async function getUserName() {
         axios
@@ -34,7 +32,6 @@ function Chat(props) {
             })
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res.data.name);
                     setUserName(res.data.name);
                 }
             });

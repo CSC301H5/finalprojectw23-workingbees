@@ -5,44 +5,22 @@ import "../styles/Style.css";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
-  const [roomCode, setRoomCode] = useState('');
-  const [token, setToken] = useState('')
+  const [code, setCode] = useState('');
   const navigate = useNavigate();
 
   const handleJoinRoomCode = () => {
-
-    axios.post("/api/v1/guestRegister").then(res => {
-
-      if (res.status === 201) {
-        setToken(res.data.token)
-        document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
-
-        async function getHiveName() {
-          const roomInt = parseInt(roomCode);
-
-          if (isNaN(roomInt)) {
-            console.error('Room code is not a number!');
-            return;
+    axios.get("/api/v1/getCodeExistence", {
+      params: {
+        code: code
+      }
+    }).then(res => {
+      if (res.status === 200 && res.data.exists) {
+        axios.post("/api/v1/guestRegister").then(res => {
+          if (res.status === 201) {
+            document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
+            navigate("/profile", { state: { code: code, token: res.data.token } });
           }
-          console.log("BeforegetHiveInfo", token);
-          axios.get("/api/v1/getHiveInfo", {
-            params: {
-              code: roomCode
-            },
-            headers: {
-              "x-auth-token": token
-            }
-          }).then(res => {
-            if (res.status === 200) {
-              console.log("AFTERgetHiveInfo", token);
-              navigate("/profile", { state: { code: roomCode, token: token } })
-            }
-            console.log(res.data);
-          }).catch(err => {
-            console.error(err.response.data);
-          });
-        }
-        getHiveName();
+        })
       }
     })
   };
@@ -58,8 +36,8 @@ const Landing = () => {
           <input className="textBox" style={{ width: '400px', height: '50px', left: '750px', top: '450px' }}
             id="room-code"
             type="text"
-            value={roomCode}
-            onChange={e => setRoomCode(e.target.value)}
+            value={code}
+            onChange={e => setCode(e.target.value)}
           />
           <button class='small_button' onClick={handleJoinRoomCode} style={{ position: 'absolute', left: '1167px', top: '445px' }}>Join Hive</button>
           <button onClick={() => { navigate("/register") }} style={{ position: 'absolute', left: '1017px', top: '617px' }}>Register</button>
@@ -69,7 +47,6 @@ const Landing = () => {
       </div>
     </>
   );
-
 };
 
 export default Landing;

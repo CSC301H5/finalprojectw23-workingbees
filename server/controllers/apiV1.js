@@ -4,7 +4,7 @@ import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import SwarmModel from '../models/swarmModel.js';
-import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
+import { getUniqueCode, validCode ,checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
 import { removeElement, getObjectIndex } from '../utils/arrayUtils.js';
@@ -148,6 +148,32 @@ export const guestRegister = async (req, res) => {
         console.error(e.message);
         console.error(e.stack)
         res.status(500).json({msg: "Server Error."})
+    }
+}
+
+export const getCodeExistence = async (req, res) => {
+
+    let code = req.query.code;
+
+    // verify request
+    if (!code || !validCode(code)) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        let hive = await getHiveFromDB({"code": code});
+        if (hive && hive.phase === 0) {
+            return res.status(200).json({exists: true});
+        } else {
+            return res.status(200).json({exists: false})
+        }
+
+    } catch (e) {
+        console.error("Error on getCodeExistence controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
     }
 }
 

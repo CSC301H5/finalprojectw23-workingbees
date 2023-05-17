@@ -15,6 +15,11 @@ export async function getUniqueCode() {
     }
 }
 
+export function validCode(code) {
+    const codeExp = /^[\d]{6}$/
+  return codeExp.test(code);
+}
+
 export async function checkConfigOptions(req, res) {
         
     // check config options body is as desired

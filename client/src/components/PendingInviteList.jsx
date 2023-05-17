@@ -58,8 +58,10 @@ export default function PendingInviteList({ hiveID, token, socket, members, setM
 
     return (
         <div >
-            {invites.map(invitation => (
-                <SmallEntry name={invitation.name}>{invitation.component}</SmallEntry>
+            {invites.map((invitation, index) => (
+                <span key={index}>
+                    <SmallEntry name={invitation.name}>{invitation.component}</SmallEntry>
+                </span>
             ))}
         </div>
     )

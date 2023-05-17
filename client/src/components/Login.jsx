@@ -29,7 +29,6 @@ export default class Login extends Component {
 		const emailexp = /^[\w.-_]+@\w+\.\w+$/
 		const pwexp = /^[\w.,-_!@#%$ ]{8,32}$/
 
-
 		return (emailexp.test(username) && pwexp.test(password))
 	}
 
@@ -69,7 +68,7 @@ export default class Login extends Component {
 		}
 	}
 
-	//displaying 2 input fields and a button
+	// displaying 2 input fields and a button
 	render() {
 		return (
 			<div class="grid">

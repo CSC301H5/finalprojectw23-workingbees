@@ -6,8 +6,8 @@ import hives from '../assets/hives.png'
 import Navbar from './Navbar.jsx';
 
 export default class Register extends Login {
-	//this technically means you could use the console to log in from register despite the button for it not existing
-	//unintended, but doesnt affect security
+	// this technically means you could use the console to log in from register despite the button for it not existing
+	// unintended, but doesnt affect security
 
 	constructor() {
 		super()
@@ -16,7 +16,7 @@ export default class Register extends Login {
 	}
 
 	handleRegister = (event) => {
-		//checks input validity then sends the post request
+		// checks input validity then sends the post request
 		event.preventDefault()
 		if (this.state.password !== this.state.confirmPassword) {
 			this.setState({ errText: "Password and confirm password must match" })
@@ -39,7 +39,7 @@ export default class Register extends Login {
 		}
 	}
 
-	//displaying 3 input fields and a button
+	// displaying 3 input fields and a button
 	render() {
 		return (
 			<div class="grid">
