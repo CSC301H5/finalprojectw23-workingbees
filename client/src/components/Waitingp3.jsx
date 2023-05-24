@@ -24,7 +24,6 @@ function WaitingP3() {
   socket.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if (data.event === "SWARMS_CREATED") {
-      console.log(" SWARMS_CREATED ")
       navigate('/teamViewing', { state: { code: code, token: token, hiveID: hiveID } });
     }
   });

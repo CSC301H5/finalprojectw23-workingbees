@@ -86,7 +86,6 @@ export default class QuestionList extends Component {
 
 	publish(event) {
 		event.preventDefault();
-		console.log(this.props.Max, parseInt(this.props.Max));
 		axios.post("/api/v1/createHive",
 			{
 				profilePicture: this.props.profilePicture,

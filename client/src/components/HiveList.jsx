@@ -18,7 +18,6 @@ export default function HiveList(props) {
             if (res.status === 200) {
                 const rows = [];
                 for (let hiveID in res.data) {
-                    console.log(res.data[hiveID]);
                     if (res.data[hiveID].isHost) {
                         rows.push({ name: res.data[hiveID].name, description: "Phase " + res.data[hiveID].phase });
                     } else {

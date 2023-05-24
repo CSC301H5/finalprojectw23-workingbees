@@ -35,10 +35,8 @@ const Profile = () => {
     }).then(res => {
       if (res.status === 201) {
         const hiveID = res.data.hiveID;
-        console.log("hiveID sent from Profile:", hiveID);
         navigate("/groupCreation", { state: { token, hiveID, code } });
       }
-      console.log(res.data);
     }).catch(err => {
       console.error(err.response.data);
     });

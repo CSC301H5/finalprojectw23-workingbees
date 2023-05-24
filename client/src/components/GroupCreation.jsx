@@ -10,12 +10,12 @@ import PhaseTimer from './PhaseTimer';
 
 const GroupCreation = () => {
     const navigate = useNavigate();
-    const [username, setName] = useState('');
     const location = useLocation();
     const token = location.state.token;
     const hiveID = location.state.hiveID;
     const code = location.state.code;
 
+    const [username, setName] = useState('');
     const [leader, setLeader] = useState('');
     const [members, setMembers] = useState([]);
     const [invitedUsers, setInvitedUsers] = useState([]);

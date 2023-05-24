@@ -290,21 +290,16 @@ export const createHive = async (req, res) => {
     }
 
     try {
-        console.log(1);
         // try and find user
         const user = await UserModel.findById(req.userID);
         if (!user) {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
-        console.log(2);
         // check config options
-        console.log("configRes : ")
         let configRes = await checkConfigOptions(req, res);
-        console.log("configRes : ", configRes)
         if (configRes) {
             return;
         }
-        console.log(3);
         // create host
         let host = new HostModel({
             name: displayName,
@@ -312,7 +307,6 @@ export const createHive = async (req, res) => {
         });
 
         // create new hive
-        console.log(4);
         let hive = new HiveModel({
             name: hiveName,
             code: code,
@@ -322,7 +316,6 @@ export const createHive = async (req, res) => {
             phase: 0,
             configOptions: JSON.stringify(configOptions)
         });
-        console.log(5);
         // link host and hive through mutual access of ids
         host.userID = user.userID;
         hive.hiveID = hive._id.toString();
@@ -330,12 +323,10 @@ export const createHive = async (req, res) => {
         hive.hostID = host.userID;
         await host.save();
         await hive.save();
-        console.log(6);
 
         // update user's hives
         user.hiveIDs.push(hive.hiveID);
         await user.save();
-        console.log(7);
         return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {
@@ -1429,9 +1420,6 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
 
     // verify request
     if (!hiveID || !matchingGroupID || !response) {
-        console.log("hiveID ", hiveID);
-        console.log("matchingGroupID ", matchingGroupID);
-        console.log("response ", response);
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -1615,14 +1603,11 @@ export const getAllSwarms = async (req, res) => {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        
-
         const data = {};
 
         for (let i = 0; i < hive.swarmIDs.length; i++) {
             let swarm = await SwarmModel.findById(hive.swarmIDs[i]);
             data[swarm.swarmID] = swarm.memberIDs.length;
-            console.log(data)
         }
         return res.status(200).json(data);
 
@@ -1724,8 +1709,6 @@ export const sendSwarmChatMessage = async (req, res) => {
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
         const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
         if (attendee && attendee.swarmID !== swarmID) { // attendee exists but is not in this swarm
-            console.log(attendee.swarmID, swarmID);
-            console.log(user.userID);
             return res.status(401).json({msg: "You are not permitted to access that swarmID."});
         } 
 

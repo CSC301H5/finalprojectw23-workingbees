@@ -17,8 +17,6 @@ function IncomingMessage(props) {
 
     // get chat history
     async function getChatHistory() {
-        console.log(props.hiveID)
-        console.log(props.swarmID)
         axios.get("/api/v1/getSwarmChatHistory",
             {
                 params: {
@@ -30,7 +28,6 @@ function IncomingMessage(props) {
                 }
             }).then(res => {
                 if (res.status === 200) {
-                    console.log(res.data.messages)
                     props.setMessages(res.data.messages)
                 }
             })
@@ -41,10 +38,8 @@ function IncomingMessage(props) {
 
     const rows = [];
     for (let i = 0; i < (props.messages.length); i++) {
-        console.log(props.userName)
         if (props.messages[i].sender === props.userName) {
             // my message
-
             rows.push(<div>
                 <MyMessage message={props.messages[i].message} />
             </div>
@@ -76,7 +71,6 @@ function IncomingMessage(props) {
             <div ref={messagesEnd} />
         </div>
     )
-
 }
 
 export default IncomingMessage;

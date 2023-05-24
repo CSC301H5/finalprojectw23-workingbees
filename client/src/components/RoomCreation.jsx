@@ -39,7 +39,9 @@ function RoomCreation() {
             phaseChangeDates[1] = futureDate(Date.parse(phaseOneDate), parseInt(timeData[0]) + 4, parseInt(timeData[1]), 0).toISOString();
         }
 
-        navigate('/RoomConfig', { state: { Max: groupMax, Min: groupMin, token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+        if (groupMin <= groupMax && (phaseChangeDates[0] === null || phaseChangeDates[1] === null || phaseChangeDates[0] <= phaseChangeDates[1])) {
+            navigate('/roomConfig', { state: { Max: groupMax, Min: groupMin, token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+        }
     }
 
     return (

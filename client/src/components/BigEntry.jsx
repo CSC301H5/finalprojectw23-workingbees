@@ -7,7 +7,6 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log("going to the room: ", { destination, hiveID, token, code, swarmID })
     navigate(destination, { state: { code: code, token: token, hiveID: hiveID, swarmID: swarmID } })
   };
 

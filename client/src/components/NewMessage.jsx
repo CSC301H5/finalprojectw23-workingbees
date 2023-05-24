@@ -15,8 +15,6 @@ function NewMessage(props) {
     });
 
     function getChatHistory() {
-        console.log(props.hiveID)
-        console.log(props.swarmID)
         axios.get("/api/v1/getSwarmChatHistory",
             {
                 params: {
@@ -36,7 +34,6 @@ function NewMessage(props) {
     socket.addEventListener('message', (event) => {
         let data = JSON.parse(event.data);
         if (data.event === "NEW_CHAT_MESSAGE") {
-            console.log("msg received")
             getChatHistory()
         }
     });

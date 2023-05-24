@@ -4,8 +4,6 @@ expects the following props:
     - message
 */
 function OtherMessage(props) {
-
-
     return (
         <div>
             <p className="other-sender" id="similar">{props.sender}</p>

@@ -4,13 +4,13 @@ import axios from 'axios';
 import "../styles/Style.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from './Navbar';
-import { getCookie } from '../utils/getAuthToken';
 import DisplayMultiselect from './DisplayMultiselect';
 import DisplayDropDown from './DisplayDropdown';
 import DisplayTimetable from './DisplayTimetable';
 import ProfileNumberAnswer from './ProfileNumberAnswer';
 import ResponseButtons from './ResponseButtons';
 import FakeProfileHeader from './FakeHeader';
+
 // Need hiveID
 const Tinder = (props) => {
   const [roomCode, setRoomCode] = useState('');
@@ -56,17 +56,14 @@ const Tinder = (props) => {
       {
         params: {
           hiveID: hiveID,
-
         },
         headers: {
           'x-auth-token': token
         }
       }).then(res => {
         if (res.status === 200) {
-          let a = res.data.questions
-
+          let a = res.data.questions;
           recommendations.forEach((recommendation) => {
-            console.log("recommendataion,", recommendation)
             let i = 0;
             let title = "";
             let explanation = "";
@@ -109,7 +106,6 @@ const Tinder = (props) => {
               setDisplayComponents(prevComponents => [...prevComponents, profile]);
             }
           }
-
           );
           SetmatchingGroupIDArray(matchingGroupIDArray2);
 

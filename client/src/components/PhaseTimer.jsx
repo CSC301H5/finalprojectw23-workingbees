@@ -25,7 +25,7 @@ export default function PhaseTimer({ token, hiveID, event }) {
     }, [])
 
     if (!phaseCompletionDate) {
-        return "";
+        return null;
     } else {
         return <Timer endDate={phaseCompletionDate} event={event} />
     }
