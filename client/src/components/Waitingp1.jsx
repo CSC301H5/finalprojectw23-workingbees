@@ -16,7 +16,6 @@ expects the following props
 */
 function WaitingP1() {
   const [attendeeList, setAttendeeList] = useState([])
-  const [numBees, setNumBees] = useState("0")
   const [profileNums, setProfileNums] = useState(0)
   const location = useLocation();
   const navigate = useNavigate();
@@ -74,9 +73,7 @@ function WaitingP1() {
           />
           <p className="nums" style={{ left: '820px' }}>{attendeeList.length}</p>
           <p className="nums" style={{ left: '1070px' }}>{profileNums}</p>
-
           <label className="attendees">Attendee list
-
             <AttendeeList
               socket={socket}
               attendeeList={attendeeList}

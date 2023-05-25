@@ -13,9 +13,6 @@ import FakeProfileHeader from './FakeHeader';
 
 // Need hiveID
 const Tinder = (props) => {
-  const [roomCode, setRoomCode] = useState('');
-  const [result, setResult] = useState([]);
-  const [questions_array, setQuestions_array] = useState([]);
   const [displayComponents, setDisplayComponents] = useState([]);
   const [current_profile_index, Setcurrent_profile_index] = useState(0);
   const [matchingGroupIDArray, SetmatchingGroupIDArray] = useState([]);
@@ -46,10 +43,8 @@ const Tinder = (props) => {
 
   async function get_options() {
     const recommendations = ex1;
-    let i = 0;
     let users_array = [];
     let matchingGroupIDArray2 = [];
-    let matchingGroupID = 0;
     let configOptionsResponses = [];
     let newDisplayComponents = "";
     axios.get("/api/v1/getRoomConfigOptions",
@@ -62,7 +57,7 @@ const Tinder = (props) => {
         }
       }).then(res => {
         if (res.status === 200) {
-          let a = res.data.questions;
+          const questions = res.data.questions;
           recommendations.forEach((recommendation) => {
             let i = 0;
             let title = "";
@@ -75,31 +70,31 @@ const Tinder = (props) => {
             configOptionsResponses = recommendation.configOptionsResponses;
             let number = 0;
             profile.push(<FakeProfileHeader list={users_array} />)
-            for (let index in a) {
+            for (let index in questions) {
               index = parseInt(index)
-              title = a[index].title;
-              explanation = a[index].explanation;
-              question_type = a[index].type;
+              title = questions[index].title;
+              explanation = questions[index].explanation;
+              question_type = questions[index].type;
               i = index;
               number = 1;
 
-              if (question_type == "DROPDOWN") {
+              if (question_type === "DROPDOWN") {
                 newDisplayComponents = <DisplayDropDown array={configOptionsResponses[i]} question={"Q" + (number) + ":"} title={title} />;
               }
-              else if (question_type == "MULTISELECT") {
+              else if (question_type === "MULTISELECT") {
                 newDisplayComponents = <DisplayMultiselect array={configOptionsResponses[i]} question={"Q" + (index)} title={title} />;
               }
-              else if (question_type == "NUMBERLINE") {
+              else if (question_type === "NUMBERLINE") {
                 newDisplayComponents = <ProfileNumberAnswer array={configOptionsResponses[i]} question={"Q" + (index)} />;
               }
-              else if (question_type == "TIMETABLE") {
+              else if (question_type === "TIMETABLE") {
                 newDisplayComponents = <DisplayTimetable arr={configOptionsResponses[i]} question={"Q" + (index)} />;
               }
 
               profile.push(newDisplayComponents);;
             }
 
-            if (configOptionsResponses[i] == "") {
+            if (configOptionsResponses[i] === "") {
               console.log("skip profile")
             }
             else {
@@ -107,8 +102,8 @@ const Tinder = (props) => {
             }
           }
           );
-          SetmatchingGroupIDArray(matchingGroupIDArray2);
 
+          SetmatchingGroupIDArray(matchingGroupIDArray2);
           setup_index = 1;
         }
       });

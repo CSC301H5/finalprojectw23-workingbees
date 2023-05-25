@@ -25,7 +25,7 @@ function NewMessage(props) {
                     'x-auth-token': props.token
                 }
             }).then(res => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     props.setMessages(res.data.messages)
                 }
             })

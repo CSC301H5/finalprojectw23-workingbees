@@ -31,10 +31,9 @@ function WaitingP1Attendee() {
 	return (
 		<div className="grid">
 			<div class="left">
-				<img src={hives}></img>
+				<img src={hives} alt="" />
 			</ div>
 			<div class="right" style={{ text_align: 'center' }}>
-
 				<label className="centeredSubtitle">
 					Waiting for others to join the hive
 				</label>

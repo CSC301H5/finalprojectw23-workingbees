@@ -14,7 +14,7 @@ function sendMatchingResponse(hiveID, matchingID, response, next, token) {
 		}
 	}
 	).then(res => {
-		if (res.status == 200) {
+		if (res.status === 200) {
 			next()
 		}
 	}).catch(err => {

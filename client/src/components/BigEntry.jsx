@@ -19,6 +19,7 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, 
           <img
             src={`data:image/png;base64,${pictureUrl.split(',')[1]}`}
             style={{ width: "75px", height: "75px", borderRadius: "50%", marginRight: "10px", marginLeft: "10px" }}
+            alt="Profile"
           />
         ) : (
           <div class="circle"></div>

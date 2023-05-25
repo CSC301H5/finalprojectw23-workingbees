@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Style.css"
 import hives from '../assets/hives.png'
@@ -6,10 +5,8 @@ import PhaseTimer from './PhaseTimer'
 
 function WaitingP2Attendee() {
 
-	const profilesCompleted = useState()
 	const location = useLocation();
 	const navigate = useNavigate();
-	const code = location.state.code;
 	const token = location.state.token;
 	const hiveID = location.state.hiveID;
 	const ws = new WebSocket('ws://localhost:3030/initializeWS')
@@ -32,10 +29,9 @@ function WaitingP2Attendee() {
 	return (
 		<div className="grid">
 			<div class="left">
-				<img src={hives}></img>
+				<img src={hives} alt="" />
 			</ div>
 			<div class="right" style={{ text_align: 'center' }}>
-
 				<label className="centeredSubtitle">
 					Waiting for others to finish selecting...
 				</label>
@@ -45,7 +41,6 @@ function WaitingP2Attendee() {
 							token={token}
 							hiveID={hiveID}
 							event={handleNavigation} />
-
 					</ div>
 					<label class="yellowSubtitle">
 						Until groups are created !
@@ -54,6 +49,5 @@ function WaitingP2Attendee() {
 			</div>
 		</div>
 	);
-
 }
 export default WaitingP2Attendee
