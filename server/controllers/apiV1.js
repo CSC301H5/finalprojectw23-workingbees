@@ -9,7 +9,7 @@ import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.j
 import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
 import { removeElement, getObjectIndex } from '../utils/arrayUtils.js';
 import { getPendingRecommendations, createSwarms } from '../utils/algorithm.js';
-
+import { validRegistration } from '../utils/security.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -22,7 +22,7 @@ export const register = async (req, res) => {
     let password = req.body.password;
 
     // verify request
-    if (!email || !password) {
+    if (!email || !password || !validRegistration(email, password)) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
 
     // verify credentials
     try {
-        let user = await UserModel.findOne({"email": email});
+        const user = await UserModel.findOne({"email": email});
         if (!user) {
             return res.status(401).json({msg: "Error: Email or password incorrect"});
         }
@@ -120,7 +120,7 @@ export const guestRegister = async (req, res) => {
     try {
 
         // create guest user
-        var user = new UserModel({
+        const user = new UserModel({
             email: "",
             password: "",
             isGuest: true
@@ -162,7 +162,7 @@ export const getCodeExistence = async (req, res) => {
 
     try {
         // try and find hive
-        let hive = await getHiveFromDB({"code": code});
+        const hive = await getHiveFromDB({"code": code});
         if (hive && hive.phase === 0) {
             return res.status(200).json({exists: true});
         } else {
@@ -191,7 +191,7 @@ export const joinHive = async (req, res) => {
 
     try {
         // check if the code corresponds to an existing hive
-        let hive = await getHiveFromDB({"code": code});
+        const hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -301,13 +301,13 @@ export const createHive = async (req, res) => {
             return;
         }
         // create host
-        let host = new HostModel({
+        const host = new HostModel({
             name: displayName,
             profilePicture: profilePicture
         });
 
         // create new hive
-        let hive = new HiveModel({
+        const hive = new HiveModel({
             name: hiveName,
             code: code,
             attendeeIDs: [],
