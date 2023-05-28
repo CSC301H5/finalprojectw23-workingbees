@@ -11,11 +11,6 @@ function DisplayDropDown(props) {
         )
     }
 
-    function DropDown() {
-        const displayComponents = props.array.map((item) => <Display item={item} />);
-        return <div>{displayComponents}</div>;
-    }
-
     return (
         <div style={{ paddingLeft: '50px' }}>
             <h1 className="text" style={{ fontSize: '22px' }}>  {props.title}</h1>

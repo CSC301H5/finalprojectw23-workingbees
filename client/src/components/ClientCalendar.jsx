@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 // takes in maxAllowed, question, and explanation
 function ClientCalendar(props) {
     const maxAllowed = props.maxAllowed
-    const setArr = props.setArr
     const [schedule, setSchedule] = useState([])
     // 2D array to store availability where 0 = F and 1 = T
     // Sunday = 0, Saturday = 6

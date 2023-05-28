@@ -23,7 +23,7 @@ function StaticAttendeeList(props) {
           'x-auth-token': props.token
         }
       }).then(res => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           props.setAttendeeList(res.data.attendeeNames)
         }
       })

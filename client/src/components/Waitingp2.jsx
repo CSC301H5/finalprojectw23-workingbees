@@ -11,8 +11,6 @@ import MiniEntry from "./MiniEntry";
 
 function WaitingP2() {
   const [attendeeList, setAttendeeList] = useState([])
-  const [numBees, setNumBees] = useState("0")
-  const profilesCompleted = useState("0")
   const location = useLocation();
   const navigate = useNavigate();
   const [profileNums, setProfileNums] = useState(0)

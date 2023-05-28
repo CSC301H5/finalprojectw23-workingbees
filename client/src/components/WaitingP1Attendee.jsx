@@ -51,7 +51,6 @@ function WaitingP1Attendee() {
 			</div>
 		</div>
 	);
-
 }
 
 export default WaitingP1Attendee

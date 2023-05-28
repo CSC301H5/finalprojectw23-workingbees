@@ -5,7 +5,7 @@ import AcceptReject from "./AcceptReject";
 
 function indexOfObject(arr, key, value) {
     try {
-        for (let i = 0; i < i < arr.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             if (arr[i][key] === value) {
                 return i;
             }
