@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, guestRegister, getCodeExistence, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive, createHive, getHiveAttendeeNames, getMatchingGroup, roomConfigOptionsCompleted, getIncomingInvites, getOutgoingInvites, sendInvite, acceptInvite, rejectInvite, getRoomConfigOptions, submitRoomConfigOptions, getHiveMatchingGroupCompletion, getUserDisplayName, beginPhaseOne, getPendingMatchingGroupRecommendations, getMatchingGroupsDonePhaseOne, respondToMatchingGroupRecommendation, getSwarmInfo, getAllSwarms, beginPhaseTwo, sendSwarmChatMessage, getSwarmChatHistory } from '../controllers/apiV1.js'
+import { register, login, guestRegister, getCodeExistence, getUserHives, getHiveInfo, getHiveTimer, getHivePhase, joinHive, createHive, getHiveAttendeeNames, getMatchingGroup, roomConfigOptionsCompleted, getIncomingInvites, getOutgoingInvites, sendInvite, acceptInvite, rejectInvite, confirmGroup, getRoomConfigOptions, submitRoomConfigOptions, getHiveMatchingGroupCompletion, getUserDisplayName, beginPhaseOne, getPendingMatchingGroupRecommendations, getMatchingGroupsDonePhaseOne, respondToMatchingGroupRecommendation, getSwarmInfo, getAllSwarms, beginPhaseTwo, sendSwarmChatMessage, getSwarmChatHistory } from '../controllers/apiV1.js'
 import auth from '../middleware/auth.js'
 
 const router = express.Router();
@@ -22,6 +22,7 @@ router.get('/getOutgoingInvites', auth, getOutgoingInvites);
 router.post('/sendInvite', auth, sendInvite);
 router.post('/acceptInvite', auth, acceptInvite);
 router.post('/rejectInvite', auth, rejectInvite);
+router.post('/confirmGroup', auth, confirmGroup)
 router.get('/getRoomConfigOptions', auth, getRoomConfigOptions);
 router.post('/submitRoomConfigOptions', auth, submitRoomConfigOptions);
 router.get('/getHiveMatchingGroupCompletion', auth, getHiveMatchingGroupCompletion);

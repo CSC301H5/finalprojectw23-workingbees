@@ -761,6 +761,7 @@ export const getOutgoingInvites = async (req, res) => {
 }
 
 export const sendInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let username = req.body.username;
 
@@ -857,6 +858,7 @@ export const sendInvite = async (req, res) => {
 }
 
 export const acceptInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let matchingGroupID = req.body.matchingGroupID
 
@@ -972,6 +974,7 @@ export const acceptInvite = async (req, res) => {
 }
 
 export const rejectInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let matchingGroupID = req.body.matchingGroupID
 
@@ -1046,8 +1049,57 @@ export const rejectInvite = async (req, res) => {
     }
 }
 
-export const getRoomConfigOptions = async(req, res) => {
+export const confirmGroup = async(req, res) => {
 
+    let hiveID = req.body.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try to find user and hive and check that the user is an attendee in this hive
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        const hive = await getHiveFromDBByID(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        // only phase 0 allows modification of matchingGroups
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Matching groups can only be confirmed in phase 0."});
+        }
+
+        // try and find the matching group
+        const matchingGroup = await MatchingGroupModel.findOne({"hiveID": hiveID, "leaderID": user.userID});
+        if (!matchingGroup) {
+            return res.status(404).json({msg: "Error: Matching group not found (user must be the leader of the group)"});
+        }
+
+        // notify members of the matching group if they are active
+        broadcast(hiveID, matchingGroup, `{"event": "GROUP_CONFIRMED", "leaderName": "${attendee.name}"}`);
+
+        return res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on confirmGroup controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getRoomConfigOptions = async(req, res) => {
 
     let hiveID = req.query.hiveID;
 

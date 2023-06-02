@@ -22,6 +22,11 @@ button:hover {
   opacity: 0.5;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor:default;
+}
+
 .small_button {
   background-color: #FFAF40;
   color: white;

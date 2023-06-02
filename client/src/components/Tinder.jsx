@@ -10,6 +10,7 @@ import DisplayTimetable from './DisplayTimetable';
 import ProfileNumberAnswer from './ProfileNumberAnswer';
 import ResponseButtons from './ResponseButtons';
 import FakeProfileHeader from './FakeHeader';
+import PhaseTimer from './PhaseTimer'
 
 // Need hiveID
 const Tinder = (props) => {
@@ -23,6 +24,22 @@ const Tinder = (props) => {
   const hiveID = location.state.hiveID;
   const code = location.state.code;
   let ex1 = null;
+
+  const socket = new WebSocket('ws://localhost:3030/initializeWS');
+  socket.addEventListener('open', (event) => {
+    socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
+  });
+
+  socket.addEventListener('message', (event) => {
+    const parsed_data = JSON.parse(event.data)
+    if (parsed_data.event === "PHASE_SKIP") {
+      handleNavigation();
+    }
+  });
+
+  const handleNavigation = () => {
+    navigate('/teamIntro', { state: { code: code, token: token, hiveID: hiveID } });
+  }
 
   async function get_result() {
     axios.get("/api/v1/getPendingMatchingGroupRecommendations",
@@ -135,13 +152,14 @@ const Tinder = (props) => {
           <img src={hives} alt="" />
         </div>
         <div className="right"  >
-          <Navbar token={token} />
+          <Navbar roomCode={code} token={token} >
+            <PhaseTimer token={token} hiveID={hiveID} />
+          </Navbar>
           <div className="config" style={{
             border: "1px solid #FFAF40",
             borderRadius: "8px", overflow: "auto", height: "500px", width: "436px", backgroundColor: "whitesmoke"
           }}>
-            <div  >{displayComponents[current_profile_index]}</div>
-
+            <div>{displayComponents[current_profile_index]}</div>
           </div>
           <div style={{ padding: "30px" }} >
             <ResponseButtons Setcurrent_profile_index={Setcurrent_profile_index} current_profile_index={current_profile_index}

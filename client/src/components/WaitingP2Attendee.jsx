@@ -9,21 +9,22 @@ function WaitingP2Attendee() {
 	const navigate = useNavigate();
 	const token = location.state.token;
 	const hiveID = location.state.hiveID;
-	const ws = new WebSocket('ws://localhost:3030/initializeWS')
-	ws.addEventListener('open', (event) => {
-		ws.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
+	const code = location.state.code;
+
+	const socket = new WebSocket('ws://localhost:3030/initializeWS');
+	socket.addEventListener('open', (event) => {
+		socket.send(JSON.stringify({ event: 'REGISTER', hiveID: hiveID, token: token }));
 	});
-	ws.addEventListener('message', (event) => {
+
+	socket.addEventListener('message', (event) => {
 		const parsed_data = JSON.parse(event.data)
 		if (parsed_data.event === "PHASE_SKIP") {
-			handleNavigation()
+			handleNavigation();
 		}
 	});
 
 	const handleNavigation = () => {
-		// idk where im sending yet
-
-		navigate('/teamIntro', { state: { code: location.state.code, token: location.state.token, hiveID: location.state.hiveID } });
+		navigate('/teamIntro', { state: { code: code, token: token, hiveID: hiveID } });
 	}
 
 	return (
