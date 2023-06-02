@@ -23,9 +23,7 @@ function WaitingP1Attendee() {
 	});
 
 	const handleNavigation = () => {
-		// idk where im sending yet
-
-		navigate('/tinder', { state: { token: location.state.token, hiveID: location.state.hiveID, code: code } });
+		navigate('/tinder', { state: { token: token, hiveID: hiveID, code: code } });
 	}
 
 	return (
