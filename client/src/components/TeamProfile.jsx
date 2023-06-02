@@ -3,6 +3,7 @@ import ClientCalendar from "./ClientCalendar"
 import ClientDropdown from "./ClientDropdown"
 import ClientMultiselect from "./ClientMultiselect"
 import ClientSlider from "./ClientSlider"
+import PhaseTimer from './PhaseTimer';
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import Navbar from "./Navbar"
@@ -38,15 +39,19 @@ function TeamProfile() {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const token = location.state.token;
+    const hiveID = location.state.hiveID;
+    const code = location.state.code;
+
     // get configOptions
     async function getConfigOptions() {
         axios.get("/api/v1/getRoomConfigOptions",
             {
                 params: {
-                    hiveID: location.state.hiveID
+                    hiveID: hiveID
                 },
                 headers: {
-                    'x-auth-token': location.state.token
+                    'x-auth-token': token
                 }
             }).then(res => {
                 if (res.status === 200) {
@@ -62,29 +67,16 @@ function TeamProfile() {
         e.preventDefault();
         axios.post("/api/v1/submitRoomConfigOptions",
             {
-                hiveID: location.state.hiveID,
+                hiveID: hiveID,
                 responses: userResponses
             }, {
             headers: {
-                'x-auth-token': location.state.token
+                'x-auth-token': token
             }
         }
         ).then(res => {
             if (res.status === 200) {
-
-                navigate('/waitingP1Attendee',
-                    {
-                        state: {
-                            token: location.state.token,
-                            profilePicture: location.state.profilePicture,
-                            hiveName: location.state.hiveName,
-                            displayName: location.state.displayName,
-                            phaseChangeDates: location.state.phaseChangeDates,
-                            hiveID: location.state.hiveID,
-                            code: location.state.code
-                        }
-                    }
-                )
+                navigate('/waitingP1Attendee', { state: { token: token, hiveID: hiveID, code: code } })
             }
         })
     }
@@ -121,7 +113,9 @@ function TeamProfile() {
                 <img src={hives} alt="" />
             </div>
             <div class="right">
-                <Navbar roomCode={location.state.code} token={location.state.token} />
+                <Navbar roomCode={code} token={token} >
+                    <PhaseTimer token={token} hiveID={hiveID} />
+                </Navbar>
                 <div className="config" style={{ overflow: "auto", maxHeight: "70vh" }}>
                     <tbody>{rows}</tbody>
                 </div>
@@ -129,7 +123,6 @@ function TeamProfile() {
             </div>
         </div>
     )
-
 }
 
 export default TeamProfile
