@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Style.css"
+import "../styles/Style.css"
 import Navbar from "./Navbar";
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 import StaticAttendeeList from "./StaticAttendeeList";
 import PhaseTimer from "./PhaseTimer";
 import MiniEntry from "./MiniEntry";
@@ -20,12 +20,11 @@ function WaitingP3() {
   socket.addEventListener('open', (event) => {
     socket.send(JSON.stringify({ event: 'REGISTER', hiveID: String(hiveID), token: token }));
   });
-  
+
   socket.addEventListener('message', (event) => {
     let data = JSON.parse(event.data);
     if (data.event === "SWARMS_CREATED") {
-      console.log(" SWARMS_CREATED ")
-      navigate('/TeamViewing', { state: { code: code, token: token, hiveID: hiveID } });
+      navigate('/teamViewing', { state: { code: code, token: token, hiveID: hiveID } });
     }
   });
 

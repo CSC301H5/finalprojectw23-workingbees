@@ -5,8 +5,6 @@ import Timer from "./Timer";
 export default function PhaseTimer({ token, hiveID, event }) {
 
     const [phaseCompletionDate, setPhaseCompletionDate] = useState("");
-     console.log("hiveID", hiveID);
-     console.log("token", token);
 
     async function getPhaseDeadline() {
         axios.get("/api/v1/getHiveTimer", {
@@ -27,7 +25,7 @@ export default function PhaseTimer({ token, hiveID, event }) {
     }, [])
 
     if (!phaseCompletionDate) {
-        return "";
+        return null;
     } else {
         return <Timer endDate={phaseCompletionDate} event={event} />
     }

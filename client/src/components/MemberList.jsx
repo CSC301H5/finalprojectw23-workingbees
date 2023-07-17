@@ -91,8 +91,10 @@ export default function MemberList({ hiveID, token, socket, leader, setLeader, m
     return (
         <div>
             <SmallEntry name={leader} status='leader' />
-            {members.map(member => (
-                <SmallEntry name={member} status='Accepted' />
+            {members.map((member, index) => (
+                <span key={index}>
+                    <SmallEntry name={member} status='Accepted' />
+                </span>
             ))}
             {invitedUsers.map(invitedUser => (
                 <SmallEntry name={invitedUser} status='Invited' />

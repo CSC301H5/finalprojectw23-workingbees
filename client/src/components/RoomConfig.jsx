@@ -1,16 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Style.css"
+import "../styles/Style.css"
 import QuestionList from "./QuestionList";
 import Navbar from "./Navbar";
-import hives from "../Assets/hives.png";
+import hives from "../assets/hives.png";
 
-const ConfigRoom = () => {
+const RoomConfig = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    
 
-   
     return (
         <div class="grid">
             <div class="left">
@@ -19,7 +17,7 @@ const ConfigRoom = () => {
             <div class="right">
                 <Navbar />
                 <div className="config">
-                    <h2>Room configuration</h2>
+                    <h2 style={{ fontFamily: "Montserrat" }}>Room configuration</h2>
                     <QuestionList
                         token={location.state.token}
                         profilePicture={location.state.profilePicture}
@@ -36,4 +34,5 @@ const ConfigRoom = () => {
         </div>
     );
 }
-export default ConfigRoom
+
+export default RoomConfig

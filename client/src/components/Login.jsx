@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import "./Style.css"
-import hives from '../Assets/hives.png'
+import "../styles/Style.css"
+import hives from '../assets/hives.png'
 import Navbar from './Navbar';
 
 export default class Login extends Component {
@@ -24,16 +24,15 @@ export default class Login extends Component {
 
 	checkInputs = (username, password) => {
 		// checks username and password formatting
-		//emails have to follow tstandard email formatting
-		//passwords are 8-32 chars long, and alphanumeric  plus .,-_!@#%$ and spaces
+		// emails have to follow tstandard email formatting
+		// passwords are 8-32 chars long, and alphanumeric  plus .,-_!@#%$ and spaces
 		const emailexp = /^[\w.-_]+@\w+\.\w+$/
 		const pwexp = /^[\w.,-_!@#%$ ]{8,32}$/
-
 
 		return (emailexp.test(username) && pwexp.test(password))
 	}
 
-	//this updates the object state if any changes happen
+	// this updates the object state if any changes happen
 	handleTextChange = (event) => {
 		if (event.target.name === "username") {
 			this.setState({ username: event.target.value });
@@ -45,8 +44,8 @@ export default class Login extends Component {
 	}
 
 	handleLogin = (event) => {
-		//checks inputs, then sends the request,
-		//on success saves the token as a cookie, then forwards to the logged in homepage
+		// checks inputs, then sends the request,
+		// on success saves the token as a cookie, then forwards to the logged in homepage
 		// failure at any point prints an error
 
 		event.preventDefault()
@@ -58,8 +57,7 @@ export default class Login extends Component {
 				if (res.status === 200) {
 					//this auth token is stored globally and deleted at the end of the session
 					document.cookie = "x-auth-token=" + res.data.token + "; SameSite=Lax "
-					console.log(res.data.token)
-					window.location.replace("/LoginHomePage");
+					window.location.replace("/loginHomePage");
 				} else if (res.status === 401) {
 					this.setState({ errText: "Incorrect username or password" })
 				} else {
@@ -69,7 +67,7 @@ export default class Login extends Component {
 		}
 	}
 
-	//displaying 2 input fields and a button
+	// displaying 2 input fields and a button
 	render() {
 		return (
 			<div class="grid">

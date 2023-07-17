@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 // "BANANA!!!" take string as input  
 function DisplayDropDown(props) {
@@ -9,11 +9,6 @@ function DisplayDropDown(props) {
                 {props.item}
             </div>
         )
-    }
-
-    function DropDown() {
-        const displayComponents = props.array.map((item) => <Display item={item} />);
-        return <div>{displayComponents}</div>;
     }
 
     return (

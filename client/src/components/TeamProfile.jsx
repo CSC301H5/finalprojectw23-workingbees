@@ -3,10 +3,11 @@ import ClientCalendar from "./ClientCalendar"
 import ClientDropdown from "./ClientDropdown"
 import ClientMultiselect from "./ClientMultiselect"
 import ClientSlider from "./ClientSlider"
+import PhaseTimer from './PhaseTimer';
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from 'axios'
 import Navbar from "./Navbar"
-import hives from '../Assets/hives.png'
+import hives from '../assets/hives.png'
 
 
 // expects code, token, and hiveID 
@@ -38,15 +39,19 @@ function TeamProfile() {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const token = location.state.token;
+    const hiveID = location.state.hiveID;
+    const code = location.state.code;
+
     // get configOptions
     async function getConfigOptions() {
         axios.get("/api/v1/getRoomConfigOptions",
             {
                 params: {
-                    hiveID: location.state.hiveID
+                    hiveID: hiveID
                 },
                 headers: {
-                    'x-auth-token': location.state.token
+                    'x-auth-token': token
                 }
             }).then(res => {
                 if (res.status === 200) {
@@ -62,29 +67,16 @@ function TeamProfile() {
         e.preventDefault();
         axios.post("/api/v1/submitRoomConfigOptions",
             {
-                hiveID: location.state.hiveID,
+                hiveID: hiveID,
                 responses: userResponses
             }, {
             headers: {
-                'x-auth-token': location.state.token
+                'x-auth-token': token
             }
         }
         ).then(res => {
             if (res.status === 200) {
-
-                navigate('/waitingP1Attendee',
-                    {
-                        state: {
-                            token: location.state.token,
-                            profilePicture: location.state.profilePicture,
-                            hiveName: location.state.hiveName,
-                            displayName: location.state.displayName,
-                            phaseChangeDates: location.state.phaseChangeDates,
-                            hiveID: location.state.hiveID,
-                            code: location.state.code
-                        }
-                    }
-                )
+                navigate('/waitingP1Attendee', { state: { token: token, hiveID: hiveID, code: code } })
             }
         })
     }
@@ -97,19 +89,19 @@ function TeamProfile() {
     for (let i = 0; i < (configOptions.length); i++) {
         // calendar
         if (configOptions[i].type === "TIMETABLE") {
-            rows.push(<ClientCalendar maxAllowed={configOptions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} explanation={configOptions[i].explanation} question={configOptions[i].title} />);
+            rows.push(<span key={i}><ClientCalendar maxAllowed={configOptions[i].typeOptions.maxAllowed} arr={arr} setArr={setArr} explanation={configOptions[i].explanation} question={configOptions[i].title} /></span>);
             userResponses.push(arr);
         }
         if (configOptions[i].type === "DROPDOWN") {
-            rows.push(<ClientDropdown options={configOptions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions[i].explanation} question={configOptions[i].title} />);
+            rows.push(<span key={i}><ClientDropdown options={configOptions[i].typeOptions.options} response={response} setResponse={setResponse} explanation={configOptions[i].explanation} question={configOptions[i].title} /></span>);
             userResponses.push(response);
         }
         if (configOptions[i].type === "MULTISELECT") {
-            rows.push(<ClientMultiselect options={configOptions[i].typeOptions.options} selected={selected} setSelected={setSelected} explanation={configOptions[i].explanation} maxAllowed={configOptions[i].typeOptions.maxAllowed} question={configOptions[i].title} />);
+            rows.push(<span key={i}><ClientMultiselect options={configOptions[i].typeOptions.options} selected={selected} setSelected={setSelected} explanation={configOptions[i].explanation} maxAllowed={configOptions[i].typeOptions.maxAllowed} question={configOptions[i].title} /></span>);
             userResponses.push(selected);
         }
         if (configOptions[i].type === "NUMBERLINE") {
-            rows.push(<ClientSlider min={configOptions[i].typeOptions.min} max={configOptions[i].typeOptions.max} step={configOptions[i].typeOptions.step} num={num} setNum={setNum} explanation={configOptions[i].explanation} question={configOptions[i].title} />);
+            rows.push(<span key={i}><ClientSlider min={configOptions[i].typeOptions.min} max={configOptions[i].typeOptions.max} step={configOptions[i].typeOptions.step} num={num} setNum={setNum} explanation={configOptions[i].explanation} question={configOptions[i].title} /></span>);
             userResponses.push(num);
         }
     }
@@ -121,15 +113,16 @@ function TeamProfile() {
                 <img src={hives} alt="" />
             </div>
             <div class="right">
-                <Navbar roomCode={location.state.code} token={location.state.token} />
-                <div style={{ overflow: "auto", maxHeight: "70vh" }}>
+                <Navbar roomCode={code} token={token} >
+                    <PhaseTimer token={token} hiveID={hiveID} />
+                </Navbar>
+                <div className="config" style={{ overflow: "auto", maxHeight: "70vh" }}>
                     <tbody>{rows}</tbody>
                 </div>
                 <button type="submit" className="continue" style={{ cursor: 'pointer' }} onClick={handleSubmit}>Continue</button>
             </div>
         </div>
     )
-
 }
 
 export default TeamProfile

@@ -4,11 +4,12 @@ expects the following props:
 */
 function MyMessage(props) {
 
-
     return (
-        <div className="my-message">
-            <p className="sender">You</p>
-            <p className="message">{props.message}</p>
+        <div>
+            <p className="my-sender" id="similar" style={{ textAlign: 'right' }}>You</p>
+            <p className="my-message">{props.message}</p>
         </div>
     )
-} export default MyMessage;
+}
+
+export default MyMessage;

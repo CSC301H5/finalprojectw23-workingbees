@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import "./Style.css"
+import "../styles/Style.css"
 import axios from 'axios'
 
 // This attendee list does not update in real time
@@ -23,7 +23,7 @@ function StaticAttendeeList(props) {
           'x-auth-token': props.token
         }
       }).then(res => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           props.setAttendeeList(res.data.attendeeNames)
         }
       })

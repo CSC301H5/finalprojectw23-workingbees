@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import "./Style.css";
+import "../styles/Style.css";
 import axios from 'axios';
 
 export default function Navbar({ roomCode, children, token }) {

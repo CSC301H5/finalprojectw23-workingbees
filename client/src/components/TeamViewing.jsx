@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
-import hives from '../Assets/hives.png'
-import "./Style.css"
+import hives from '../assets/hives.png'
+import "../styles/Style.css"
 import Navbar from "./Navbar";
-import { getCookie } from '../utils/getAuthToken';
 import HiveList2 from './HiveList2';
 
 
@@ -11,16 +10,9 @@ import HiveList2 from './HiveList2';
 function TeamViewing(props) {
   const location = useLocation();
   const code = location.state.code;
-  const token = location.state.token;
   const hiveID = location.state.hiveID;
 
-  const [room, setRoom] = useState('');
-  const x_auth_token = getCookie("x-auth-token");
   const navigate = useNavigate();
-  //const hiveID = location.state.hiveID;
-  const handleInputChange = (event) => {
-    setRoom(event.target.value);
-  }
 
   // Handle create new hive button 
   const handlBackToHomePage = () => {

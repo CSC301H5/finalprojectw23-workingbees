@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Style.css"
+import "../styles/Style.css"
 import QuestionText from './QuestionText'
 import Question from './Question'
 /* Necessary props: same as parent

@@ -1,5 +1,5 @@
 import React from 'react';
-import crown from "../Assets/leader.png"
+import crown from "../assets/leader.png"
 const MiniEntry = ({ name, status = null, pictureUrl = null, children }) => {
   return (
     <div className="entryWrapper">

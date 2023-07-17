@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from "react-router-dom";
-import hives from '../Assets/hives.png'
-import "./Style.css"
+import hives from '../assets/hives.png'
+import "../styles/Style.css"
 import Navbar from "./Navbar";
 
 import BigEntry from './BigEntry'
@@ -29,7 +29,8 @@ const TeamintroPage = () => {
       if (res.status === 200) {
         setSwarmID(res.data.swarmID);
         for (let member in res.data.members) {
-          row.push(<BigEntry hiveId={hiveID} name={res.data.members[member].name} detail={res.data.members[member].biography} pictureUrl={res.data.members[member].profilePicture} />);
+          row.push(<BigEntry hiveId={hiveID} name={res.data.members[member].name} detail={res.data.members[member].biography} pictureUrl={res.data.members[member].profilePicture} img={false
+          } />);
         }
         setDisplayComponents(row);
       }
@@ -57,14 +58,16 @@ const TeamintroPage = () => {
             overflow: 'auto',
           }}
         >
-          <div> {displayComponents}</div>
+          <div>
+            <p style={{ fontFamily: "Montserrat", fontWeight: "1000", fontSize: "large" }}> Meet Your Team!</p>
+            {displayComponents}
+          </div>
         </div>
         <button
           className="button"
           onClick={handleNavigation}
           style={{ cursor: 'pointer', position: 'absolute', width: '250px', height: '50px', left: '665px', top: '660px' }}
         >  Open Chat </button>
-
       </div>
     </div>
   );

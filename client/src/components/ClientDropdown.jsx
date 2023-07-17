@@ -1,21 +1,20 @@
-import "./Style.css"
-import Select from 'react-select'
-import { useState } from "react"
+import "../styles/Style.css";
+import Select from "react-select";
 
 // takes in options, required, response, setResponse, explanation, question
 function ClientDropdown(props) {
-
-  const values = props.options.map(item => ({ value: item, label: item }))
+  const values = props.options.map((item) => ({ value: item, label: item }));
   // add a no preference option with value ""
-  values.unshift({ vale: "", label: "Select..." })
+  values.unshift({ vale: "", label: "Select..." });
 
   const handleChange = (e) => {
-    (props.setResponse(e.value))
-  }
+    props.setResponse(e.value);
+  };
 
   return (
     <div>
-      <h1 className="text">{props.question}</h1><br/>
+      <h1 className="text">{props.question}</h1>
+      <br />
       <h1 className="text">{props.explanation}</h1>
       {/* Display options */}
       <Select
@@ -25,11 +24,11 @@ function ClientDropdown(props) {
         styles={{
           control: (baseStyles, state) => ({
             ...baseStyles,
-            borderColor: '#FFAF40',
-            borderRadius: '16px',
-            boxShadow: 'none',
+            borderColor: "#FFAF40",
+            borderRadius: "16px",
+            boxShadow: "none",
             "&:hover": {
-              borderColor: "#FFAF40"
+              borderColor: "#FFAF40",
             },
           }),
         }}
@@ -38,12 +37,14 @@ function ClientDropdown(props) {
           borderRadius: 0,
           colors: {
             ...theme.colors,
-            text: 'black',
+            text: "black",
             primary25: "#f8d6a5",
-            primary: '#FFAF40',
+            primary: "#FFAF40",
           },
         })}
       />
     </div>
-  )
-} export default ClientDropdown
+  );
+}
+
+export default ClientDropdown;

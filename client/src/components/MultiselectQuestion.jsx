@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import QuestionText from './QuestionText'
 import OptionTexts from "./OptionTexts"
 import DropdownQuestion from './DropdownQuestion'

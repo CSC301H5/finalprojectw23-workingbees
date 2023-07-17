@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 /*
 expects the following props:
@@ -18,6 +18,6 @@ function ProfileNumbers(props) {
         <div>
         </div>
     )
-
 }
+
 export default ProfileNumbers

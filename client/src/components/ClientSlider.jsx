@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 // takes in max, min, step, num (target grade), setNum, question, and explanation
 function ClientSlider(props) {
@@ -9,12 +9,12 @@ function ClientSlider(props) {
     const setNum = props.setNum
     const explanation = props.explanation
 
-    const handleChange = (e) => { setNum(e.target.value) }
+    const handleChange = (e) => { setNum(parseInt(e.target.value)) }
 
     return (
         <div>
-            <label className="question">{props.question}</label>
-            <label className="text">{explanation}</label>
+            <label className="question" style={{ fontSize: "16px", marginRight: "50px", fontFamily: "Montserrat" }}>{props.question}</label>
+            <label className="text" style={{ fontSize: "16px", marginRight: "50px", fontFamily: "Montserrat" }}>{explanation}</label>
             <label className="text" style={{ color: "#FFAF40", fontSize: "24px", fontWeight: "light" }}>{num}%</label> <br />
             <label className="text" style={{ color: "#FFAF40", fontSize: "13px" }}>{min}%</label>
             <input
@@ -24,8 +24,11 @@ function ClientSlider(props) {
                 max={max}
                 step={step}
                 onChange={handleChange}
+                style={{ marginBottom: "14px" }}
             />
             <label className="text" style={{ color: "#FFAF40", fontSize: "13px", marginRight: "50px" }}>{max}%</label>
         </div>
     )
-} export default ClientSlider
+}
+
+export default ClientSlider

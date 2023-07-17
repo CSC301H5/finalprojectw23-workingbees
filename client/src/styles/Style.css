@@ -22,6 +22,11 @@ button:hover {
   opacity: 0.5;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor:default;
+}
+
 .small_button {
   background-color: #FFAF40;
   color: white;
@@ -800,7 +805,7 @@ button:hover {
 .questionList::-webkit-scrollbar-thumb:hover {
   background-color: #FFAF40;
 }
-
+/*
 .message {
   font-family: 'Montserrat';
   font-style: normal;
@@ -814,7 +819,8 @@ button:hover {
 
   padding: 5px;
 }
-
+*/
+/*
 .sender {
   font-family: 'Montserrat';
   font-style: normal;
@@ -823,7 +829,8 @@ button:hover {
   text-align: right;
 
 }
-
+*/
+/*
 .incomingMsg {
   box-sizing: border-box;
 
@@ -832,7 +839,9 @@ button:hover {
   background: #F6F6F6;
   border: 1px solid #FFAF40;
   border-radius: 8px;
+  width: auto;
 }
+*/
 
 .placeTimer {
   position: absolute;
@@ -871,8 +880,60 @@ button:hover {
 }
 .my-message {
   float: right;
+  width: auto;
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  background: #FFFFFF;
+  border-radius: 10px;
+  color: #000000;
+  font-size: 14px;
+  margin-left: 1rem;
+  padding: 1rem;
+  width: auto;
+  font-family: 'Montserrat';
+  font-style: normal;
 }
 
+.my-sender {
+  display: inline-block;
+    width: 50px;
+    float: right;
+    font-family: 'Montserrat';
+  font-style: normal;
+
+}
+#similar { 
+  float:right; 
+  width:100%; 
+  background:#f1f1f1; 
+  clear:both; 
+} 
+
+
 .other-message {
-  float: left;
+  display: inline-block;
+    padding: 0 0 0 10px;
+    vertical-align: top;
+    width: 92%;
+
+    background: #FFFFFF;
+  border-radius: 10px;
+  color: #000000;
+  font-size: 14px;
+  margin-left: 1rem;
+  padding: 1rem;
+  width: auto;
+  font-family: 'Montserrat';
+  font-style: normal;
+}
+
+.other-sender {
+  font-family: 'Montserrat';
+  font-style: normal;
+  display: inline-block;
+    width: 50px;
+    float: left;
+    
 }
