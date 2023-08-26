@@ -4,12 +4,12 @@ import AttendeeModel from '../models/attendeeModel.js';
 import HostModel from '../models/hostModel.js';
 import MatchingGroupModel from '../models/matchingGroupModel.js';
 import SwarmModel from '../models/swarmModel.js';
-import { getUniqueCode, checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
+import { getUniqueCode, validCode ,checkConfigOptions, checkConfigOptionsResponse } from '../utils/hiveUtils.js';
 import { getSocketOfUser, broadcast, getSocketsInHive } from '../utils/wsutils.js';
 import { getHiveFromDB, getHiveFromDBByID } from '../utils/dbUtils.js';
 import { removeElement, getObjectIndex } from '../utils/arrayUtils.js';
 import { getPendingRecommendations, createSwarms } from '../utils/algorithm.js';
-
+import { validRegistration } from '../utils/security.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -22,7 +22,7 @@ export const register = async (req, res) => {
     let password = req.body.password;
 
     // verify request
-    if (!email || !password) {
+    if (!email || !password || !validRegistration(email, password)) {
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
 
     // verify credentials
     try {
-        let user = await UserModel.findOne({"email": email});
+        const user = await UserModel.findOne({"email": email});
         if (!user) {
             return res.status(401).json({msg: "Error: Email or password incorrect"});
         }
@@ -120,7 +120,7 @@ export const guestRegister = async (req, res) => {
     try {
 
         // create guest user
-        var user = new UserModel({
+        const user = new UserModel({
             email: "",
             password: "",
             isGuest: true
@@ -151,6 +151,32 @@ export const guestRegister = async (req, res) => {
     }
 }
 
+export const getCodeExistence = async (req, res) => {
+
+    let code = req.query.code;
+
+    // verify request
+    if (!code || !validCode(code)) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try and find hive
+        const hive = await getHiveFromDB({"code": code});
+        if (hive && hive.phase === 0) {
+            return res.status(200).json({exists: true});
+        } else {
+            return res.status(200).json({exists: false})
+        }
+
+    } catch (e) {
+        console.error("Error on getCodeExistence controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
 export const joinHive = async (req, res) => {
 
     let code = req.body.code;
@@ -165,7 +191,7 @@ export const joinHive = async (req, res) => {
 
     try {
         // check if the code corresponds to an existing hive
-        let hive = await getHiveFromDB({"code": code});
+        const hive = await getHiveFromDB({"code": code});
         if (!hive) {
             return res.status(404).json({msg: "Error: Hive not found"});
         }
@@ -269,21 +295,19 @@ export const createHive = async (req, res) => {
         if (!user) {
             return res.status(401).json({msg: "Invalid user. Action forbidden."});
         }
-
         // check config options
         let configRes = await checkConfigOptions(req, res);
         if (configRes) {
             return;
         }
-
         // create host
-        let host = new HostModel({
+        const host = new HostModel({
             name: displayName,
             profilePicture: profilePicture
         });
 
         // create new hive
-        let hive = new HiveModel({
+        const hive = new HiveModel({
             name: hiveName,
             code: code,
             attendeeIDs: [],
@@ -292,7 +316,6 @@ export const createHive = async (req, res) => {
             phase: 0,
             configOptions: JSON.stringify(configOptions)
         });
-
         // link host and hive through mutual access of ids
         host.userID = user.userID;
         hive.hiveID = hive._id.toString();
@@ -304,14 +327,13 @@ export const createHive = async (req, res) => {
         // update user's hives
         user.hiveIDs.push(hive.hiveID);
         await user.save();
-
         return res.status(200).json({code: hive.code, hiveID: host.hiveID});
 
     } catch (e) {
         console.error("Error on createHive controller!");
         console.error(e.message);
         console.error(e.status);
-        res.status(500).json({msg: "Server Error."});
+        res.status(500).json({msg: "Server Error. asdfasdfasd"});
     }
 }
 
@@ -739,6 +761,7 @@ export const getOutgoingInvites = async (req, res) => {
 }
 
 export const sendInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let username = req.body.username;
 
@@ -835,6 +858,7 @@ export const sendInvite = async (req, res) => {
 }
 
 export const acceptInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let matchingGroupID = req.body.matchingGroupID
 
@@ -950,6 +974,7 @@ export const acceptInvite = async (req, res) => {
 }
 
 export const rejectInvite = async (req, res) => {
+
     let hiveID = req.body.hiveID;
     let matchingGroupID = req.body.matchingGroupID
 
@@ -1024,8 +1049,57 @@ export const rejectInvite = async (req, res) => {
     }
 }
 
-export const getRoomConfigOptions = async(req, res) => {
+export const confirmGroup = async(req, res) => {
 
+    let hiveID = req.body.hiveID;
+
+    // verify request
+    if (!hiveID) {
+        return res.status(400).json({msg: "Malformed request."});
+    }
+
+    try {
+        // try to find user and hive and check that the user is an attendee in this hive
+        const user = await UserModel.findById(req.userID);
+        if (!user) {
+            return res.status(401).json({msg: "Invalid user. Action forbidden."});
+        }
+
+        const hive = await getHiveFromDBByID(hiveID);
+        if (!hive) {
+            return res.status(404).json({msg: "Error: Hive not found"});
+        }
+
+        const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
+        if (!attendee) {
+            return res.status(401).json({msg: "User must be an attendee of this hive"});
+        }
+
+        // only phase 0 allows modification of matchingGroups
+        if (hive.phase !== 0) {
+            return res.status(409).json({msg: "Error: Matching groups can only be confirmed in phase 0."});
+        }
+
+        // try and find the matching group
+        const matchingGroup = await MatchingGroupModel.findOne({"hiveID": hiveID, "leaderID": user.userID});
+        if (!matchingGroup) {
+            return res.status(404).json({msg: "Error: Matching group not found (user must be the leader of the group)"});
+        }
+
+        // notify members of the matching group if they are active
+        broadcast(hiveID, matchingGroup, `{"event": "GROUP_CONFIRMED", "leaderName": "${attendee.name}"}`);
+
+        return res.status(200).json();
+
+    } catch (e) {
+        console.error("Error on confirmGroup controller!");
+        console.error(e.message);
+        console.error(e.status);
+        res.status(500).json({msg: "Server Error."});
+    }
+}
+
+export const getRoomConfigOptions = async(req, res) => {
 
     let hiveID = req.query.hiveID;
 
@@ -1098,7 +1172,7 @@ export const submitRoomConfigOptions = async(req, res) => {
         // get matching group of the user and ensure the user is the leader
         let matchingGroup = await MatchingGroupModel.findById(attendee.groupID);
         if (!matchingGroup) { // this should always exist if the user exists, so something went terribly wrong.
-            return res.status(500).json({msg: "Server Error."});
+            return res.status(500).json({msg: "Server Error.1"});
         }
 
         if (user.userID !== matchingGroup.leaderID) {
@@ -1135,7 +1209,7 @@ export const submitRoomConfigOptions = async(req, res) => {
         console.error("Error on submitRoomConfigOptions controller!");
         console.error(e.message);
         console.error(e.stack);
-        res.status(500).json({msg: "Server Error."});
+        res.status(500).json({msg: "Server Error.2"});
     }
 }
 
@@ -1398,9 +1472,6 @@ export const respondToMatchingGroupRecommendation = async(req, res) => {
 
     // verify request
     if (!hiveID || !matchingGroupID || !response) {
-        console.log("hiveID ", hiveID);
-        console.log("matchingGroupID ", matchingGroupID);
-        console.log("response ", response);
         return res.status(400).json({msg: "Malformed request."});
     }
 
@@ -1584,14 +1655,11 @@ export const getAllSwarms = async (req, res) => {
             return res.status(401).json({ msg:"Permission denied." });
         }
 
-        
-
         const data = {};
 
         for (let i = 0; i < hive.swarmIDs.length; i++) {
             let swarm = await SwarmModel.findById(hive.swarmIDs[i]);
             data[swarm.swarmID] = swarm.memberIDs.length;
-            console.log(data)
         }
         return res.status(200).json(data);
 
@@ -1693,8 +1761,6 @@ export const sendSwarmChatMessage = async (req, res) => {
         const attendee = await AttendeeModel.findOne({"hiveID": hiveID, "userID": user.userID});
         const host = await HostModel.findOne({"hiveID": hiveID, "userID": user.userID});
         if (attendee && attendee.swarmID !== swarmID) { // attendee exists but is not in this swarm
-            console.log(attendee.swarmID, swarmID);
-            console.log(user.userID);
             return res.status(401).json({msg: "You are not permitted to access that swarmID."});
         } 
 

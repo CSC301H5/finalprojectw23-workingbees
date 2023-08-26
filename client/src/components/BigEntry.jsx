@@ -1,14 +1,13 @@
 import React from 'react';
-import arrow from "../Assets/arrow.png"
-import { useNavigate,useLocation } from "react-router-dom";
+import arrow from "../assets/arrow.png"
+import { useNavigate } from "react-router-dom";
 
 
-const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token=null, code=null, swarmID=null}) => {
+const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, hiveID = null, token = null, code = null, swarmID = null, img = arrow }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log("going to the room: ", { destination, hiveID, token, code, swarmID})
-    navigate(destination,{ state: { code: code, token: token, hiveID: hiveID , swarmID:swarmID} })
+    navigate(destination, { state: { code: code, token: token, hiveID: hiveID, swarmID: swarmID } })
   };
 
   const displayName = name && name.length > 30 ? `${name.substring(0, 30)}...` : name;
@@ -16,12 +15,13 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, 
   return (
     <div class="flex-grid">
       <div class="big-box">
-        {pictureUrl ?(
+        {pictureUrl ? (
           <img
             src={`data:image/png;base64,${pictureUrl.split(',')[1]}`}
             style={{ width: "75px", height: "75px", borderRadius: "50%", marginRight: "10px", marginLeft: "10px" }}
+            alt="Profile"
           />
-        ) :(
+        ) : (
           <div class="circle"></div>
         )}
         <div class="text-box">
@@ -30,14 +30,18 @@ const BigEntry = ({ name = null, detail, pictureUrl = null, destination = null, 
           </div>
           <div class="details">{detail}</div>
         </div>
-        <div class="pointer">
-          <img
-            src={arrow}
-            alt=""
-            style={{ cursor: "pointer", width: "30px", height: "100px", marginLeft: "150px" }}
-            onClick={handleClick}
-          />
-        </div>
+        {img ? (
+          <div class="pointer">
+
+            <img
+              src={img}
+              alt=""
+              style={{ cursor: "pointer", width: "30px", height: "100px", marginLeft: "150px" }}
+              onClick={handleClick}
+            />
+          </div>
+        ) : (<div></div>
+        )}
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import "./Style.css"
+import "../styles/Style.css"
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
-import hives from '../Assets/hives.png';
+import hives from '../assets/hives.png';
 import { futureDate } from "../utils/time";
 
-function CreateRoom() {
+function RoomCreation() {
     const [hiveName, setHiveName] = useState('')
     const [displayName, setDisplayName] = useState('')
     const [phaseZeroDate, setPhaseZeroDate] = useState('')
@@ -16,7 +16,6 @@ function CreateRoom() {
     const [groupMin, setMin] = useState(0)
     const navigate = useNavigate();
     const location = useLocation();
-
     const token = location.state.token;
 
     const handleHiveName = (e) => { setHiveName(e.target.value) }
@@ -39,9 +38,10 @@ function CreateRoom() {
             const timeData = phaseOneTime.split(":");
             phaseChangeDates[1] = futureDate(Date.parse(phaseOneDate), parseInt(timeData[0]) + 4, parseInt(timeData[1]), 0).toISOString();
         }
-        console.log( groupMax, groupMin); 
- 
-       navigate('/RoomConfig', { state: {Max: groupMax, Min: groupMin, token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+
+        if (groupMin <= groupMax && (phaseChangeDates[0] === null || phaseChangeDates[1] === null || phaseChangeDates[0] <= phaseChangeDates[1])) {
+            navigate('/roomConfig', { state: { Max: groupMax, Min: groupMin, token: token, profilePicture: "meow", hiveName: hiveName, displayName: displayName, phaseChangeDates: phaseChangeDates } });
+        }
     }
 
     return (
@@ -68,14 +68,14 @@ function CreateRoom() {
                     />
                     <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '370px' }}>Group size </label>
                     <input
-                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '395px' }}  placeholder="MAX" required
-                        type="text"
-                        onChange={handleMax}
-                    />
-                    <input
-                        className="SmalltextBox" style={{ width: '197.5px', left: '953px', top: '395px' }}  placeholder="Min" required
+                        className="SmalltextBox" style={{ width: '197.5px', left: '753px', top: '395px' }} placeholder="Min" required
                         ype="text"
                         onChange={handleMin}
+                    />
+                    <input
+                        className="SmalltextBox" style={{ width: '197.5px', left: '953px', top: '395px' }} placeholder="MAX" required
+                        type="text"
+                        onChange={handleMax}
                     />
                     <label className="display" style={{ width: '300px', height: '20px', left: '753px', top: '455px' }}>Phase 0 deadline (Optional)</label>
                     <input
@@ -99,9 +99,8 @@ function CreateRoom() {
                         className="SmalltextBox" style={{ top: '580px', left: '953px', width: '197.5px' }}
                         type="time"
                         onChange={handlePhaseOneTime}
-
                     />
-           
+
                     <button type="submit" className="continue" style={{ cursor: 'pointer' }}>Continue</button>
                 </form>
             </div>
@@ -109,4 +108,4 @@ function CreateRoom() {
     );
 }
 
-export default CreateRoom
+export default RoomCreation

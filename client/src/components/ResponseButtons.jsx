@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import "./Style.css"
+import "../styles/Style.css"
 
 function sendMatchingResponse(hiveID, matchingID, response, next, token) {
 	axios.post("/api/v1/respondToMatchingGroupRecommendation",
@@ -14,14 +14,9 @@ function sendMatchingResponse(hiveID, matchingID, response, next, token) {
 		}
 	}
 	).then(res => {
-		console.log("x2 : ", token);
-		if (res.status == 200) {
-			console.log("30000");
-			console.log("x2 ", token);
+		if (res.status === 200) {
 			next()
 		}
-		console.log(res.data);
-
 	}).catch(err => {
 		console.error(err.response);
 	});
@@ -43,7 +38,6 @@ export default function ResponseButtons(props) {
 				value="Reject"
 				onClick={() => {
 					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.token)
-					console.log("click click click -1", props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "NO", props.next, props.hiveID)
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
 			/>
@@ -53,7 +47,6 @@ export default function ResponseButtons(props) {
 				value="Maybe"
 				onClick={() => {
 					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "MAYBE", props.next, props.token)
-					console.log("click  +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
 			/>
@@ -63,7 +56,6 @@ export default function ResponseButtons(props) {
 				value="Accept"
 				onClick={() => {
 					sendMatchingResponse(props.hiveID, props.matchingGroupIDArray[props.current_profile_index], "YES", props.next, props.token)
-					console.log("click click +1")
 					props.Setcurrent_profile_index(props.current_profile_index + 1)
 				}}
 			/>

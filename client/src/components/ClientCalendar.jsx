@@ -1,11 +1,10 @@
-import "./Style.css"
+import "../styles/Style.css"
 import ScheduleSelector from 'react-schedule-selector';
 import { useEffect, useState } from "react";
 
 // takes in maxAllowed, question, and explanation
 function ClientCalendar(props) {
     const maxAllowed = props.maxAllowed
-    const setArr = props.setArr
     const [schedule, setSchedule] = useState([])
     // 2D array to store availability where 0 = F and 1 = T
     // Sunday = 0, Saturday = 6
@@ -16,15 +15,15 @@ function ClientCalendar(props) {
     const setArray = (e) => {
         // loop through e and update arr
         let newArr = Array(7).fill(0).map(row => new Array(24).fill(0))
-        for (let i=0; i<e.length; i++) {
+        for (let i = 0; i < e.length; i++) {
             let date = String(e[i]).slice(0, 3)
             let time = String(e[i]).slice(16, 18)
-            if (time[0]==='0') {
-                time = time.slice(1,2)
+            if (time[0] === '0') {
+                time = time.slice(1, 2)
             }
             newArr[dates.indexOf(date)][times.indexOf(time)] = 1
         }
-        {props.setArr((prevArr) => newArr)}
+        { props.setArr((prevArr) => newArr) }
     }
 
     const handleChange = (e) => {
@@ -57,4 +56,5 @@ function ClientCalendar(props) {
         </div>
     )
 }
+
 export default ClientCalendar

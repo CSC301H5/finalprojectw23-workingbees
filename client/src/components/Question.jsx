@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import "./Style.css"
+import "../styles/Style.css"
 
 /*Props must have:
 	key: int to uniquely identify the question

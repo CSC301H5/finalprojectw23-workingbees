@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 /*
 expects the following props:

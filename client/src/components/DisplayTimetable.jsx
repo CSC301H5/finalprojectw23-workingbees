@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import ScheduleSelector from 'react-schedule-selector';
 import { useEffect, useState } from "react";
 
@@ -24,13 +24,12 @@ function DisplayTimetable(props) {
     // loop through arr to set schedule (convert to dates)
     // date format: Wed Mar 01 2023 14:00
     async function convertToDate() {
-        console.log(props.arr)
         for (let i = 0; i < props.arr.length; i++) {
             for (let j = 0; j < props.arr[i].length; j++) {
                 if (props.arr[i][j] === 1) {
                     let date = dates[i]
                     let time = String(j) + ":00"
-                    setSchedule((prevSchedule) => 
+                    setSchedule((prevSchedule) =>
                         [...prevSchedule, (date + time)]
                     )
                 }
@@ -42,11 +41,11 @@ function DisplayTimetable(props) {
     }, [])
 
     const handleChange = (e) => {
-        
+
     }
 
     return (
-        <div className="schedule" style={{paddingLeft:"50px"}}>
+        <div className="schedule" style={{ paddingLeft: "50px" }}>
             <h1 className="text">Availability: </h1>
             <ScheduleSelector
                 selection={schedule}
@@ -61,6 +60,6 @@ function DisplayTimetable(props) {
             />
         </div>
     )
-
 }
+
 export default DisplayTimetable

@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 
 // ["option1", "option3"] take array as input  
 function DisplayMultiselect(props) {

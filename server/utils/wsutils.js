@@ -1,4 +1,3 @@
-
 import HiveModel from '../models/hiveModel.js';
 import jwt from 'jsonwebtoken';
 

@@ -11,4 +11,5 @@ function VerticalGrid({ items }) {
     </div>
   );
 }
+
 export default VerticalGrid

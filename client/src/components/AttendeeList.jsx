@@ -1,4 +1,4 @@
-import "./Style.css"
+import "../styles/Style.css"
 import MiniEntry from "./MiniEntry";
 
 function AttendeeList(props) {
